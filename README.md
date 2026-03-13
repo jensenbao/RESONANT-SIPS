@@ -25,7 +25,7 @@ npm install
 
 ```bash
 VITE_AI_PROVIDER=deepseek
-VITE_DEEPSEEK_API_KEY=your_api_key
+VITE_DEEPSEEK_API_KEY=填入你的api_key
 VITE_DEEPSEEK_MODEL=deepseek-chat
 VITE_DEEPSEEK_ENDPOINT=https://api.deepseek.com/chat/completions
 ```
@@ -34,7 +34,7 @@ VITE_DEEPSEEK_ENDPOINT=https://api.deepseek.com/chat/completions
 
 ```bash
 VITE_AI_PROVIDER=gemini
-VITE_GEMINI_API_KEY=your_api_key
+VITE_GEMINI_API_KEY=填入你的api_key
 VITE_GEMINI_MODEL=gemini-2.5-flash
 VITE_GEMINI_ENDPOINT=https://generativelanguage.googleapis.com/v1/models
 VITE_GEMINI_IMAGE_MODEL=gemini-2.5-flash-image
