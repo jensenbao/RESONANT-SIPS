@@ -1,27 +1,30 @@
 # Mixologist
 
-一个基于 React + Vite 的赛博酒吧调酒互动游戏。
+🌍 **English** | [简体中文](README.zh-CN.md)
 
-## 环境要求
+An interactive cyberpunk bartending game built with React + Vite.
 
-- Node.js 18 或更高版本
-- npm 9 或更高版本
+## Requirements
 
-## 安装依赖
+- Node.js 18 or higher
+- npm 9 or higher
 
-在项目根目录执行：
+## Install Dependencies
+
+Run the following command in the project root:
 
 ```bash
 npm install
 ```
 
-## 环境变量
+## Environment Variables
 
-项目支持 `deepseek`、`gemini` 和 `mock` 三种 AI 模式。
+The project supports three AI modes: `deepseek`, `gemini`, and `mock`.
 
-如果你只是想先把项目跑起来，可以不配置任何密钥，项目会自动回退到 `mock` 模式。
+If you just want to run the project quickly, you can skip all API keys.  
+The app will automatically fall back to `mock` mode.
 
-如果你要接真实模型，建议在根目录新建 `.env.local`：
+If you want to connect to real models, create a `.env.local` file in the root directory:
 
 ```bash
 VITE_AI_PROVIDER=deepseek
@@ -30,7 +33,7 @@ VITE_DEEPSEEK_MODEL=deepseek-chat
 VITE_DEEPSEEK_ENDPOINT=https://api.deepseek.com/chat/completions
 ```
 
-可选的 Gemini 配置：
+Optional Gemini configuration:
 
 ```bash
 VITE_AI_PROVIDER=gemini
@@ -41,37 +44,37 @@ VITE_GEMINI_IMAGE_MODEL=gemini-2.5-flash-image
 VITE_GEMINI_IMAGE_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/models
 ```
 
-## 本地启动
+## Run Locally
 
-启动开发环境：
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Vite 默认会在本地输出一个开发地址，通常是：
+Vite will output a local development URL, usually:
 
 ```text
 http://localhost:5173
 ```
 
-打开浏览器访问这个地址即可开始调试。
+Open it in your browser to start testing and debugging.
 
-## 构建与预览
+## Build and Preview
 
-生产构建：
+Create a production build:
 
 ```bash
 npm run build
 ```
 
-本地预览构建结果：
+Preview the production build locally:
 
 ```bash
 npm run preview
 ```
 
-## 说明
+## Notes
 
-- 设计文档目录 `docs/design/` 已加入 Git 忽略。
-- `.env`、`.env.local` 已在忽略列表中，不会默认提交到仓库。
+- The design document directory `docs/design/` is in `.gitignore`.
+- `.env` and `.env.local` are also ignored and will not be committed by default.
