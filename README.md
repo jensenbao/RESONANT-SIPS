@@ -17,7 +17,7 @@ Run the following command in the project root:
 npm install
 ```
 
-## Environment Variables
+## API Key Setup
 
 Template-style setup: fill and use directly.
 
