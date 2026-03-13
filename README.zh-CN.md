@@ -19,29 +19,16 @@ npm install
 
 ## 环境变量
 
-项目支持 `deepseek`、`gemini` 和 `mock` 三种 AI 模式。
+像模板一样，直接填上即用：
 
-如果你只是想先把项目跑起来，可以不配置任何密钥，项目会自动回退到 `mock` 模式。
+1. 打开 `src/config/localApiKeys.js`
+2. 把 `your api key` 改成你的真实 key
+3. 保存文件后直接运行 `npm run dev`
 
-如果你要接真实模型，建议在根目录新建 `.env.local`：
-
-```bash
-VITE_AI_PROVIDER=deepseek
-VITE_DEEPSEEK_API_KEY=填入你的api_key
-VITE_DEEPSEEK_MODEL=deepseek-chat
-VITE_DEEPSEEK_ENDPOINT=https://api.deepseek.com/chat/completions
-```
-
-可选的 Gemini 配置：
-
-```bash
-VITE_AI_PROVIDER=gemini
-VITE_GEMINI_API_KEY=填入你的api_key
-VITE_GEMINI_MODEL=gemini-2.5-flash
-VITE_GEMINI_ENDPOINT=https://generativelanguage.googleapis.com/v1/models
-VITE_GEMINI_IMAGE_MODEL=gemini-2.5-flash-image
-VITE_GEMINI_IMAGE_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/models
-```
+说明：
+- 不需要理解或设置 `CONFIG.provider`。
+- 默认会自动选择已填写 key 的模型。
+- 如果两个 key 都没填，会自动回退到 `mock`。
 
 ## 本地启动
 
@@ -76,4 +63,4 @@ npm run preview
 ## 说明
 
 - 游戏存档目录 `saves/` 的内容已被 Git 忽略，仅保留了基础的文件夹结构，您的本地存档不会被上传。
-- `.env`、`.env.local` 等敏感配置文件已在忽略列表中，不会被提交到仓库，保障您的 API Key 安全。
+- `.env`、`.env.local`、`.env.development.local`、`.env.production.local` 等敏感配置文件已在忽略列表中，不会被提交到仓库，保障您的 API Key 安全。

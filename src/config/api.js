@@ -1,10 +1,31 @@
 import promptTemplates from './promptTemplates.json';
+import LOCAL_API_KEYS from './localApiKeys.js';
 
 // AI API 配置
 
-const deepseekApiKey = import.meta.env.VITE_DEEPSEEK_API_KEY || '';
-const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
-const requestedProvider = (import.meta.env.VITE_AI_PROVIDER || '').trim().toLowerCase();
+const normalizeApiKey = (raw) => {
+  const value = String(raw || '').trim();
+  if (!value) return '';
+
+  const lower = value.toLowerCase();
+  if (lower === 'your api key' || lower === 'your_api_key' || lower === 'your-api-key') {
+    return '';
+  }
+
+  return value;
+};
+
+const deepseekApiKey =
+  normalizeApiKey(LOCAL_API_KEYS?.deepseek?.apiKey) ||
+  normalizeApiKey(import.meta.env.VITE_DEEPSEEK_API_KEY);
+const geminiApiKey =
+  normalizeApiKey(LOCAL_API_KEYS?.gemini?.apiKey) ||
+  normalizeApiKey(import.meta.env.VITE_GEMINI_API_KEY);
+const requestedProvider = String(
+  LOCAL_API_KEYS?.provider || import.meta.env.VITE_AI_PROVIDER || ''
+)
+  .trim()
+  .toLowerCase();
 
 const resolveProvider = () => {
   if (requestedProvider === 'deepseek' && deepseekApiKey) return 'deepseek';
@@ -21,21 +42,33 @@ export const API_CONFIG = {
   deepseek: {
     enabled: activeProvider === 'deepseek' && !!deepseekApiKey,
     apiKey: deepseekApiKey,
-    model: import.meta.env.VITE_DEEPSEEK_MODEL || 'deepseek-chat',
-    endpoint: import.meta.env.VITE_DEEPSEEK_ENDPOINT || 'https://api.deepseek.com/chat/completions'
+    model: LOCAL_API_KEYS?.deepseek?.model || import.meta.env.VITE_DEEPSEEK_MODEL || 'deepseek-chat',
+    endpoint:
+      LOCAL_API_KEYS?.deepseek?.endpoint ||
+      import.meta.env.VITE_DEEPSEEK_ENDPOINT ||
+      'https://api.deepseek.com/chat/completions'
   },
 
   gemini: {
     enabled: activeProvider === 'gemini' && !!geminiApiKey,
     apiKey: geminiApiKey,
-    model: import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash',
-    endpoint: import.meta.env.VITE_GEMINI_ENDPOINT || 'https://generativelanguage.googleapis.com/v1/models'
+    model: LOCAL_API_KEYS?.gemini?.model || import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash',
+    endpoint:
+      LOCAL_API_KEYS?.gemini?.endpoint ||
+      import.meta.env.VITE_GEMINI_ENDPOINT ||
+      'https://generativelanguage.googleapis.com/v1/models'
   },
 
   imageGen: {
     enabled: !!geminiApiKey,
-    model: import.meta.env.VITE_GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image',
-    endpoint: import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT || 'https://generativelanguage.googleapis.com/v1beta/models'
+    model:
+      LOCAL_API_KEYS?.gemini?.imageModel ||
+      import.meta.env.VITE_GEMINI_IMAGE_MODEL ||
+      'gemini-2.5-flash-image',
+    endpoint:
+      LOCAL_API_KEYS?.gemini?.imageEndpoint ||
+      import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT ||
+      'https://generativelanguage.googleapis.com/v1beta/models'
   },
 
   mock: {

@@ -7,6 +7,7 @@
     "dev": "node scripts/dev.mjs",
     "dev:client": "vite",
     "dev:server": "node server/save-server.mjs",
+    "setup:api": "node scripts/setup-api-keys.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

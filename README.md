@@ -19,30 +19,16 @@ npm install
 
 ## Environment Variables
 
-The project supports three AI modes: `deepseek`, `gemini`, and `mock`.
+Template-style setup: fill and use directly.
 
-If you just want to run the project quickly, you can skip all API keys.  
-The app will automatically fall back to `mock` mode.
+1. Open `src/config/localApiKeys.js`
+2. Replace `your api key` with your real key
+3. Save and run `npm run dev`
 
-If you want to connect to real models, create a `.env.local` file in the root directory:
-
-```bash
-VITE_AI_PROVIDER=deepseek
-VITE_DEEPSEEK_API_KEY=填入你的api_key
-VITE_DEEPSEEK_MODEL=deepseek-chat
-VITE_DEEPSEEK_ENDPOINT=https://api.deepseek.com/chat/completions
-```
-
-Optional Gemini configuration:
-
-```bash
-VITE_AI_PROVIDER=gemini
-VITE_GEMINI_API_KEY=填入你的api_key
-VITE_GEMINI_MODEL=gemini-2.5-flash
-VITE_GEMINI_ENDPOINT=https://generativelanguage.googleapis.com/v1/models
-VITE_GEMINI_IMAGE_MODEL=gemini-2.5-flash-image
-VITE_GEMINI_IMAGE_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/models
-```
+Notes:
+- No need to set provider manually.
+- The app auto-selects a provider from available keys.
+- If both keys are empty, it falls back to `mock` mode.
 
 ## Run Locally
 
@@ -77,4 +63,4 @@ npm run preview
 ## Notes
 
 - The runtime save slots directory `saves/` is ignored by Git, keeping only the folder structure. Your local game saves will not be committed.
-- `.env`, `.env.local` and other sensitive config files are in `.gitignore` to keep your API keys secure and will not be committed.
+- `.env`, `.env.local`, `.env.development.local`, `.env.production.local` and other sensitive config files are in `.gitignore` to keep your API keys secure and will not be committed.
