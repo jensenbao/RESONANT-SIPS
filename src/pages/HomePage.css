@@ -1288,6 +1288,8 @@
   width: 100vw;
   max-width: 100vw;
   box-sizing: border-box;
+  /* 右侧菜单列 scale(1.2) 会向下/向左溢出布局盒，避免被 .home-page 裁切 */
+  overflow: visible;
 }
 
 .home-page .home-content-layer {
@@ -1299,24 +1301,29 @@
   box-sizing: border-box;
 }
 
+.home-page.home-page--main-menu .home-content-layer {
+  overflow: visible;
+}
+
 /*
  * 右侧压暗：右缘不透明最强，向左渐隐为 0（替代纯色 black base.png，避免中间硬边）
  * gradient: to left → 起点在右、终点在左
  */
+/* 参考 游戏界面渲染图；列 scale(1.2) 后略加宽以盖住丝带 */
 .home-content-layer > .home-ui-panel-base {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: auto;
-  width: min(56vw, 780px);
+  width: min(40vw, 520px);
   z-index: 0;
   pointer-events: none;
   background: linear-gradient(
     to left,
-    rgba(0, 0, 0, 0.92) 0%,
-    rgba(0, 0, 0, 0.55) 38%,
-    rgba(0, 0, 0, 0.18) 68%,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.42) 42%,
+    rgba(0, 0, 0, 0.12) 72%,
     rgba(0, 0, 0, 0) 100%
   );
 }
@@ -1337,8 +1344,8 @@
   align-content: flex-start;
   box-sizing: border-box;
   text-align: center;
-  /* Smaller padding-right = UI sits further right; top/bottom unchanged */
-  padding: clamp(7vh, 10vh, 13vh) clamp(10px, 2.5vw, 36px) clamp(20px, 3.5vh, 48px) clamp(10px, 2vw, 28px);
+  /* 整体下移：与动态海报中央 Bar 霓虹招牌对齐 headline */
+  padding: clamp(14vh, 18vh, 26vh) clamp(12px, 3vw, 40px) clamp(18px, 3vh, 40px) clamp(10px, 2vw, 24px);
   margin: 0;
 }
 
@@ -1346,8 +1353,12 @@
   flex: 0 0 auto;
   margin-left: auto;
   margin-right: 0;
-  width: min(38vw, 480px);
-  max-width: calc(100vw - 16px);
+  width: min(30vw, 400px);
+  max-width: calc(100vw - 24px);
+  overflow: visible;
+  /* 整块 UI（标题+副标题+按钮）相对参考再放大 1.2×，锚定右上避免贴边漂移 */
+  transform: scale(1.2);
+  transform-origin: top right;
 }
 
 .home-content-layer > .splash-overlay {
@@ -1360,15 +1371,21 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: clamp(16px, 2.5vh, 28px);
+  gap: clamp(12px, 2vh, 22px);
   width: 100%;
   box-sizing: border-box;
-  padding: clamp(14px, 2vh, 22px) clamp(14px, 2.4vw, 22px);
+  padding: clamp(10px, 1.6vh, 18px) clamp(10px, 2vw, 18px);
+  overflow: visible;
 }
 
 .home-menu-render__column .home-header {
   margin-bottom: 0;
   text-align: center;
+  overflow: visible;
+}
+
+.home-menu-render__column .home-header--asset-title {
+  overflow: visible;
 }
 
 .home-menu-render__column .game-description {
@@ -1380,6 +1397,7 @@
   opacity: 0.92;
 }
 
+/* 与渲染图一致：标题与两条丝带同宽（列宽内 100%） */
 .game-title.game-title--asset {
   font-size: 0 !important;
   line-height: 0 !important;
@@ -1387,15 +1405,19 @@
   text-shadow: none !important;
   margin-bottom: clamp(6px, 1.2vh, 12px) !important;
   padding: 0 !important;
+  position: static;
+  left: auto;
+  transform: none;
+  width: 100%;
+  max-width: 100%;
 }
 
-/* headline.png: ×1.5 vs previous cap (44vh / 400px) */
 .game-title-img {
   display: block;
   margin: 0 auto;
   width: 100%;
   height: auto;
-  max-height: min(66vh, 600px);
+  max-height: min(38vh, 340px);
   object-fit: contain;
   object-position: center;
   image-rendering: auto;
@@ -1429,20 +1451,32 @@
   border-radius: 0 !important;
   overflow: visible;
   cursor: pointer;
+  transform-origin: center center;
+  transition: transform 0.22s ease, filter 0.22s ease;
 }
 
 .home-menu-render .start-button.start-button--asset:hover {
   background: transparent !important;
   color: inherit !important;
   box-shadow: none !important;
-  transform: none !important;
-  filter: brightness(1.08);
+  transform: scale(1.045) !important;
+  filter: brightness(1.06);
 }
 
 .home-menu-render .start-button.start-button--asset:active {
-  transform: scale(0.985) !important;
+  transform: scale(0.99) !important;
   box-shadow: none !important;
-  filter: brightness(0.95);
+  filter: brightness(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-menu-render .start-button.start-button--asset {
+    transition: none;
+  }
+
+  .home-menu-render .start-button.start-button--asset:hover {
+    transform: none !important;
+  }
 }
 
 .home-menu-render .start-button-img {
@@ -1495,21 +1529,21 @@
 
 @media (max-width: 768px) {
   .home-content-layer > .home-ui-panel-base {
-    width: min(96vw, 680px);
+    width: min(92vw, 460px);
     right: 0;
   }
 
   .home-center.home-menu-render {
     justify-content: flex-end;
     align-items: flex-start;
-    padding: clamp(18px, 4vh, 36px) clamp(8px, 3vw, 20px) clamp(18px, 3vh, 32px) clamp(8px, 3vw, 16px);
+    padding: clamp(12vh, 16vh, 22vh) clamp(10px, 4vw, 20px) clamp(16px, 3vh, 28px) clamp(8px, 3vw, 14px);
   }
 
   .home-menu-render__column {
-    width: min(90vw, 440px);
+    width: min(86vw, 380px);
   }
 
   .game-title-img {
-    max-height: min(51vh, 450px);
+    max-height: min(32vh, 280px);
   }
 }
