@@ -633,15 +633,25 @@
 }
 
 .chat-header {
-  display: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  margin: 0 20px 12px;
+  background: linear-gradient(180deg, rgba(56, 42, 102, 0.52), rgba(30, 22, 58, 0.46));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(232, 224, 255, 0.16);
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(16, 10, 34, 0.22);
 }
 
 .ai-avatar {
   width: 60px;
   height: 60px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  box-shadow: none;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 18px rgba(16, 10, 34, 0.14);
 }
 
 .ai-info h3 {
@@ -652,28 +662,40 @@
 }
 
 .trait-tag {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: #A8DADC;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #d8e3ff;
 }
 
 .trust-indicator {
-  padding: 0;
-  border: none;
-  border-radius: 0;
-  background: transparent;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .chat-messages {
   min-height: 0;
   padding: 20px;
   gap: 16px;
+  background: linear-gradient(180deg, rgba(42, 30, 78, 0.48), rgba(20, 14, 40, 0.4));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  border: 1px solid rgba(225, 216, 255, 0.16);
+  box-shadow: 0 14px 36px rgba(16, 10, 34, 0.22);
 }
 
 .chat-composer {
   flex-shrink: 0;
-  padding: 0 20px 20px;
+  padding: 12px 16px 18px;
   gap: 12px;
+  background: linear-gradient(180deg, rgba(38, 26, 72, 0.58), rgba(20, 14, 40, 0.52));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 18px;
+  border: 1px solid rgba(228, 220, 255, 0.16);
+  box-shadow: 0 12px 32px rgba(18, 12, 36, 0.24);
 }
 
 .welcome-message {
@@ -690,28 +712,29 @@
 .welcome-message .subtitle {
   max-width: none;
   line-height: 1.5;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.58);
 }
 
 .message-bubble {
   max-width: 46%;
   padding: 16px 20px;
   border-radius: 20px;
-  backdrop-filter: none;
-  box-shadow: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 10px 22px rgba(14, 8, 30, 0.18);
   width: fit-content;
 }
 
 .ai-message .message-bubble {
-  background: linear-gradient(135deg, rgba(75, 123, 236, 0.42) 0%, rgba(139, 92, 246, 0.42) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.58);
-  color: #E0E0E0;
+  background: linear-gradient(135deg, rgba(76, 100, 182, 0.68) 0%, rgba(98, 70, 170, 0.64) 100%);
+  border: 1px solid rgba(214, 202, 255, 0.22);
+  color: #f0f1f7;
   max-width: min(620px, calc(100% - 24px));
 }
 
 .player-message .message-bubble {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.44) 0%, rgba(126, 34, 206, 0.44) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.62);
+  background: linear-gradient(135deg, rgba(128, 60, 182, 0.7) 0%, rgba(96, 40, 150, 0.66) 100%);
+  border: 1px solid rgba(224, 176, 255, 0.24);
   color: #ffffff;
   max-width: min(42%, 420px);
 }
@@ -729,12 +752,14 @@
 
 .quick-option {
   border-radius: 20px;
-  background: rgba(139, 92, 246, 0.34);
-  border: 1px solid rgba(139, 92, 246, 0.56);
+  background: rgba(82, 58, 138, 0.62);
+  border: 1px solid rgba(216, 195, 255, 0.18);
 }
 
 .quick-option:hover:not(:disabled) {
-  box-shadow: none;
+  background: rgba(98, 70, 158, 0.72);
+  border-color: rgba(232, 214, 255, 0.28);
+  box-shadow: 0 8px 18px rgba(18, 12, 36, 0.18);
 }
 
 .chat-input-container {
@@ -745,18 +770,20 @@
 
 .chat-input {
   min-height: 0;
-  background: rgba(255, 255, 255, 0.16);
-  border-radius: 12px;
+  background: rgba(18, 12, 34, 0.72);
+  border: 1px solid rgba(220, 212, 255, 0.16);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .chat-input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .send-button {
   min-width: 0;
-  border-radius: 12px;
-  box-shadow: none;
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(126, 34, 206, 0.18);
 }
 
 .thinking-ellipsis {
