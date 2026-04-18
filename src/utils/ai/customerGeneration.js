@@ -13,7 +13,6 @@ import {
   analyzeStoryworldCharacterEmotion,
   getStoryworldCharacterByName,
 } from '../storyworldRepository.js';
-import { getSettings } from '../storage.js';
 import { EMOTION_IDS_8, normalizeEmotionList } from '../emotionSchema.js';
 import { extractCleanJSON, tryRepairTruncatedJSON } from './jsonUtils.js';
 import { callDeepSeekAPIHelper } from './sharedApi.js';
@@ -287,6 +286,14 @@ const summarizeBackstory = (value) => {
   return clipText(summary || text, 220);
 };
 
+const resolvePortraitDataUrl = (source) => {
+  const direct = String(source?.portraitDataUrl || source?.avatarBase64 || '').trim();
+  if (direct.startsWith('data:image/')) return direct;
+
+  const portraitDataUrl = String(source?.portrait?.dataUrl || '').trim();
+  return portraitDataUrl.startsWith('data:image/') ? portraitDataUrl : '';
+};
+
 const DEFAULT_DIALOGUE_FEATURES = {
   formal: ['措辞克制', '少用比喻', '回答直接'],
   tired: ['短句', '停顿多', '不展开长篇解释'],
@@ -443,13 +450,15 @@ export const generateCustomerAvatar = async (customerConfig) => {
   const config = API_CONFIG.gemini;
   if (!config.enabled || !config.apiKey) return null;
 
+  if (API_CONFIG.avatarGeneration?.enabled === false) return null;
   if (API_CONFIG.imageGen?.enabled === false) return null;
-  const settings = getSettings();
-  if (settings && settings.avatarEnabled === false) return null;
 
   const imageModel = API_CONFIG.imageGen?.model || 'gemini-2.5-flash-image';
   const endpoint = API_CONFIG.imageGen?.endpoint || config.endpoint;
-  const url = `${endpoint}/${imageModel}:generateContent?key=${config.apiKey}`;
+  const isOpenAICompatible = !!API_CONFIG.imageGen?.openaiCompatible;
+  const url = isOpenAICompatible
+    ? `${String(endpoint || '').replace(/\/$/, '')}/chat/completions`
+    : `${endpoint}/${imageModel}:generateContent?key=${config.apiKey}`;
 
   const prompt = buildAvatarPrompt(customerConfig);
   console.log('🎨 开始生成头像...');
@@ -458,18 +467,37 @@ export const generateCustomerAvatar = async (customerConfig) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 30000);
 
-    const requestBody = {
-      contents: [{
-        parts: [{ text: `Generate a single portrait image: ${prompt}` }],
-      }],
-      generationConfig: {
-        responseModalities: ['TEXT', 'IMAGE'],
-      },
-    };
+    const requestBody = isOpenAICompatible
+      ? {
+          model: imageModel,
+          messages: [
+            {
+              role: 'user',
+              content: `Generate a single portrait image: ${prompt}`,
+            },
+          ],
+          modalities: ['image', 'text'],
+          stream: false,
+        }
+      : {
+          contents: [{
+            parts: [{ text: `Generate a single portrait image: ${prompt}` }],
+          }],
+          generationConfig: {
+            responseModalities: ['TEXT', 'IMAGE'],
+          },
+        };
 
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: isOpenAICompatible
+        ? {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${config.apiKey}`,
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'future-bartender-game',
+          }
+        : { 'Content-Type': 'application/json' },
       signal: controller.signal,
       body: JSON.stringify(requestBody),
     });
@@ -483,6 +511,22 @@ export const generateCustomerAvatar = async (customerConfig) => {
     }
 
     const data = await response.json();
+
+    if (isOpenAICompatible) {
+      const images = data?.choices?.[0]?.message?.images || [];
+      for (const image of images) {
+        const imageUrl = String(image?.image_url?.url || image?.imageUrl?.url || '').trim();
+        if (imageUrl.startsWith('data:image/')) {
+          const payload = imageUrl.split(',', 2)[1] || '';
+          console.log('✅ 头像生成成功，大小:', Math.round(payload.length * 0.75 / 1024), 'KB');
+          return imageUrl;
+        }
+      }
+
+      console.warn('⚠️ OpenRouter 响应中未找到图片数据，message keys:', Object.keys(data?.choices?.[0]?.message || {}));
+      return null;
+    }
+
     const parts = data.candidates?.[0]?.content?.parts || [];
 
     for (const part of parts) {
@@ -536,6 +580,10 @@ export const generateCustomer = async (categoryId) => {
 
     customer.avatarBase64 = null;
     customer.avatarCacheKey = `${categoryConfig.id}_${customer.name}_${Date.now()}`;
+
+    if (API_CONFIG.avatarGeneration?.enabled === false) {
+      return customer;
+    }
 
     try {
       const cachedAvatar = await getAvatarFromCache(customer.avatarCacheKey);
@@ -653,16 +701,18 @@ export const generateCustomerFromCharacterId = async (characterId) => {
     base.currentEmotionTop3 = top3;
   }
 
-  const portraitDataUrl = String(context?.portrait?.dataUrl || '').trim();
+  const portraitDataUrl = resolvePortraitDataUrl(context);
   base.avatarBase64 = portraitDataUrl || null;
   try {
     if (base.avatarBase64) {
       await saveAvatarToCache(base.avatarCacheKey, base.avatarBase64);
+    } else if (API_CONFIG.avatarGeneration?.enabled === false) {
+      base.avatarBase64 = null;
     } else {
       const cachedAvatar = await getAvatarFromCache(base.avatarCacheKey);
       if (cachedAvatar) {
         base.avatarBase64 = cachedAvatar;
-      } else {
+      } else if (API_CONFIG.avatarGeneration?.enabled !== false) {
         generateAndCacheAvatar(base).catch(() => {});
       }
     }

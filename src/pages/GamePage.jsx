@@ -450,14 +450,20 @@ const GamePage = ({
       {!isMixingStage && (
         <button
           type="button"
-          className="mixing-entry-fab"
+          className="mixing-entry-fab mixing-entry-fab--pad"
           onClick={() => {
             emotionSystem.setSelectedEmotions([]);
             cocktailFlow.handleStartEmotionGuess();
           }}
           disabled={dialogue.isLoading}
+          aria-label="前往调酒台"
         >
-          前往调酒台
+          <img
+            className="mixing-entry-fab__pad-img"
+            src="/asset/道具/pad2.png"
+            alt=""
+            draggable={false}
+          />
         </button>
       )}
 

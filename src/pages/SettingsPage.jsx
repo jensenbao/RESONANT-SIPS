@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSettings, saveSettings, clearAllCache, getStorageUsage } from '../utils/storage.js';
 import { DEBUG_CONFIG, getActiveAPIConfig, getActiveAPIName, getActiveAPIType } from '../config/api.js';
-import { clearAvatarCache, getAvatarCacheStats } from '../utils/avatarCache.js';
 import audioManager from '../utils/audioManager.js';
 import './SettingsPage.css';
 
@@ -9,10 +8,8 @@ const SettingsPage = ({ onBack }) => {
   const [settings, setSettings] = useState(getSettings());
   const [storageInfo, setStorageInfo] = useState(getStorageUsage());
   const [showClearConfirm, setShowClearConfirm] = useState(false);
-  const [avatarCacheStats, setAvatarCacheStats] = useState({ count: 0, maxSize: 50 });
 
   useEffect(() => {
-    getAvatarCacheStats().then(setAvatarCacheStats);
     localStorage.removeItem('bartender_effects_level');
   }, []);
 
@@ -63,7 +60,7 @@ const SettingsPage = ({ onBack }) => {
           <div className="setting-item">
             <div className="setting-info">
               <label>音效开关</label>
-              <p className="setting-description">启用或禁用游戏音效</p>
+              <p className="setting-description">启用或关闭游戏声音</p>
             </div>
             <label className="toggle-switch">
               <input
@@ -77,8 +74,8 @@ const SettingsPage = ({ onBack }) => {
 
           <div className="setting-item">
             <div className="setting-info">
-              <label>音乐音量</label>
-              <p className="setting-description">背景音乐音量</p>
+              <label>背景音乐音量</label>
+              <p className="setting-description">调整背景音乐大小</p>
             </div>
             <div className="volume-control">
               <input
@@ -97,7 +94,7 @@ const SettingsPage = ({ onBack }) => {
           <div className="setting-item">
             <div className="setting-info">
               <label>音效音量</label>
-              <p className="setting-description">按钮与操作反馈音量</p>
+              <p className="setting-description">调整按钮与交互反馈音量</p>
             </div>
             <div className="volume-control">
               <input
@@ -127,40 +124,6 @@ const SettingsPage = ({ onBack }) => {
             </div>
           </div>
 
-          <div className="setting-item" style={{ marginBottom: '12px' }}>
-            <div className="setting-info">
-              <label>AI 头像生成</label>
-              <p className="setting-description">为顾客生成赛博朋克风格头像（需要联网）</p>
-            </div>
-            <label className="toggle-switch">
-              <input
-                type="checkbox"
-                checked={settings.avatarEnabled !== false}
-                onChange={(e) => updateSetting('avatarEnabled', e.target.checked)}
-              />
-              <span className="toggle-slider"></span>
-            </label>
-          </div>
-
-          <div className="storage-info" style={{ marginBottom: '12px' }}>
-            <div className="storage-item">
-              <span className="storage-label">头像缓存</span>
-              <span className="storage-value">
-                {avatarCacheStats.count} / {avatarCacheStats.maxSize} 张
-              </span>
-            </div>
-            <button
-              className="clear-cache-button"
-              style={{ padding: '8px 16px', fontSize: '13px' }}
-              onClick={async () => {
-                await clearAvatarCache();
-                setAvatarCacheStats({ count: 0, maxSize: avatarCacheStats.maxSize });
-              }}
-            >
-              清空头像缓存
-            </button>
-          </div>
-
           <button
             className={`clear-cache-button ${showClearConfirm ? 'confirm' : ''}`}
             onClick={handleClearCache}
@@ -169,7 +132,7 @@ const SettingsPage = ({ onBack }) => {
           </button>
 
           <p className="cache-warning">
-            清除缓存会删除所有游戏进度、对话记录和解锁内容
+            清除缓存会删除所有游戏进度、对话记录和解锁内容。
           </p>
         </section>
 
@@ -202,11 +165,11 @@ const SettingsPage = ({ onBack }) => {
                 </>
               ) : (
                 <>
-                  未配置可用 API Key，请在 <strong>.env.local</strong> 中配置后重启。
+                  尚未配置可用 API Key，请在 <strong>.env.local</strong> 中完成配置后重启。
                 </>
               )}
               <br />
-              AI 回复将由真实大语言模型生成，体验会更自然。
+              当前保留了通用图像生成配置，后续可直接接入其他生图功能。
             </p>
           </section>
         )}

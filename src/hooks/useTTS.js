@@ -17,7 +17,8 @@ export const useTTS = () => {
   const remoteTtsEnabled = String(import.meta.env.VITE_ENABLE_REMOTE_TTS ?? '1') !== '0';
   const ttsDebug = String(import.meta.env.VITE_TTS_DEBUG ?? '1') !== '0';
   const remoteTtsEndpoint = String(
-    import.meta.env.VITE_GEMINI_TTS_ENDPOINT ||
+    import.meta.env.VITE_REMOTE_TTS_ENDPOINT ||
+      import.meta.env.VITE_GEMINI_TTS_ENDPOINT ||
       import.meta.env.VITE_GEMINI_ENDPOINT ||
       'https://openrouter.ai/api/v1'
   ).replace(/\/$/, '');
@@ -31,10 +32,20 @@ export const useTTS = () => {
     })()
   );
   const remoteTtsApiKey = String(import.meta.env.VITE_GEMINI_API_KEY || '').trim();
-  const remoteTtsVoice = String(import.meta.env.VITE_GEMINI_TTS_VOICE || 'Kore').trim();
-  const remoteTtsFormat = String(import.meta.env.VITE_GEMINI_TTS_FORMAT || 'pcm16').trim().toLowerCase();
+  const remoteTtsVoice = String(
+    import.meta.env.VITE_REMOTE_TTS_VOICE ||
+      import.meta.env.VITE_GEMINI_TTS_VOICE ||
+      'Kore'
+  ).trim();
+  const remoteTtsFormat = String(
+    import.meta.env.VITE_REMOTE_TTS_FORMAT ||
+      import.meta.env.VITE_GEMINI_TTS_FORMAT ||
+      'pcm16'
+  ).trim().toLowerCase();
   const remoteTtsModelRaw = String(
-    import.meta.env.VITE_GEMINI_TTS_MODEL || 'gemini-2.5-flash-preview-tts'
+    import.meta.env.VITE_REMOTE_TTS_MODEL ||
+      import.meta.env.VITE_GEMINI_TTS_MODEL ||
+      'gemini-2.5-flash-preview-tts'
   ).trim();
 
   const remoteTtsModels = Array.from(

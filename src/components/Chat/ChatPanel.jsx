@@ -6,7 +6,6 @@ import './ChatPanel.css';
 
 const ChatPanel = ({
   aiConfig,
-  trustLevel,
   dialogueHistory,
   onSendMessage,
   quickOptions = [],
@@ -14,10 +13,8 @@ const ChatPanel = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(null);
-  const [trustAnim, setTrustAnim] = useState('');
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
-  const prevTrustRef = useRef(trustLevel);
   const lastSpokenSignature = useRef('');
   const speakTimerRef = useRef(null);
   const { speak, stopTTS } = useTTS();
@@ -33,7 +30,7 @@ const ChatPanel = ({
     }
 
     const content = String(lastMsg.content || '').trim();
-    if (!content || content === '...' || content === '……') {
+    if (!content || content === '...' || content === '鈥︹€?') {
       return;
     }
 
@@ -62,18 +59,6 @@ const ChatPanel = ({
     }
     stopTTS();
   }, [stopTTS]);
-
-  useEffect(() => {
-    if (trustLevel > prevTrustRef.current) {
-      setTrustAnim('trust-up');
-    } else if (trustLevel < prevTrustRef.current) {
-      setTrustAnim('trust-down');
-    }
-
-    prevTrustRef.current = trustLevel;
-    const timer = setTimeout(() => setTrustAnim(''), 600);
-    return () => clearTimeout(timer);
-  }, [trustLevel]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -112,43 +97,11 @@ const ChatPanel = ({
 
   return (
     <div className="chat-panel">
-      <div className="chat-header">
-        <div className="ai-avatar">
-          <CustomerAvatar
-            avatarBase64={aiConfig.avatarBase64}
-            emoji={aiConfig.avatar}
-            size={56}
-            customerId={aiConfig.id || aiConfig.avatarCacheKey}
-          />
-        </div>
-        <div className="ai-info">
-          <h3>{aiConfig.name}</h3>
-          <div className="ai-personality">
-            {(aiConfig.personality || []).map((trait, i) => (
-              <span key={i} className="trait-tag">{trait}</span>
-            ))}
-          </div>
-        </div>
-        <div className="trust-indicator">
-          <span className="trust-label">信任度</span>
-          <div className="trust-bar">
-            <div
-              className={`trust-fill ${trustAnim}`}
-              style={{
-                width: `${trustLevel * 100}%`,
-                backgroundColor: trustLevel < 0.3 ? '#E63946' : trustLevel < 0.6 ? '#FFB703' : '#A855F7'
-              }}
-            />
-          </div>
-          <span className="trust-value">{Math.round(trustLevel * 100)}%</span>
-        </div>
-      </div>
-
       <div className="chat-messages">
         {dialogueHistory.length === 0 && (
           <div className="welcome-message">
             <p>欢迎来到 Resonant Sips</p>
-            <p className="subtitle">通过对话了解顾客的真实情绪，再为 TA 调制专属鸡尾酒</p>
+            <p className="subtitle">通过对话了解顾客的真实情绪，再为 TA 调制专属鸡尾酒。</p>
           </div>
         )}
 
@@ -158,7 +111,7 @@ const ChatPanel = ({
             className={`message ${msg.role === 'player' ? 'player-message' : 'ai-message'}`}
           >
             <div className="message-avatar">
-              {msg.role === 'player' ? '🫖' : (
+              {msg.role === 'player' ? '🧑' : (
                 <CustomerAvatar
                   avatarBase64={aiConfig.avatarBase64}
                   emoji={aiConfig.avatar}
