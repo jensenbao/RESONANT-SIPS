@@ -7,6 +7,7 @@
     "dev": "node scripts/dev.mjs",
     "dev:client": "vite",
     "dev:server": "node server/save-server.mjs",
+    "image:remove-white-bg": "node scripts/remove-white-background.mjs",
     "setup:api": "node scripts/setup-api-keys.mjs",
     "migrate:characters": "node scripts/migrate-character-assets-layout.mjs",
     "build": "vite build",
@@ -25,6 +26,7 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react": "^4.2.1",
+    "sharp": "^0.34.5",
     "vite": "^5.0.11"
   }
 }

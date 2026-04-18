@@ -10,6 +10,37 @@
   background-repeat: no-repeat;
 }
 
+.pixi-game-canvas::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  bottom: 4%;
+  width: min(38vw, 620px);
+  aspect-ratio: 1078 / 1280;
+  background-image: url('/asset/角色/微信图片_20260418170446_294_154-cutout.png');
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: contain;
+  opacity: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 1200px) {
+  .pixi-game-canvas::after {
+    right: 4%;
+    bottom: 5%;
+    width: min(44vw, 560px);
+  }
+}
+
+@media (max-width: 768px) {
+  .pixi-game-canvas::after {
+    right: 0;
+    bottom: 7%;
+    width: min(54vw, 430px);
+  }
+}
+
 .pixi-game-canvas__canvas {
   display: block;
   width: 100%;

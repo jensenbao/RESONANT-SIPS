@@ -410,20 +410,6 @@
   cursor: not-allowed;
 }
 
-/* 沉默选项特殊样式 */
-.quick-option.silence {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px dashed rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.4);
-  font-style: italic;
-}
-
-.quick-option.silence:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: rgba(255, 255, 255, 0.6);
-}
-
 .quick-option.active {
   background: rgba(168, 85, 247, 0.3);
   border-color: rgba(168, 85, 247, 0.6);
@@ -636,7 +622,8 @@
   box-shadow: none;
   overflow: hidden;
   height: calc(100% - 156px);
-  width: min(82%, 900px);
+  width: 45%;
+  max-width: 900px;
   margin: 0 auto 0 0;
 }
 
@@ -716,15 +703,15 @@
 }
 
 .ai-message .message-bubble {
-  background: linear-gradient(135deg, rgba(75, 123, 236, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  background: linear-gradient(135deg, rgba(75, 123, 236, 0.42) 0%, rgba(139, 92, 246, 0.42) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.58);
   color: #E0E0E0;
   max-width: min(620px, calc(100% - 24px));
 }
 
 .player-message .message-bubble {
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(126, 34, 206, 0.2) 100%);
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.44) 0%, rgba(126, 34, 206, 0.44) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.62);
   color: #ffffff;
   max-width: min(42%, 420px);
 }
@@ -742,8 +729,8 @@
 
 .quick-option {
   border-radius: 20px;
-  background: rgba(139, 92, 246, 0.2);
-  border: 1px solid rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.34);
+  border: 1px solid rgba(139, 92, 246, 0.56);
 }
 
 .quick-option:hover:not(:disabled) {
@@ -758,8 +745,12 @@
 
 .chat-input {
   min-height: 0;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.16);
   border-radius: 12px;
+}
+
+.chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .send-button {

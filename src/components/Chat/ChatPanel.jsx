@@ -221,25 +221,10 @@ const ChatPanel = ({
         )}
 
         <div className="chat-input-container" style={{ position: 'relative' }}>
-          {!inputValue && (
-            <div
-              style={{
-                position: 'absolute',
-                left: '38px',
-                top: '34px',
-                pointerEvents: 'none',
-                color: 'rgba(255, 255, 255, 0.4)',
-                fontSize: '14px',
-                zIndex: 10
-              }}
-            >
-              <BalancedPixelText text="输入你的回应... (Enter发送，Shift+Enter换行)" />
-            </div>
-          )}
           <textarea
             ref={inputRef}
             className="chat-input"
-            placeholder=""
+            placeholder="Type your reply... (Enter to send, Shift+Enter for newline)"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
