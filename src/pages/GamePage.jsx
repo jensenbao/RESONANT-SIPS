@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 // 缁勪欢瀵煎叆
 import ChatPanel from '../components/Chat/ChatPanel.jsx';
@@ -59,6 +59,7 @@ import { EMOTIONS, INITIAL_UNLOCKED_EMOTIONS, GLASS_TYPES } from '../data/emotio
 import { INITIAL_UNLOCKED_INGREDIENTS } from '../data/ingredients.js';
 import { TUTORIAL_VISIBLE_EMOTIONS } from '../data/tutorialData.js';
 import { clearAllCache } from '../utils/storage.js';
+import audioManager from '../utils/audioManager.js';
 import {
   ensureNpcProfileInActiveSlot,
   queueActiveSlotGameStateSync,
@@ -116,14 +117,39 @@ const GamePage = ({
   // 鏂版墜寮曞绯荤粺
   const advancedGuides = useAdvancedGuides();
   const [showHelp, setShowHelp] = useState(false);
+  const [showServeStoryAnim, setShowServeStoryAnim] = useState(false);
+  const [serveStoryAnimKey, setServeStoryAnimKey] = useState(0);
+
+  const triggerServeStoryAnim = useCallback(() => {
+    setServeStoryAnimKey(Date.now());
+    setShowServeStoryAnim(true);
+  }, []);
 
   const audioHook = useAudio();
   const isMuted = audioHook?.isMuted ?? false;
   const sfxVolume = audioHook?.sfxVolume ?? 0.5;
   const playSFX = audioHook?.playSFX ?? (() => {});
+  const playBGM = audioHook?.playBGM ?? (() => {});
+  const stopBGM = audioHook?.stopBGM ?? (() => {});
   const toggleMute = audioHook?.toggleMute ?? (() => {});
   const setSfxVolume = audioHook?.setSfxVolume ?? (() => {});
   const initAudio = audioHook?.initAudio ?? (() => {});
+  const shouldResumeBgmAfterServeAnimRef = useRef(false);
+  const serveAnimPrevBgmTrackRef = useRef('game');
+
+  useEffect(() => {
+    if (showServeStoryAnim) {
+      serveAnimPrevBgmTrackRef.current = audioManager.currentBgmTrack || 'game';
+      shouldResumeBgmAfterServeAnimRef.current = !isMuted && Boolean(audioManager.isBgmPlaying || audioManager.bgmAudio);
+      stopBGM();
+      return;
+    }
+
+    if (shouldResumeBgmAfterServeAnimRef.current && !isMuted) {
+      playBGM(serveAnimPrevBgmTrackRef.current || 'game');
+      shouldResumeBgmAfterServeAnimRef.current = false;
+    }
+  }, [showServeStoryAnim, isMuted, stopBGM, playBGM]);
 
   const cocktailFlow = useCocktailFlow({ playSFX, addToast });
   const [recipePreview, setRecipePreview] = useState({
@@ -293,6 +319,7 @@ const GamePage = ({
   const mixingSession = useMixingSession({
     resetKey: `${customerFlow.currentDay}:${customerFlow.currentCustomerIndex}:${cocktailFlow.guessedCorrectly ? 'mixing' : 'locked'}`,
     targetConditions: cocktailFlow.targetConditions,
+    onServeTriggered: triggerServeStoryAnim,
     onServeCocktail: handlers.handleServeCocktail,
     unlockedGlasses: unlockedItems.glasses || ['martini'],
     unlockedIceTypes: unlockedItems.iceTypes || ['no_ice'],
@@ -448,6 +475,26 @@ const GamePage = ({
       {progress.showRules && <RulesModal onClose={() => progress.setShowRules(false)} />}
 
       {cocktailFlow.showServeAnim && <div className="serve-animation">馃嵏</div>}
+
+      {showServeStoryAnim && (
+        <div className="serve-story-overlay" role="dialog" aria-label="递酒剧情动画">
+          <video
+            key={serveStoryAnimKey}
+            className="serve-story-video"
+            src="/asset/角色/调酒师动画.mp4"
+            autoPlay
+            playsInline
+            onEnded={() => setShowServeStoryAnim(false)}
+          />
+          <button
+            type="button"
+            className="serve-story-skip"
+            onClick={() => setShowServeStoryAnim(false)}
+          >
+            跳过
+          </button>
+        </div>
+      )}
 
       {cocktailFlow.showCocktailResult && (
         <div className={`cocktail-result-card ${cocktailFlow.showCocktailResult.isSuccess ? 'success' : ''}`}>

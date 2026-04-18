@@ -33,6 +33,7 @@ export const useMixingSession = ({
   resetKey,
   targetConditions = [],
   onServeCocktail,
+  onServeTriggered,
   unlockedGlasses = [],
   unlockedIceTypes = [],
   unlockedIngredients = [],
@@ -220,6 +221,8 @@ export const useMixingSession = ({
       return;
     }
 
+    onServeTriggered?.();
+
     const fullRecipe = {
       ...recipe,
       mixture: currentMixture,
@@ -230,7 +233,7 @@ export const useMixingSession = ({
 
     onServeCocktail?.(fullRecipe);
     handleReset();
-  }, [recipe, currentMixture, targetCheck, currentAttitude, onServeCocktail, handleReset]);
+  }, [recipe, currentMixture, targetCheck, currentAttitude, onServeTriggered, onServeCocktail, handleReset]);
 
   const handleServeWater = useCallback(() => {
     const waterAttitude = interpretCocktailAttitude({ thickness: 0, sweetness: 0, strength: 0 }, true);
