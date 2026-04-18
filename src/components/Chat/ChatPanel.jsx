@@ -4,54 +4,11 @@ import BalancedPixelText from '../Common/BalancedPixelText.jsx';
 import { useTTS } from '../../hooks/useTTS.js';
 import './ChatPanel.css';
 
-const mixingEntryStyles = {
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 14,
-    padding: '14px 20px',
-    background: 'rgba(255, 255, 255, 0.03)',
-    borderTop: '1px solid rgba(255, 255, 255, 0.05)'
-  },
-  copy: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 4,
-    minWidth: 0
-  },
-  eyebrow: {
-    fontSize: 11,
-    fontWeight: 700,
-    letterSpacing: '0.08em',
-    textTransform: 'uppercase',
-    color: 'rgba(147, 185, 255, 0.8)'
-  },
-  text: {
-    fontSize: 14,
-    color: 'rgba(241, 244, 255, 0.88)'
-  },
-  button: (disabled) => ({
-    flexShrink: 0,
-    minWidth: 144,
-    padding: '11px 16px',
-    border: 'none',
-    borderRadius: 12,
-    background: 'linear-gradient(135deg, #88b4ff, #6c8fff)',
-    color: '#0b1324',
-    fontSize: 14,
-    fontWeight: 700,
-    cursor: disabled ? 'not-allowed' : 'pointer',
-    opacity: disabled ? 0.5 : 1
-  })
-};
-
 const ChatPanel = ({
   aiConfig,
   trustLevel,
   dialogueHistory,
   onSendMessage,
-  onEnterMixing,
   quickOptions = [],
   isLoading = false
 }) => {
@@ -120,7 +77,7 @@ const ChatPanel = ({
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [dialogueHistory]);
+  }, [dialogueHistory, isLoading]);
 
   const handleSend = () => {
     if (!inputValue.trim()) {
@@ -247,69 +204,56 @@ const ChatPanel = ({
         <div ref={chatEndRef} />
       </div>
 
-      {quickOptions.length > 0 && (
-        <div className="quick-options">
-          {quickOptions.map((option, index) => (
-            <button
-              key={index}
-              className={`quick-option ${highlightedIndex === index ? 'active' : ''} ${option === '……' ? 'silence' : ''}`}
-              onClick={() => handleQuickOption(option, index)}
-              disabled={isLoading}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <div style={mixingEntryStyles.container}>
-        <div style={mixingEntryStyles.copy}>
-          <span style={mixingEntryStyles.eyebrow}>Mixing</span>
-          <span style={mixingEntryStyles.text}>进入猜情绪和调酒界面</span>
-        </div>
-        <button
-          type="button"
-          onClick={onEnterMixing}
-          disabled={isLoading}
-          style={mixingEntryStyles.button(isLoading)}
-        >
-          前往调酒台
-        </button>
-      </div>
-
-      <div className="chat-input-container" style={{ position: 'relative' }}>
-        {!inputValue && (
-          <div
-            style={{
-              position: 'absolute',
-              left: '38px',
-              top: '34px',
-              pointerEvents: 'none',
-              color: 'rgba(255, 255, 255, 0.4)',
-              fontSize: '14px',
-              zIndex: 10
-            }}
-          >
-            <BalancedPixelText text="输入你的回应... (Enter发送，Shift+Enter换行)" />
+      <div className="chat-composer">
+        {quickOptions.length > 0 && (
+          <div className="quick-options chat-composer__quick-options">
+            {quickOptions.map((option, index) => (
+              <button
+                key={index}
+                className={`quick-option ${highlightedIndex === index ? 'active' : ''} ${option === '……' ? 'silence' : ''}`}
+                onClick={() => handleQuickOption(option, index)}
+                disabled={isLoading}
+              >
+                {option}
+              </button>
+            ))}
           </div>
         )}
-        <textarea
-          ref={inputRef}
-          className="chat-input"
-          placeholder=""
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onKeyPress={handleKeyPress}
-          disabled={isLoading}
-          rows={2}
-        />
-        <button
-          className="send-button"
-          onClick={handleSend}
-          disabled={isLoading || !inputValue.trim()}
-        >
-          发送
-        </button>
+
+        <div className="chat-input-container" style={{ position: 'relative' }}>
+          {!inputValue && (
+            <div
+              style={{
+                position: 'absolute',
+                left: '38px',
+                top: '34px',
+                pointerEvents: 'none',
+                color: 'rgba(255, 255, 255, 0.4)',
+                fontSize: '14px',
+                zIndex: 10
+              }}
+            >
+              <BalancedPixelText text="输入你的回应... (Enter发送，Shift+Enter换行)" />
+            </div>
+          )}
+          <textarea
+            ref={inputRef}
+            className="chat-input"
+            placeholder=""
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyPress={handleKeyPress}
+            disabled={isLoading}
+            rows={2}
+          />
+          <button
+            className="send-button"
+            onClick={handleSend}
+            disabled={isLoading || !inputValue.trim()}
+          >
+            发送
+          </button>
+        </div>
       </div>
     </div>
   );

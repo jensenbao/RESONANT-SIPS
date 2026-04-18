@@ -382,10 +382,6 @@ const GamePage = ({
             <ChatPanel
               aiConfig={aiConfig} trustLevel={trustLevel} dialogueHistory={dialogue.dialogueHistory}
               onSendMessage={handlers.handleSendMessage} quickOptions={dialogue.quickOptions} isLoading={dialogue.isLoading}
-              onEnterMixing={() => {
-                emotionSystem.setSelectedEmotions([]);
-                cocktailFlow.handleStartEmotionGuess();
-              }}
             />
           ) : (
             <BartenderPanel
@@ -423,6 +419,20 @@ const GamePage = ({
         )}
 
       </div>
+
+      {!isMixingStage && (
+        <button
+          type="button"
+          className="mixing-entry-fab"
+          onClick={() => {
+            emotionSystem.setSelectedEmotions([]);
+            cocktailFlow.handleStartEmotionGuess();
+          }}
+          disabled={dialogue.isLoading}
+        >
+          前往调酒台
+        </button>
+      )}
 
       {/* 淇′换搴﹂瀛?*/}
       {cocktailFlow.trustFlies.map(fly => (
