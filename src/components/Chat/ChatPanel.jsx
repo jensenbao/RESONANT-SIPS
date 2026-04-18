@@ -32,11 +32,11 @@ const ChatMessage = ({ aiConfig, msg, renderMessageContent }) => (
 
 const ChatPanel = ({
   aiConfig,
-  trustLevel,
   dialogueHistory,
   onSendMessage,
   quickOptions = [],
-  isLoading = false
+  isLoading = false,
+  trustLevel = 0
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(null);
@@ -44,7 +44,6 @@ const ChatPanel = ({
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
-  const prevTrustRef = useRef(trustLevel);
   const lastSpokenSignature = useRef('');
   const speakTimerRef = useRef(null);
   const { speak, stopTTS } = useTTS();
@@ -60,7 +59,7 @@ const ChatPanel = ({
     }
 
     const content = String(lastMsg.content || '').trim();
-    if (!content || content === '...' || content === '……') {
+    if (!content || content === '...' || content === '鈥︹€?') {
       return;
     }
 
@@ -89,18 +88,6 @@ const ChatPanel = ({
     }
     stopTTS();
   }, [stopTTS]);
-
-  useEffect(() => {
-    if (trustLevel > prevTrustRef.current) {
-      setTrustAnim('trust-up');
-    } else if (trustLevel < prevTrustRef.current) {
-      setTrustAnim('trust-down');
-    }
-
-    prevTrustRef.current = trustLevel;
-    const timer = setTimeout(() => setTrustAnim(''), 600);
-    return () => clearTimeout(timer);
-  }, [trustLevel]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });

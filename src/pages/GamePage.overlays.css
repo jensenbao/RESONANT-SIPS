@@ -980,10 +980,12 @@
   margin: 0;
   padding: 16px 18px;
   border-radius: 24px;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
+  background: linear-gradient(180deg, rgba(10, 16, 28, 0.86), rgba(8, 12, 20, 0.74));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
 }
 
 .game-content {
@@ -1129,21 +1131,33 @@
 .game-page-ui {
   padding: 0;
   gap: 0;
+  overflow: visible;
 }
 
 .game-header {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin: 0;
-  padding: 15px 24px;
-  border-radius: 0;
+  padding: 15px 24px !important;
+  min-height: 68px !important;
+  height: auto !important;
+  border-radius: 18px;
   border: none;
-  border-bottom: none;
-  background: transparent;
-  backdrop-filter: none;
-  box-shadow: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  overflow: visible;
+  z-index: 3200;
 }
 
 .game-content {
-  padding: 18px;
+  padding: 98px 18px 18px;
   gap: 18px;
 }
 
@@ -1179,12 +1193,21 @@
 }
 
 @media (max-width: 768px) {
+  .game-page-ui {
+    padding: 0;
+  }
+
   .game-header {
-    padding: 10px 14px;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 10px 14px !important;
+    min-height: 60px !important;
+    border-radius: 14px;
   }
 
   .game-content {
-    padding: 10px;
+    padding: 84px 10px 10px;
     gap: 10px;
   }
 }
