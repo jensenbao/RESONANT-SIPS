@@ -65,12 +65,33 @@ const geminiEndpoint = preferLocalGeminiConfig
 const geminiOpenAICompatible = isOpenAICompatibleEndpoint(geminiEndpoint);
 
 const geminiImageModel = preferLocalGeminiConfig
-  ? (LOCAL_API_KEYS?.gemini?.imageModel || import.meta.env.VITE_GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image')
-  : (import.meta.env.VITE_GEMINI_IMAGE_MODEL || LOCAL_API_KEYS?.gemini?.imageModel || 'gemini-2.5-flash-image');
+  ? (
+      LOCAL_API_KEYS?.gemini?.imageModel ||
+      import.meta.env.VITE_IMAGE_GEN_MODEL ||
+      import.meta.env.VITE_GEMINI_IMAGE_MODEL ||
+      'gemini-2.5-flash-image'
+    )
+  : (
+      import.meta.env.VITE_IMAGE_GEN_MODEL ||
+      import.meta.env.VITE_GEMINI_IMAGE_MODEL ||
+      LOCAL_API_KEYS?.gemini?.imageModel ||
+      'gemini-2.5-flash-image'
+    );
 
 const geminiImageEndpoint = preferLocalGeminiConfig
-  ? (LOCAL_API_KEYS?.gemini?.imageEndpoint || import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT || 'https://generativelanguage.googleapis.com/v1beta/models')
-  : (import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT || LOCAL_API_KEYS?.gemini?.imageEndpoint || 'https://generativelanguage.googleapis.com/v1beta/models');
+  ? (
+      LOCAL_API_KEYS?.gemini?.imageEndpoint ||
+      import.meta.env.VITE_IMAGE_GEN_ENDPOINT ||
+      import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT ||
+      'https://generativelanguage.googleapis.com/v1beta/models'
+    )
+  : (
+      import.meta.env.VITE_IMAGE_GEN_ENDPOINT ||
+      import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT ||
+      LOCAL_API_KEYS?.gemini?.imageEndpoint ||
+      'https://generativelanguage.googleapis.com/v1beta/models'
+    );
+const geminiImageOpenAICompatible = isOpenAICompatibleEndpoint(geminiImageEndpoint);
 
 export const API_CONFIG = {
   deepseek: {
@@ -89,9 +110,14 @@ export const API_CONFIG = {
   },
 
   imageGen: {
-    enabled: !!geminiApiKey && !geminiOpenAICompatible,
+    enabled: !!geminiApiKey && !!geminiImageModel,
     model: geminiImageModel,
-    endpoint: geminiImageEndpoint
+    endpoint: geminiImageEndpoint,
+    openaiCompatible: geminiImageOpenAICompatible,
+  },
+
+  avatarGeneration: {
+    enabled: false,
   },
 
   mock: {
