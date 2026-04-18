@@ -29,7 +29,6 @@ const COPY = {
   startIcon: '\u{1F378}',
   loadIcon: '\u{1F4BE}',
   encyclopediaIcon: '\u{1F4D6}',
-  settingsIcon: '\u2699\uFE0F',
   headphoneIcon: '\u{1F3A7}',
   musicIcon: '\u{1F3B5}',
   description: '\u901A\u8FC7\u5BF9\u8BDD\u4E86\u89E3\u987E\u5BA2\u7684\u771F\u5B9E\u60C5\u7EEA\uFF0C\u8C03\u5236\u4E13\u5C5E\u9E21\u5C3E\u9152',
@@ -252,12 +251,13 @@ const HomePage = ({
             )}
             <button
               type="button"
-              className="nav-button settings home-nav-settings-pixel"
+              className="nav-button settings home-nav-settings-neon"
               onClick={() => onNavigate && onNavigate('settings')}
               aria-label={COPY.settings}
             >
-              <span className="nav-icon" aria-hidden="true">{COPY.settingsIcon}</span>
-              <span className="nav-text">{COPY.settings}</span>
+              <span className="home-nav-settings-neon__label" aria-hidden="true">
+                SETTING
+              </span>
             </button>
           </div>
         </div>
