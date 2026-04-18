@@ -277,3 +277,80 @@
   line-height: 1.6;
   transition: color 0.3s ease;
 }
+
+/* ========================================
+   UI Phase 3 - Pixel Target HUD
+   ======================================== */
+
+.target-display {
+  background:
+    linear-gradient(180deg, rgba(54, 36, 100, 0.72), rgba(20, 16, 40, 0.66));
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid rgba(228, 220, 255, 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 14px 28px rgba(14, 10, 28, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.target-header h4 {
+  font-family: "PressStart2P", "zpix", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: #fff8ff;
+}
+
+.attributes-container {
+  gap: 14px;
+}
+
+.attribute-row {
+  padding: 10px 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(228, 220, 255, 0.08);
+}
+
+.attribute-name,
+.attribute-value,
+.status-text {
+  color: rgba(250, 248, 255, 0.92);
+}
+
+.attribute-bar {
+  height: 18px;
+  background: rgba(8, 8, 18, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.condition-zone {
+  background: rgba(168, 85, 247, 0.2);
+}
+
+.marker-value,
+.attribute-scale {
+  color: rgba(255, 235, 174, 0.8);
+}
+
+.target-status {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.status-indicator {
+  border-radius: 12px;
+  font-family: "zpix", "PressStart2P", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+
+.attitude-realtime {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(228, 220, 255, 0.1);
+  border-radius: 14px;
+}

@@ -4,6 +4,32 @@ import BalancedPixelText from '../Common/BalancedPixelText.jsx';
 import { useTTS } from '../../hooks/useTTS.js';
 import './ChatPanel.css';
 
+const ChatMessage = ({ aiConfig, msg, renderMessageContent }) => (
+  <div className={`message ${msg.role === 'player' ? 'player-message' : 'ai-message'}`}>
+    <div className="message-avatar">
+      {msg.role === 'player' ? '🫖' : (
+        <CustomerAvatar
+          avatarBase64={aiConfig.avatarBase64}
+          emoji={aiConfig.avatar}
+          size={36}
+          customerId={aiConfig.id || aiConfig.avatarCacheKey}
+        />
+      )}
+    </div>
+    <div className="message-bubble">
+      {renderMessageContent(msg.content, msg.isThinking)}
+      {!msg.isThinking && (
+        <span className="message-time">
+          {new Date(msg.timestamp).toLocaleTimeString('zh-CN', {
+            hour: '2-digit',
+            minute: '2-digit'
+          })}
+        </span>
+      )}
+    </div>
+  </div>
+);
+
 const ChatPanel = ({
   aiConfig,
   trustLevel,
@@ -15,6 +41,7 @@ const ChatPanel = ({
   const [inputValue, setInputValue] = useState('');
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [trustAnim, setTrustAnim] = useState('');
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
   const prevTrustRef = useRef(trustLevel);
@@ -77,7 +104,22 @@ const ChatPanel = ({
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [dialogueHistory, isLoading]);
+  }, [dialogueHistory, isLoading, showHistoryModal]);
+
+  useEffect(() => {
+    if (!showHistoryModal) {
+      return undefined;
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setShowHistoryModal(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showHistoryModal]);
 
   const handleSend = () => {
     if (!inputValue.trim()) {
@@ -110,98 +152,94 @@ const ChatPanel = ({
     return <BalancedPixelText text={content} />;
   };
 
+  const latestPlayerMessage = [...dialogueHistory].reverse().find((msg) => msg.role === 'player');
+  const latestAiMessage = [...dialogueHistory].reverse().find((msg) => msg.role === 'ai');
+  const stageAiMessage = isLoading
+    ? {
+        id: 'stage-ai-loading',
+        role: 'ai',
+        content: '',
+        isThinking: true,
+        timestamp: Date.now()
+      }
+    : latestAiMessage;
+
   return (
     <div className="chat-panel">
       <div className="chat-header">
-        <div className="ai-avatar">
-          <CustomerAvatar
-            avatarBase64={aiConfig.avatarBase64}
-            emoji={aiConfig.avatar}
-            size={56}
-            customerId={aiConfig.id || aiConfig.avatarCacheKey}
-          />
-        </div>
-        <div className="ai-info">
-          <h3>{aiConfig.name}</h3>
-          <div className="ai-personality">
-            {(aiConfig.personality || []).map((trait, i) => (
-              <span key={i} className="trait-tag">{trait}</span>
-            ))}
-          </div>
-        </div>
-        <div className="trust-indicator">
-          <span className="trust-label">信任度</span>
-          <div className="trust-bar">
-            <div
-              className={`trust-fill ${trustAnim}`}
-              style={{
-                width: `${trustLevel * 100}%`,
-                backgroundColor: trustLevel < 0.3 ? '#E63946' : trustLevel < 0.6 ? '#FFB703' : '#A855F7'
-              }}
+        <div className="chat-header__identity">
+          <div className="ai-avatar">
+            <CustomerAvatar
+              avatarBase64={aiConfig.avatarBase64}
+              emoji={aiConfig.avatar}
+              size={48}
+              customerId={aiConfig.id || aiConfig.avatarCacheKey}
             />
           </div>
-          <span className="trust-value">{Math.round(trustLevel * 100)}%</span>
+          <div className="ai-info">
+            <h3>{aiConfig.name}</h3>
+            <div className="ai-personality">
+              {(aiConfig.personality || []).map((trait, i) => (
+                <span key={i} className="trait-tag">{trait}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="chat-header__actions">
+          <div className="trust-indicator">
+            <span className="trust-label">信任度</span>
+            <div className="trust-bar">
+              <div
+                className={`trust-fill ${trustAnim}`}
+                style={{
+                  width: `${trustLevel * 100}%`,
+                  backgroundColor: trustLevel < 0.3 ? '#E63946' : trustLevel < 0.6 ? '#FFB703' : '#A855F7'
+                }}
+              />
+            </div>
+            <span className="trust-value">{Math.round(trustLevel * 100)}%</span>
+          </div>
+
+          <button
+            type="button"
+            className="chat-history-btn"
+            onClick={() => setShowHistoryModal(true)}
+          >
+            对话记录
+          </button>
         </div>
       </div>
 
-      <div className="chat-messages">
-        {dialogueHistory.length === 0 && (
-          <div className="welcome-message">
-            <p>欢迎来到 Resonant Sips</p>
-            <p className="subtitle">通过对话了解顾客的真实情绪，再为 TA 调制专属鸡尾酒</p>
-          </div>
-        )}
+      <div className="chat-stage">
+        <div className="chat-stage__messages">
+          {!latestPlayerMessage && !stageAiMessage && (
+            <div className="welcome-message">
+              <p>欢迎来到 Resonant Sips</p>
+              <p className="subtitle">通过对话了解顾客的真实情绪，再为 TA 调制专属鸡尾酒</p>
+            </div>
+          )}
 
-        {dialogueHistory.map((msg, index) => (
-          <div
-            key={msg.id || `msg-${index}`}
-            className={`message ${msg.role === 'player' ? 'player-message' : 'ai-message'}`}
-          >
-            <div className="message-avatar">
-              {msg.role === 'player' ? '🫖' : (
-                <CustomerAvatar
-                  avatarBase64={aiConfig.avatarBase64}
-                  emoji={aiConfig.avatar}
-                  size={36}
-                  customerId={aiConfig.id || aiConfig.avatarCacheKey}
-                />
-              )}
-            </div>
-            <div className="message-bubble">
-              {renderMessageContent(msg.content, msg.isThinking)}
-              {!msg.isThinking && (
-                <span className="message-time">
-                  {new Date(msg.timestamp).toLocaleTimeString('zh-CN', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
+          {stageAiMessage && (
+            <ChatMessage
+              key={stageAiMessage.id || 'stage-ai'}
+              aiConfig={aiConfig}
+              msg={stageAiMessage}
+              renderMessageContent={renderMessageContent}
+            />
+          )}
 
-        {isLoading && (
-          <div className="message ai-message">
-            <div className="message-avatar">
-              <CustomerAvatar
-                avatarBase64={aiConfig.avatarBase64}
-                emoji={aiConfig.avatar}
-                size={36}
-                customerId={aiConfig.id || aiConfig.avatarCacheKey}
-              />
-            </div>
-            <div className="message-bubble loading">
-              <div className="typing-indicator">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-            </div>
-          </div>
-        )}
+          {latestPlayerMessage && (
+            <ChatMessage
+              key={latestPlayerMessage.id || 'stage-player'}
+              aiConfig={aiConfig}
+              msg={latestPlayerMessage}
+              renderMessageContent={renderMessageContent}
+            />
+          )}
 
-        <div ref={chatEndRef} />
+          <div ref={chatEndRef} />
+        </div>
       </div>
 
       <div className="chat-composer">
@@ -220,7 +258,7 @@ const ChatPanel = ({
           </div>
         )}
 
-        <div className="chat-input-container" style={{ position: 'relative' }}>
+        <div className="chat-input-container">
           <textarea
             ref={inputRef}
             className="chat-input"
@@ -240,6 +278,51 @@ const ChatPanel = ({
           </button>
         </div>
       </div>
+
+      {showHistoryModal && (
+        <div className="chat-history-modal" onClick={() => setShowHistoryModal(false)}>
+          <div className="chat-history-modal__panel" onClick={(event) => event.stopPropagation()}>
+            <div className="chat-history-modal__header">
+              <div className="chat-history-modal__title">对话记录</div>
+              <button
+                type="button"
+                className="chat-history-modal__close"
+                onClick={() => setShowHistoryModal(false)}
+              >
+                关闭
+              </button>
+            </div>
+
+            <div className="chat-history-modal__list">
+              {dialogueHistory.length === 0 && (
+                <div className="welcome-message">
+                  <p>还没有对话记录</p>
+                  <p className="subtitle">开始聊天后，这里会保存完整消息历史。</p>
+                </div>
+              )}
+
+              {dialogueHistory.map((msg, index) => (
+                <ChatMessage
+                  key={`history-msg-${msg.id || index}`}
+                  aiConfig={aiConfig}
+                  msg={msg}
+                  renderMessageContent={renderMessageContent}
+                />
+              ))}
+            </div>
+
+            <div className="chat-history-modal__footer">
+              <button
+                type="button"
+                className="chat-history-modal__confirm"
+                onClick={() => setShowHistoryModal(false)}
+              >
+                返回主界面
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

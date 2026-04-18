@@ -1715,3 +1715,125 @@
 .bartender-panel__stage-scroll > .pixi-mixing-board {
   border-radius: 24px;
 }
+
+/* ========================================
+   UI Phase 3 - Mixing Shell
+   ======================================== */
+
+.bartender-panel {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(44, 30, 84, 0.7), rgba(18, 14, 38, 0.64));
+  border: 1px solid rgba(228, 220, 255, 0.14);
+  border-radius: 24px;
+  box-shadow:
+    0 18px 36px rgba(16, 10, 34, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(116%);
+  -webkit-backdrop-filter: blur(12px) saturate(116%);
+}
+
+.bartender-header {
+  margin-bottom: 6px;
+  padding: 4px 2px 0;
+}
+
+.bartender-header h3 {
+  font-family: "PressStart2P", "zpix", sans-serif;
+  font-size: clamp(13px, 1.45vw, 18px);
+  line-height: 1.35;
+  color: #fff8ff;
+}
+
+.reset-btn {
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(230, 222, 255, 0.14);
+  color: #fff;
+  box-shadow: 0 8px 16px rgba(16, 10, 34, 0.14);
+}
+
+.reset-btn:hover {
+  border-color: rgba(255, 219, 166, 0.28);
+  box-shadow: 0 10px 18px rgba(16, 10, 34, 0.18);
+  transform: translateY(-1px);
+}
+
+.bartender-emotion-step {
+  padding: 20px 18px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(52, 38, 98, 0.68), rgba(20, 16, 42, 0.62));
+  border: 1px solid rgba(228, 220, 255, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.bartender-emotion-step__eyebrow {
+  font-family: "zpix", "PressStart2P", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(244, 236, 255, 0.68);
+}
+
+.bartender-emotion-step__header h4 {
+  font-family: "PressStart2P", "zpix", sans-serif;
+  font-size: clamp(15px, 1.7vw, 22px);
+  line-height: 1.4;
+}
+
+.bartender-emotion-step__count {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(228, 220, 255, 0.14);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.bartender-emotion-card {
+  min-height: 132px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(228, 220, 255, 0.12);
+  box-shadow: 0 10px 22px rgba(14, 10, 28, 0.12);
+}
+
+.bartender-emotion-card:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.06));
+}
+
+.bartender-emotion-step__ghost,
+.bartender-emotion-step__confirm,
+.plain-water-btn {
+  border-radius: 14px;
+  box-shadow: 0 10px 18px rgba(14, 10, 28, 0.14);
+}
+
+.bartender-emotion-step__ghost {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(228, 220, 255, 0.14);
+}
+
+.bartender-emotion-step__confirm {
+  font-family: "zpix", "PressStart2P", sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.plain-water-btn {
+  align-self: stretch;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, rgba(74, 98, 144, 0.22), rgba(42, 60, 104, 0.16));
+  border: 1px solid rgba(192, 220, 255, 0.14);
+  color: rgba(235, 244, 255, 0.9);
+  font-family: "zpix", "PressStart2P", sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.plain-water-btn:hover {
+  background: linear-gradient(180deg, rgba(86, 118, 172, 0.3), rgba(46, 68, 118, 0.22));
+  color: #fff;
+  transform: translateY(-1px);
+}
