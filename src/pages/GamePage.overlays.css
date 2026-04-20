@@ -1361,11 +1361,15 @@
    ======================================== */
 
 .game-page-ui {
-  padding: 8px 12px 14px;
+  padding: calc(34px + env(safe-area-inset-top, 0px)) 12px 14px;
   gap: 10px;
 }
 
 .game-header {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
   padding: 8px 12px;
   border-radius: 16px;
   box-shadow:
@@ -1394,7 +1398,7 @@
 
 @media (max-width: 768px) {
   .game-page-ui {
-    padding: 8px;
+    padding: calc(24px + env(safe-area-inset-top, 0px)) 8px 8px;
     gap: 8px;
   }
 

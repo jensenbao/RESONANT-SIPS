@@ -4,15 +4,25 @@ import BalancedPixelText from '../Common/BalancedPixelText.jsx';
 import { useTTS } from '../../hooks/useTTS.js';
 import './ChatPanel.css';
 
+const BARTENDER_AVATAR_SRC = '/asset/角色/调酒师头像.png';
+
 const ChatMessage = ({ aiConfig, msg, renderMessageContent }) => (
   <div className={`message ${msg.role === 'player' ? 'player-message' : 'ai-message'}`}>
     <div className="message-avatar">
-      {msg.role === 'player' ? '🫖' : (
+      {msg.role === 'player' ? (
+        <img
+          src={BARTENDER_AVATAR_SRC}
+          alt="调酒师头像"
+          className="player-avatar-image"
+          loading="eager"
+        />
+      ) : (
         <CustomerAvatar
           avatarBase64={aiConfig.avatarBase64}
           emoji={aiConfig.avatar}
           size={36}
           customerId={aiConfig.id || aiConfig.avatarCacheKey}
+          className="chat-message-avatar-image"
         />
       )}
     </div>
@@ -42,11 +52,14 @@ const ChatPanel = ({
   const [highlightedIndex, setHighlightedIndex] = useState(null);
   const [trustAnim, setTrustAnim] = useState('');
   const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
   const chatEndRef = useRef(null);
   const inputRef = useRef(null);
   const lastSpokenSignature = useRef('');
   const speakTimerRef = useRef(null);
   const { speak, stopTTS } = useTTS();
+  const personalityTraits = Array.isArray(aiConfig?.personality) ? aiConfig.personality : [];
+  const previewTraits = personalityTraits.slice(0, 2);
 
   useEffect(() => {
     if (!Array.isArray(dialogueHistory) || dialogueHistory.length === 0) {
@@ -166,9 +179,12 @@ const ChatPanel = ({
           <div className="ai-info">
             <h3>{aiConfig.name}</h3>
             <div className="ai-personality">
-              {(aiConfig.personality || []).map((trait, i) => (
+              {previewTraits.map((trait, i) => (
                 <span key={i} className="trait-tag">{trait}</span>
               ))}
+              {personalityTraits.length > previewTraits.length && (
+                <span className="trait-tag trait-tag--more">+{personalityTraits.length - previewTraits.length}</span>
+              )}
             </div>
           </div>
         </div>
@@ -187,6 +203,14 @@ const ChatPanel = ({
             </div>
             <span className="trust-value">{Math.round(trustLevel * 100)}%</span>
           </div>
+
+          <button
+            type="button"
+            className="chat-profile-btn"
+            onClick={() => setShowProfileModal(true)}
+          >
+            人物履历
+          </button>
 
           <button
             type="button"
@@ -303,6 +327,58 @@ const ChatPanel = ({
                 type="button"
                 className="chat-history-modal__confirm"
                 onClick={() => setShowHistoryModal(false)}
+              >
+                返回主界面
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showProfileModal && (
+        <div className="chat-history-modal" onClick={() => setShowProfileModal(false)}>
+          <div className="chat-history-modal__panel chat-profile-modal__panel" onClick={(event) => event.stopPropagation()}>
+            <div className="chat-history-modal__header">
+              <div className="chat-history-modal__title">人物履历</div>
+              <button
+                type="button"
+                className="chat-history-modal__close"
+                onClick={() => setShowProfileModal(false)}
+              >
+                关闭
+              </button>
+            </div>
+
+            <div className="chat-history-modal__list chat-profile-modal__list">
+              <div className="chat-profile-modal__section">
+                <div className="chat-profile-modal__label">姓名</div>
+                <div className="chat-profile-modal__value">{aiConfig?.name || '未知顾客'}</div>
+              </div>
+
+              {personalityTraits.length > 0 && (
+                <div className="chat-profile-modal__section">
+                  <div className="chat-profile-modal__label">人格特征</div>
+                  <div className="chat-profile-modal__traits">
+                    {personalityTraits.map((trait, index) => (
+                      <span key={`profile-trait-${index}`} className="trait-tag">{trait}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {aiConfig?.dialogueStyle?.tone && (
+                <div className="chat-profile-modal__section">
+                  <div className="chat-profile-modal__label">对话语气</div>
+                  <div className="chat-profile-modal__value">{aiConfig.dialogueStyle.tone}</div>
+                </div>
+              )}
+            </div>
+
+            <div className="chat-history-modal__footer">
+              <button
+                type="button"
+                className="chat-history-modal__confirm"
+                onClick={() => setShowProfileModal(false)}
               >
                 返回主界面
               </button>
