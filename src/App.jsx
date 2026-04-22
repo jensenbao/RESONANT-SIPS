@@ -49,9 +49,9 @@ function App() {
       try {
         const shouldMigrate = await shouldRunMigration();
         if (!shouldMigrate) return;
-        await migrateFromLocalStorage('迁移存档');
+        await migrateFromLocalStorage('Migrated Save');
       } catch (error) {
-        console.warn('自动迁移跳过:', error?.message || error);
+        console.warn('Auto-migration skipped:', error?.message || error);
       }
     };
 
@@ -63,7 +63,7 @@ function App() {
       if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'd') {
         event.preventDefault();
         setDevModeVisible((prev) => !prev);
-        console.log('🔧 开发者模式:', !devModeVisible ? '开启' : '关闭');
+        console.log('🔧 Developer mode:', !devModeVisible ? 'ON' : 'OFF');
       }
     };
 
@@ -92,15 +92,15 @@ function App() {
       })
       .then((customer) => {
         if (!customer) {
-          console.log('ℹ️ 未配置启用角色，跳过首页顾客预加载');
+          console.log('ℹ️ No enabled characters configured, skipping home guest preload');
           setPreloadedFirstCustomer(null);
           return;
         }
         setPreloadedFirstCustomer(customer);
-        console.log('✅ 第一个顾客预加载完成:', customer.name);
+        console.log('✅ First guest preloaded:', customer.name);
       })
       .catch((error) => {
-        console.error('❌ 预加载顾客失败:', error);
+        console.error('❌ Failed to preload guest:', error);
         setPreloadedFirstCustomer(null);
       })
       .finally(() => {
@@ -129,7 +129,7 @@ function App() {
     const endpointHint = config?.endpoint ? ` [endpoint: ${config.endpoint}]` : '';
 
     if (apiType === 'none' || !config?.apiKey) {
-      return { ok: false, message: getAPIUnavailableReason() || '未配置可用 API Key。' };
+      return { ok: false, message: getAPIUnavailableReason() || 'No available API key is configured.' };
     }
 
     try {
@@ -299,7 +299,7 @@ function App() {
 
   const handleToggleDevMode = useCallback(() => {
     setDevModeVisible((prev) => !prev);
-    console.log('🔧 开发者模式:', !devModeVisible ? '开启' : '关闭');
+    console.log('🔧 Developer mode:', !devModeVisible ? 'ON' : 'OFF');
   }, [devModeVisible]);
 
   const renderPage = () => {
@@ -381,7 +381,7 @@ function App() {
       <Suspense
         fallback={(
           <div className="app-loading">
-            <div className="app-loading__panel">加载中...</div>
+            <div className="app-loading__panel">Loading...</div>
           </div>
         )}
       >

@@ -55,7 +55,7 @@ export const unlockAllItems = () => {
     successCount: 999
   };
   saveUnlockedItems(unlocked);
-  console.log('🔓 已解锁全部物品:', unlocked);
+  console.log('🔓 All items unlocked:', unlocked);
   return unlocked;
 };
 
@@ -66,7 +66,7 @@ export const unlockCategory = (currentUnlocked, category) => {
   const allItems = getAllItemIds();
   
   if (!allItems[category]) {
-    console.warn('未知类别:', category);
+    console.warn('Unknown category:', category);
     return currentUnlocked;
   }
   
@@ -76,7 +76,7 @@ export const unlockCategory = (currentUnlocked, category) => {
   };
   
   saveUnlockedItems(updated);
-  console.log(`🔓 已解锁全部${category}:`, allItems[category]);
+  console.log(`🔓 Unlocked all ${category}:`, allItems[category]);
   return updated;
 };
 
@@ -96,7 +96,7 @@ export const discoverAllCombos = () => {
     });
   });
   
-  console.log('🎊 已发现全部黄金组合:', combos.length, '个');
+  console.log('🎊 Discovered all golden combos:', combos.length, 'total');
   return getDiscoveredCombos();
 };
 
@@ -122,7 +122,7 @@ export const exportGameData = () => {
     }
   };
   
-  console.log('📦 游戏数据已导出:', data);
+  console.log('📦 Game data exported:', data);
   return data;
 };
 
@@ -149,7 +149,7 @@ export const setCurrentChapter = (chapterId, currentDay = 1) => {
     ].slice(-10)
   };
   saveChapterState(updated);
-  console.log('📖 [DEV] 已设置当前章节:', id);
+  console.log('📖 [DEV] Current chapter set:', id);
   return updated;
 };
 
@@ -159,7 +159,7 @@ export const setCurrentChapter = (chapterId, currentDay = 1) => {
 export const createTestReturnCustomer = (options = {}) => {
   const now = Date.now();
   const category = options.categoryId || 'workplace';
-  const name = options.name || `回头客${String(now).slice(-4)}`;
+  const name = options.name || `ReturnGuest${String(now).slice(-4)}`;
   const phase = options.phase || 'introduction';
   const baseEmotions = options.realEmotions || ['fear', 'sadness'];
 
@@ -170,15 +170,15 @@ export const createTestReturnCustomer = (options = {}) => {
       name,
       categoryId: category,
       avatar: '👤',
-      personality: ['寡言', '警惕', '在试探'],
-      dialogueStyle: { tone: 'casual', length: 'short', features: ['停顿多', '回答简短', '只输出台词'] },
+      personality: ['quiet', 'guarded', 'testing the waters'],
+      dialogueStyle: { tone: 'casual', length: 'short', features: ['frequent pauses', 'brief replies', 'dialogue only'] },
       emotionMask: {
         surface: ['trust'],
         reality: baseEmotions.slice(0, 2),
         trustThreshold: { low: 0.25, medium: 0.55, high: 0.75 }
       },
       preferences: { iceType: 'no_ice', garnishes: [], decorations: [] },
-      backstory: '（DEV）用于回头客连贯性与十字路口测试的样例人物。'
+      backstory: '(DEV) Sample character used for return-guest continuity and crossroads testing.'
     },
     name,
     category,
@@ -187,7 +187,7 @@ export const createTestReturnCustomer = (options = {}) => {
       intimacy: 0.6,
       sharedHistory: [{
         day: 1,
-        summary: '第一次来（DEV 创建）。'
+        summary: 'First visit (created by DEV).'
       }]
     },
     characterArc: {
@@ -195,14 +195,14 @@ export const createTestReturnCustomer = (options = {}) => {
       phases: [{
         phase,
         day: 1,
-        state: '（DEV）故事从这里开始',
+        state: '(DEV) The story starts here.',
         emotions: baseEmotions.slice(0, 2),
         resolved: true
       }],
       nextVisitSetup: {
-        visitReason: '想再来坐坐',
+        visitReason: 'Wanted to come back for another quiet sit-down',
         openingMood: 'familiar',
-        storyDirection: '续上次的话题',
+        storyDirection: 'Continue the last conversation',
         suggestedDayGap: 1
       }
     },
@@ -229,7 +229,7 @@ export const createTestReturnCustomer = (options = {}) => {
   const pool = getReturnCustomers();
   const updated = [...pool, customer].slice(0, 15);
   saveReturnCustomers(updated);
-  console.log('🔄 [DEV] 已创建回头客:', customer.name, customer.id);
+  console.log('🔄 [DEV] Created return guest:', customer.name, customer.id);
   return customer;
 };
 
@@ -251,7 +251,7 @@ export const scheduleReturnCustomerOnDay = (returnCustomerId, day) => {
     }
   };
   saveReturnCustomers(customers);
-  console.log('📅 [DEV] 已安排回头客可来访日:', d, returnCustomerId);
+  console.log('📅 [DEV] Scheduled return-guest availability day:', d, returnCustomerId);
   return customers[idx];
 };
 
@@ -273,7 +273,7 @@ export const setReturnCustomerPhase = (returnCustomerId, phase) => {
   };
   customers[idx] = updated;
   saveReturnCustomers(customers);
-  console.log('🧭 [DEV] 已设置回头客阶段:', nextPhase, returnCustomerId);
+  console.log('🧭 [DEV] Set return-guest phase:', nextPhase, returnCustomerId);
   return updated;
 };
 
@@ -288,12 +288,12 @@ export const setResolvedCrossroadsForReturnCustomer = (returnCustomerId, crossro
     ...customers[idx],
     crossroads: {
       active: false,
-      dilemma: crossroads?.dilemma || '（DEV）要不要做出改变？',
+      dilemma: crossroads?.dilemma || '(DEV) Should they make a change?',
       options: Array.isArray(crossroads?.options) && crossroads.options.length > 0
         ? crossroads.options.map(o => ({ ...o }))
         : [
-          { id: 'option_a', description: '继续坚持', consequence: '', wasChosen: false },
-          { id: 'option_b', description: '尝试改变', consequence: '', wasChosen: true }
+          { id: 'option_a', description: 'Keep pushing forward', consequence: '', wasChosen: false },
+          { id: 'option_b', description: 'Try to change', consequence: '', wasChosen: true }
         ],
       influenceFactors: customers[idx].crossroads?.influenceFactors || { cocktailAttitudes: [], trustAtEnd: 0, dialogueKeywords: [] },
       resolvedOption: crossroads?.resolvedOption || 'option_b',
@@ -302,7 +302,7 @@ export const setResolvedCrossroadsForReturnCustomer = (returnCustomerId, crossro
   };
   customers[idx] = updated;
   saveReturnCustomers(customers);
-  console.log('🔀 [DEV] 已设置十字路口结果:', returnCustomerId);
+  console.log('🔀 [DEV] Crossroads result set:', returnCustomerId);
   return updated;
 };
 
@@ -336,7 +336,7 @@ export const prepareChapterGate = (targetChapterId) => {
     // 无硬性回头客要求，保留空分支仅为结构对齐
   }
 
-  console.log('🚦 [DEV] 已准备章节门槛条件，目标章节:', t);
+  console.log('🚦 [DEV] Prepared chapter gate conditions, target chapter:', t);
   return { targetChapter: t };
 };
 

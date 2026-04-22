@@ -18,7 +18,7 @@ const createDefaultGuessReadiness = () => ({
   playerTurns: 0,
   requiredTrust: 0.3,
   requiredTurns: 2,
-  reason: '再聊几句，确认你要回应的情绪。'
+  reason: 'Talk a little more first so you can confirm which emotion you want to answer.'
 });
 
 export const useCocktailFlow = ({ playSFX = () => {}, addToast = () => {} } = {}) => {

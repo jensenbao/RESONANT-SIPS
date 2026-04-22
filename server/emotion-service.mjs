@@ -160,7 +160,7 @@ const inferWeightsFromText = (text) => {
     return {
       weights: createUniformWeights(),
       confidence: 0.6,
-      rationale: ['未检测到有效情绪线索，已回退均匀分布。'],
+      rationale: ['No valid emotional cues were detected, so the system fell back to a uniform distribution.'],
       signalCount: 0,
     };
   }
@@ -183,7 +183,7 @@ const inferWeightsFromText = (text) => {
   return {
     weights: normalized,
     confidence,
-    rationale: topEvidence.length > 0 ? topEvidence : ['已从角色文本抽取情绪线索。'],
+    rationale: topEvidence.length > 0 ? topEvidence : ['Emotional cues were extracted from the character text.'],
     signalCount,
   };
 };
@@ -500,7 +500,7 @@ export const analyzeCharacterEmotion = ({ character, modelOutput = null } = {}) 
     confidence,
     rationale: Array.isArray(rationale) && rationale.length > 0
       ? rationale
-      : ['已完成8维情绪归一化处理。'],
+      : ['Finished normalizing the eight-dimensional emotion weights.'],
     source,
     sourceHash,
   };

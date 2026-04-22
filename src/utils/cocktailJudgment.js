@@ -157,7 +157,7 @@ ${attitude?.summary || '??????'}
 
     return 'shallow';
   } catch (e) {
-    console.warn('AI ????????????? shallow');
+    console.warn('AI resonance judgment failed, defaulting to shallow');
     return 'shallow';
   } finally {
     clearTimeout(timeoutId);
@@ -168,10 +168,10 @@ ${attitude?.summary || '??????'}
  * 共鸣等级的影响系数
  */
 export const RESONANCE_EFFECTS = {
-  perfect: { trustChange: 0.20, tipMultiplier: 2.0, label: '完美共鸣' },
-  deep: { trustChange: 0.15, tipMultiplier: 1.5, label: '深度共鸣' },
-  shallow: { trustChange: 0.05, tipMultiplier: 1.0, label: '浅层共鸣' },
-  dissonance: { trustChange: -0.10, tipMultiplier: 0.5, label: '情感失调' }
+  perfect: { trustChange: 0.20, tipMultiplier: 2.0, label: 'Perfect Resonance' },
+  deep: { trustChange: 0.15, tipMultiplier: 1.5, label: 'Deep Resonance' },
+  shallow: { trustChange: 0.05, tipMultiplier: 1.0, label: 'Shallow Resonance' },
+  dissonance: { trustChange: -0.10, tipMultiplier: 0.5, label: 'Emotional Dissonance' }
 };
 
 /**

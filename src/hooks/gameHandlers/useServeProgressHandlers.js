@@ -66,7 +66,7 @@ export const useServeProgressHandlers = ({ ctx }) => {
           const isNew = saveDiscoveredCombo(combo.id, {
             name: combo.name, icon: combo.icon, description: combo.description, bonus: combo.bonus, requires: combo.requires
           });
-          if (isNew) addToast(`🎊 发现黄金组合：${combo.icon} ${combo.name}！已加入图鉴`, 'success');
+          if (isNew) addToast(`🎊 Golden combo discovered: ${combo.icon} ${combo.name}! Added to the codex.`, 'success');
         });
       }
 
@@ -107,7 +107,7 @@ export const useServeProgressHandlers = ({ ctx }) => {
         realEmotions: currentEmotions.reality,
         dialogueContext: (dialogue.dialogueHistory || [])
           .slice(-4)
-          .map(d => `${d.role === 'player' ? '调酒师' : aiConfig.name}：${d.content}`)
+          .map(d => `${d.role === 'player' ? 'Bartender' : aiConfig.name}: ${d.content}`)
           .join(' ')
       };
 
@@ -247,13 +247,13 @@ export const useServeProgressHandlers = ({ ctx }) => {
         cocktailFlow.setLastCorrectGuesses([]);
       }
     } catch (error) {
-      console.error('递酒失败:', error);
+      console.error('Failed to serve drink:', error);
       const fallbackSuccess = Math.random() > 0.5;
-      dialogue.addMessage('ai', fallbackSuccess ? '嗯...这杯酒还不错，谢谢你。' : '这杯酒...不太对味，不过还是谢谢。', true);
+      dialogue.addMessage('ai', fallbackSuccess ? 'Mm... this drink is pretty good. Thank you.' : 'This drink... is not quite my taste, but thank you anyway.', true);
       appendActiveNpcEvent({
         role: 'ai',
         type: 'cocktail_feedback_fallback',
-        content: fallbackSuccess ? '嗯...这杯酒还不错，谢谢你。' : '这杯酒...不太对味，不过还是谢谢。',
+        content: fallbackSuccess ? 'Mm... this drink is pretty good. Thank you.' : 'This drink... is not quite my taste, but thank you anyway.',
         meta: { isSuccess: fallbackSuccess },
         timestamp: Date.now()
       }).catch(() => {});

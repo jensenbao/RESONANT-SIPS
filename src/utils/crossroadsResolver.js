@@ -48,31 +48,31 @@ export const resolveCrossroads = (crossroads) => {
  */
 export const FALLBACK_CROSSROADS = {
   workplace: {
-    dilemma: '一个重要的职业决定正在等着你',
+    dilemma: 'An important career decision is waiting for you.',
     options: [
-      { id: 'option_a', description: '冒险尝试新方向' },
-      { id: 'option_b', description: '稳妥走现在的路' }
+      { id: 'option_a', description: 'Take a risk on a new direction' },
+      { id: 'option_b', description: 'Stay on the safer current path' }
     ]
   },
   artistic: {
-    dilemma: '在理想和现实之间做一个选择',
+    dilemma: 'Choose between your ideals and reality.',
     options: [
-      { id: 'option_a', description: '坚持自己的作品' },
-      { id: 'option_b', description: '接受市场的要求' }
+      { id: 'option_a', description: 'Stay true to your own work' },
+      { id: 'option_b', description: 'Accept what the market demands' }
     ]
   },
   student: {
-    dilemma: '面前有两条路',
+    dilemma: 'Two paths are in front of you.',
     options: [
-      { id: 'option_a', description: '追求自己真正想做的事' },
-      { id: 'option_b', description: '走大家都在走的路' }
+      { id: 'option_a', description: 'Chase what you truly want to do' },
+      { id: 'option_b', description: 'Follow the road everyone else takes' }
     ]
   },
   midlife: {
-    dilemma: '一直回避的事情终于摆到了面前',
+    dilemma: 'The thing you kept avoiding is finally in front of you.',
     options: [
-      { id: 'option_a', description: '彻底摊牌面对' },
-      { id: 'option_b', description: '再等一等' }
+      { id: 'option_a', description: 'Face it head-on and be honest' },
+      { id: 'option_b', description: 'Wait a little longer' }
     ]
   }
 };

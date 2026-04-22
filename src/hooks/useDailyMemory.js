@@ -21,10 +21,10 @@ export const useDailyMemory = () => {
       : '';
 
     const record = {
-      name: customerConfig.name || '未知顾客',
+      name: customerConfig.name || 'Unknown Guest',
       category: customerConfig.categoryId || 'workplace',
       realEmotions: customerConfig.emotionMask?.reality || [],
-      keyStory: (customerConfig.backstory || '').slice(0, 50) || '一位顾客来过',
+      keyStory: (customerConfig.backstory || '').slice(0, 50) || 'A guest passed through the bar.',
       parting, // 'satisfied' | 'neutral' | 'left_early'
       memorableQuote,
       trustLevel: trustLevel || 0,
@@ -46,7 +46,7 @@ export const useDailyMemory = () => {
       memorableQuote: r.memorableQuote
     }));
 
-    let journalEntry = `今天服务了${stats.customersServed || todayRecords.length}位客人。`;
+    let journalEntry = `Served ${stats.customersServed || todayRecords.length} guests today.`;
     let playerPerformance = { strengths: [], weaknesses: [], growthAreas: [] };
     let openThreads = [];
 
@@ -87,13 +87,13 @@ export const useDailyMemory = () => {
               if (parsed.journalEntry) journalEntry = parsed.journalEntry;
               if (parsed.playerPerformance) playerPerformance = parsed.playerPerformance;
               if (Array.isArray(parsed.openThreads)) openThreads = parsed.openThreads;
-              console.log('✅ 日记生成成功');
+              console.log('Daily journal generated successfully');
             }
           }
         }
       }
     } catch (err) {
-      console.warn('⚠️ 日记AI生成失败，使用降级:', err);
+      console.warn('Daily journal generation failed, using fallback:', err);
     }
 
     // 组装完整日记忆
@@ -221,10 +221,10 @@ function updatePlayerProfile(day, dailyMemory) {
 
   // 里程碑检查
   const milestoneChecks = [
-    { cond: profile.totalCustomersServed === 1, event: '第一位顾客', detail: '开始了调酒师的旅程' },
-    { cond: profile.totalCocktailsMade === 10, event: '调酒十杯', detail: '熟练度提升' },
-    { cond: profile.totalDaysPlayed === 7, event: '一周老板', detail: '经营酒吧一周了' },
-    { cond: profile.totalDaysPlayed === 30, event: '月度传奇', detail: '坚持了一个月' }
+    { cond: profile.totalCustomersServed === 1, event: 'First Guest', detail: 'The bartender journey began.' },
+    { cond: profile.totalCocktailsMade === 10, event: 'Ten Cocktails', detail: 'Your craft has sharpened.' },
+    { cond: profile.totalDaysPlayed === 7, event: 'One Week In', detail: 'You have kept the bar running for a full week.' },
+    { cond: profile.totalDaysPlayed === 30, event: 'Monthly Legend', detail: 'You stayed with it for an entire month.' }
   ];
   for (const check of milestoneChecks) {
     if (check.cond && !profile.milestones.some(m => m.event === check.event)) {

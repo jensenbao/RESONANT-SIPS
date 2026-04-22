@@ -38,12 +38,12 @@ const DayEndModal = ({
                 <div className="journal-performance">
                   {dailyMemory.playerPerformance.strengths?.length > 0 && (
                     <div className="perf-item perf-strength">
-                      ✅ {dailyMemory.playerPerformance.strengths.join('、')}
+                      ✅ {dailyMemory.playerPerformance.strengths.join(', ')}
                     </div>
                   )}
                   {dailyMemory.playerPerformance.growthAreas?.length > 0 && (
                     <div className="perf-item perf-growth">
-                      💡 {dailyMemory.playerPerformance.growthAreas.join('、')}
+                      💡 {dailyMemory.playerPerformance.growthAreas.join(', ')}
                     </div>
                   )}
                 </div>

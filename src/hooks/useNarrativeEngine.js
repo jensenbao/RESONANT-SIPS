@@ -37,7 +37,7 @@ export const useNarrativeEngine = () => {
         intimacy: customerRecord.trustLevel,
         sharedHistory: [{
           day: customerRecord.day,
-          summary: `第一次来，${customerRecord.parting === 'satisfied' ? '满意离开' : '离开'}。${customerRecord.openThreads?.[0]?.description || ''}`
+          summary: `First visit. ${customerRecord.parting === 'satisfied' ? 'Left satisfied' : 'Left for the night'}. ${customerRecord.openThreads?.[0]?.description || ''}`.trim()
         }]
       },
       characterArc: {
@@ -45,14 +45,14 @@ export const useNarrativeEngine = () => {
         phases: [{
           phase: 'introduction',
           day: customerRecord.day,
-          state: customerRecord.backstory?.slice(0, 50) || '初次来访',
+          state: customerRecord.backstory?.slice(0, 50) || 'First visit',
           emotions: customerRecord.emotionState?.reality || [],
           resolved: true
         }],
         nextVisitSetup: {
-          visitReason: '想再来坐坐',
+          visitReason: 'Wanted to stop by again',
           openingMood: 'casual',
-          storyDirection: customerRecord.openThreads?.[0]?.potentialFollowUp || '续续上次的话题',
+          storyDirection: customerRecord.openThreads?.[0]?.potentialFollowUp || 'Continue the previous conversation',
           suggestedDayGap: 5
         }
       },
@@ -89,10 +89,10 @@ export const useNarrativeEngine = () => {
     // 🆕 持久化回头客头像（不会被 LRU 淘汰）
     if (customerRecord.aiConfig?.avatarBase64) {
       saveAvatarToCache(`return_${returnCustomer.id}`, customerRecord.aiConfig.avatarBase64, true)
-        .catch(err => console.warn('⚠️ 回头客头像持久化失败:', err));
+        .catch(err => console.warn('Failed to persist return-customer avatar:', err));
     }
 
-    console.log(`🔄 新回头客加入：${returnCustomer.name}（分数${score}）`);
+    console.log(`New return customer added: ${returnCustomer.name} (score ${score})`);
     return true;
   }, [returnCustomerPool]);
 
@@ -178,7 +178,7 @@ export const useNarrativeEngine = () => {
     customer.relationship.intimacy = Math.max(customer.relationship.intimacy, interactionSummary.trustLevel || 0);
     customer.relationship.sharedHistory.push({
       day: interactionSummary.day,
-      summary: `第${customer.relationship.totalVisits}次来，${interactionSummary.keyDialogue?.slice(0, 30) || '聊了很多'}`
+      summary: `Visit ${customer.relationship.totalVisits}: ${interactionSummary.keyDialogue?.slice(0, 30) || 'Shared a long conversation'}`
     });
     if (customer.relationship.sharedHistory.length > 10) {
       customer.relationship.sharedHistory = customer.relationship.sharedHistory.slice(-10);
@@ -217,13 +217,13 @@ export const useNarrativeEngine = () => {
             const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
               arcResult = JSON.parse(jsonMatch[0]);
-              console.log('✅ 弧光推进成功:', arcResult.newPhase);
+              console.log('Character arc advanced successfully:', arcResult.newPhase);
             }
           }
         }
       }
     } catch (err) {
-      console.warn('⚠️ 弧光AI推进失败:', err);
+      console.warn('AI-driven arc advancement failed:', err);
     }
 
     // 降级：简单阶段推进
@@ -233,12 +233,12 @@ export const useNarrativeEngine = () => {
       const empathy = interactionSummary.empathyScore || 50;
       arcResult = {
         newPhase: empathy >= 70 && currentIdx < phases.length - 1 ? phases[currentIdx + 1] : customer.characterArc.currentPhase,
-        newState: '故事在发展中',
+        newState: 'The story is still unfolding',
         newEmotions: customer.emotionTrajectory[customer.emotionTrajectory.length - 1]?.emotions,
         nextVisitSetup: {
-          visitReason: '还想再来',
+          visitReason: 'Still wants to come back',
           openingMood: 'familiar',
-          storyDirection: '续上次的话题',
+          storyDirection: 'Pick up where the last conversation left off',
           suggestedDayGap: 5
         }
       };
@@ -281,12 +281,12 @@ export const useNarrativeEngine = () => {
           wasChosen: o.id === resolvedId
         }));
         const chosenDesc = customer.crossroads.options.find(o => o.id === resolvedId)?.description || '';
-        console.log(`🔀 十字路口已解决：${customer.name} 选择了 "${chosenDesc}"`);
+        console.log(`Crossroads resolved: ${customer.name} chose "${chosenDesc}"`);
         
         // 在共同记忆中标记
         customer.relationship.sharedHistory.push({
           day: interactionSummary.day,
-          summary: `面临抉择：${customer.crossroads.dilemma}（🔀 十字路口）`,
+          summary: `Faced a decision: ${customer.crossroads.dilemma} (Crossroads)`,
           isCrossroads: true
         });
       }
@@ -311,7 +311,7 @@ export const useNarrativeEngine = () => {
         resolvedOption: null,
         resolvedDay: null
       };
-      console.log(`🔀 十字路口激活：${customer.name} — ${arcResult.crossroads.dilemma}`);
+      console.log(`Crossroads activated: ${customer.name} - ${arcResult.crossroads.dilemma}`);
     } else if (arcResult.crossroads === undefined && 
                (arcResult.newPhase === 'escalation' || arcResult.newPhase === 'turning_point') &&
                !customer.crossroads?.active && !customer.crossroads?.resolvedOption) {
@@ -329,7 +329,7 @@ export const useNarrativeEngine = () => {
         resolvedOption: null,
         resolvedDay: null
       };
-      console.log(`🔀 使用降级十字路口模板：${customer.name} — ${fallback.dilemma}`);
+      console.log(`Using fallback crossroads template: ${customer.name} - ${fallback.dilemma}`);
     }
 
     // 更新情绪轨迹
@@ -403,7 +403,7 @@ export const useNarrativeEngine = () => {
       if (customer.crossroads?.resolvedOption && customer.crossroads?.dilemma) {
         const chosen = customer.crossroads.options?.find(o => o.id === customer.crossroads.resolvedOption);
         summaries.push(
-          `${customer.name}面临"${customer.crossroads.dilemma}"，最终选择了"${chosen?.description || '未知'}"`
+          `${customer.name} faced "${customer.crossroads.dilemma}" and ultimately chose "${chosen?.description || 'Unknown'}"`
         );
       }
     }

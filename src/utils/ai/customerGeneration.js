@@ -19,38 +19,38 @@ import { callDeepSeekAPIHelper } from './sharedApi.js';
 
 const parseCustomerJSON = (response) => {
   if (!response || typeof response !== 'string') {
-    console.error('❌ 无效的响应:', response);
+    console.error('Invalid response:', response);
     return null;
   }
 
-  console.log('📝 原始响应长度:', response.length);
+  console.log('Raw response length:', response.length);
 
   const cleanedResponse = extractCleanJSON(response);
   if (!cleanedResponse) return null;
 
   try {
     const parsed = JSON.parse(cleanedResponse);
-    console.log('✅ JSON解析成功');
+    console.log('JSON parsed successfully');
     return parsed;
   } catch (e) {
-    console.log('⚠️ 直接解析失败，尝试提取JSON对象...');
+    console.log('Direct parse failed, attempting to extract a JSON object...');
   }
 
   const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
   if (jsonMatch) {
     try {
       const parsed = JSON.parse(jsonMatch[0]);
-      console.log('✅ 从文本中提取JSON成功');
+      console.log('Successfully extracted JSON from text');
       return parsed;
     } catch (e2) {
-      console.log('⚠️ 顾客JSON不完整，尝试修复...');
+      console.log('Customer JSON is incomplete, attempting repair...');
       const repaired = tryRepairTruncatedJSON(jsonMatch[0]);
       if (repaired) {
-        console.log('✅ 顾客JSON修复成功');
+        console.log('Customer JSON repaired successfully');
         return repaired;
       }
-      console.error('❌ JSON解析失败:', e2.message);
-      console.error('📄 提取的JSON片段:', jsonMatch[0].substring(0, 300));
+      console.error('JSON parsing failed:', e2.message);
+      console.error('Extracted JSON snippet:', jsonMatch[0].substring(0, 300));
       return null;
     }
   }
@@ -59,12 +59,12 @@ const parseCustomerJSON = (response) => {
   if (jsonStart) {
     const repaired = tryRepairTruncatedJSON(jsonStart[0]);
     if (repaired) {
-      console.log('✅ 从截断文本修复顾客JSON成功');
+      console.log('Successfully repaired customer JSON from truncated text');
       return repaired;
     }
   }
 
-  console.error('❌ 未找到JSON对象，原始响应:', cleanedResponse.substring(0, 300));
+  console.error('No JSON object found in response:', cleanedResponse.substring(0, 300));
   return null;
 };
 
@@ -84,7 +84,7 @@ const validateEmotions = (emotions, fallbackPool, isRealityEmotion = false) => {
   }).filter((emotion) => VALID_EMOTION_IDS.includes(emotion));
 
   if (validEmotions.length === 0) {
-    console.warn('⚠️ 无效的情绪ID，使用降级值:', emotions);
+    console.warn('Invalid emotion IDs detected, using fallback values:', emotions);
     return isRealityEmotion
       ? normalizeEmotionList(pickRandomMultiple(fallbackPool, 2, 2), { min: 2, max: 2, fallback: ['fear', 'sadness'] })
       : normalizeEmotionList(pickRandomMultiple(fallbackPool, 1, 2), { min: 1, max: 2, fallback: ['trust'] });
@@ -128,7 +128,7 @@ const validateLength = (length, options) => {
 const completeCustomerConfig = (parsedConfig, categoryConfig) => {
   const thresholds = categoryConfig.trustThresholdRange;
   const normalizedVoice = normalizeRuntimeVoiceProfile({
-    name: parsedConfig.name || `${categoryConfig.category}访客`,
+    name: parsedConfig.name || `${categoryConfig.category} Visitor`,
     categoryId: categoryConfig.id,
     personality: parsedConfig.personality || [],
     dialogueStyle: parsedConfig.dialogueStyle || {},
@@ -149,7 +149,7 @@ const completeCustomerConfig = (parsedConfig, categoryConfig) => {
 
   return {
     id: `${categoryConfig.id}_${Date.now()}`,
-    name: parsedConfig.name || `${categoryConfig.category}·访客`,
+    name: parsedConfig.name || `${categoryConfig.category} Visitor`,
     avatar: pickRandom(categoryConfig.avatarOptions),
     personality: parsedConfig.personality || pickRandomMultiple(categoryConfig.personalityPool, 2, 3),
     dialogueStyle: {
@@ -461,7 +461,7 @@ export const generateCustomerAvatar = async (customerConfig) => {
     : `${endpoint}/${imageModel}:generateContent?key=${config.apiKey}`;
 
   const prompt = buildAvatarPrompt(customerConfig);
-  console.log('🎨 开始生成头像...');
+  console.log('Starting avatar generation...');
 
   try {
     const controller = new AbortController();
@@ -506,7 +506,7 @@ export const generateCustomerAvatar = async (customerConfig) => {
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      console.error(`❌ 头像API错误 (${response.status}):`, err);
+      console.error(`Avatar API error (${response.status}):`, err);
       return null;
     }
 
@@ -518,12 +518,12 @@ export const generateCustomerAvatar = async (customerConfig) => {
         const imageUrl = String(image?.image_url?.url || image?.imageUrl?.url || '').trim();
         if (imageUrl.startsWith('data:image/')) {
           const payload = imageUrl.split(',', 2)[1] || '';
-          console.log('✅ 头像生成成功，大小:', Math.round(payload.length * 0.75 / 1024), 'KB');
+          console.log('Avatar generated successfully, size:', Math.round(payload.length * 0.75 / 1024), 'KB');
           return imageUrl;
         }
       }
 
-      console.warn('⚠️ OpenRouter 响应中未找到图片数据，message keys:', Object.keys(data?.choices?.[0]?.message || {}));
+      console.warn('No image data found in OpenRouter response, message keys:', Object.keys(data?.choices?.[0]?.message || {}));
       return null;
     }
 
@@ -532,18 +532,18 @@ export const generateCustomerAvatar = async (customerConfig) => {
     for (const part of parts) {
       if (part.inlineData?.mimeType?.startsWith('image/')) {
         const imageBase64 = part.inlineData.data;
-        console.log('✅ 头像生成成功，大小:', Math.round(imageBase64.length * 0.75 / 1024), 'KB');
+        console.log('Avatar generated successfully, size:', Math.round(imageBase64.length * 0.75 / 1024), 'KB');
         return imageBase64;
       }
     }
 
-    console.warn('⚠️ 响应中未找到图片数据，parts:', parts.map((part) => Object.keys(part)));
+    console.warn('No image data found in response parts:', parts.map((part) => Object.keys(part)));
     return null;
   } catch (error) {
     if (error.name === 'AbortError') {
-      console.warn('⚠️ 头像生成超时（>30s），跳过');
+      console.warn('Avatar generation timed out (>30s), skipping');
     } else {
-      console.error('❌ 头像生成失败:', error.message || error);
+      console.error('Avatar generation failed:', error.message || error);
     }
     return null;
   }
@@ -555,7 +555,7 @@ const generateAndCacheAvatar = async (customer) => {
     customer.avatarBase64 = imageBase64;
     const cacheKey = customer.avatarCacheKey || customer.id || customer.name;
     await saveAvatarToCache(cacheKey, imageBase64);
-    console.log('✅ 头像已缓存:', customer.name);
+    console.log('Avatar cached:', customer.name);
     window.dispatchEvent(new CustomEvent('avatar-ready', {
       detail: { customerId: cacheKey },
     }));
@@ -566,7 +566,7 @@ export const generateCustomer = async (categoryId) => {
   const categoryConfig = getCategoryConfig(categoryId);
   const prompt = generateCustomerPrompt(categoryConfig);
 
-  console.log('🎭 开始生成顾客，类型:', categoryConfig.category);
+  console.log('Starting customer generation, category:', categoryConfig.category);
 
   try {
     const response = await callGeminiAPIForCustomer(prompt);
@@ -576,7 +576,7 @@ export const generateCustomer = async (categoryId) => {
       ? completeCustomerConfig(parsed, categoryConfig)
       : completeCustomerConfig({}, categoryConfig);
 
-    console.log('✅ 顾客生成成功:', customer.name);
+    console.log('Customer generated successfully:', customer.name);
 
     customer.avatarBase64 = null;
     customer.avatarCacheKey = `${categoryConfig.id}_${customer.name}_${Date.now()}`;
@@ -589,19 +589,19 @@ export const generateCustomer = async (categoryId) => {
       const cachedAvatar = await getAvatarFromCache(customer.avatarCacheKey);
       if (cachedAvatar) {
         customer.avatarBase64 = cachedAvatar;
-        console.log('✅ 使用缓存头像:', customer.name);
+        console.log('Using cached avatar:', customer.name);
       } else {
         generateAndCacheAvatar(customer).catch((err) => {
-          console.warn('⚠️ 后台头像生成失败:', err);
+          console.warn('Background avatar generation failed:', err);
         });
       }
     } catch (avatarErr) {
-      console.warn('⚠️ 头像处理跳过:', avatarErr);
+      console.warn('Avatar handling skipped:', avatarErr);
     }
 
     return customer;
   } catch (error) {
-    console.error('❌ 顾客生成失败:', error);
+    console.error('Customer generation failed:', error);
     return completeCustomerConfig({}, categoryConfig);
   }
 };
@@ -617,7 +617,7 @@ export const generateCustomerFromCharacterId = async (characterId) => {
   try {
     context = await getStoryworldCharacterByName(roleId);
   } catch (error) {
-    console.warn('⚠️ Storyworld角色读取失败，降级为占位角色:', error?.message || error);
+    console.warn('Failed to load Storyworld character, falling back to placeholder character:', error?.message || error);
   }
 
   try {
@@ -626,7 +626,7 @@ export const generateCustomerFromCharacterId = async (characterId) => {
       character: context || undefined,
     });
   } catch (error) {
-    console.warn('⚠️ 角色8维情绪分析失败，使用默认情绪流程:', error?.message || error);
+    console.warn('8-axis character emotion analysis failed, using default emotion flow:', error?.message || error);
   }
 
   const mappedCategoryId = String(context?.categoryId || '').trim();
@@ -667,7 +667,7 @@ export const generateCustomerFromCharacterId = async (characterId) => {
       length: 'medium',
       features: normalizedVoice.features,
     },
-    backstory: normalizedVoice.backstorySummary || `来自角色库的角色 ${roleId}，今晚来到酒吧。`,
+    backstory: normalizedVoice.backstorySummary || `A character from the roster, ${roleId}, came to the bar tonight.`,
     initialDialogue: normalizedVoice.openingLines,
   }, categoryConfig);
 
@@ -750,15 +750,15 @@ const callGeminiAPIForCustomer = async (prompt) => {
 
   if (apiType === 'deepseek') {
     const text = await callDeepSeekAPIHelper(prompt, { temperature: 0.9, max_tokens: 8192 });
-    console.log('📥 顾客生成原始返回长度:', text?.length, '字符');
-    console.log('📥 顾客生成返回预览:', text?.substring(0, 100));
+    console.log('Customer generation raw response length:', text?.length, 'characters');
+    console.log('Customer generation response preview:', text?.substring(0, 100));
     return text;
   }
 
   const config = API_CONFIG.gemini;
 
   if (!config.enabled) {
-    throw new Error('没有启用的API');
+    throw new Error('No API is enabled');
   }
 
   const url = `${config.endpoint}/${config.model}:generateContent?key=${config.apiKey}`;
@@ -781,13 +781,13 @@ const callGeminiAPIForCustomer = async (prompt) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Gemini(OpenAI兼容)调用失败: ${response.status} ${errorText}`);
+      throw new Error(`Gemini (OpenAI-compatible) request failed: ${response.status} ${errorText}`);
     }
 
     const data = await response.json();
     const text = data?.choices?.[0]?.message?.content;
     if (!text) {
-      throw new Error('Gemini(OpenAI兼容)返回格式异常');
+      throw new Error('Gemini (OpenAI-compatible) returned an invalid response format');
     }
     return text;
   }
@@ -815,8 +815,8 @@ const callGeminiAPIForCustomer = async (prompt) => {
 
   if (!response.ok) {
     const errorData = await response.json();
-    console.error('❌ Gemini API错误:', errorData);
-    throw new Error(`Gemini API调用失败: ${response.status}`);
+    console.error('Gemini API error:', errorData);
+    throw new Error(`Gemini API request failed: ${response.status}`);
   }
 
   const data = await response.json();
@@ -826,26 +826,26 @@ const callGeminiAPIForCustomer = async (prompt) => {
 
     console.log('📊 finishReason:', candidate.finishReason);
     if (candidate.finishReason && candidate.finishReason !== 'STOP') {
-      console.warn('⚠️ 响应被截断，原因:', candidate.finishReason);
+      console.warn('Response was truncated, reason:', candidate.finishReason);
     }
 
     if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
       const text = candidate.content.parts[0].text;
-      console.log('📥 Gemini原始返回长度:', text?.length, '字符');
-      console.log('📥 Gemini返回预览:', text?.substring(0, 100));
+      console.log('Gemini raw response length:', text?.length, 'characters');
+      console.log('Gemini response preview:', text?.substring(0, 100));
       return text;
     }
   }
 
-  console.error('❌ 响应结构异常:', JSON.stringify(data).substring(0, 500));
-  throw new Error('Gemini返回格式异常');
+  console.error('Unexpected response structure:', JSON.stringify(data).substring(0, 500));
+  throw new Error('Gemini returned an invalid response format');
 };
 
 export const generateDailyCustomers = async (day, onProgress) => {
   const count = Math.min(2 + Math.floor(day / 3), 5);
   const customers = [];
 
-  console.log(`🌙 开始生成第${day}天的${count}个顾客...`);
+  console.log(`Starting generation for day ${day}: ${count} customers...`);
 
   const shuffledCategories = [...ALL_CATEGORY_IDS].sort(() => Math.random() - 0.5);
 
@@ -853,7 +853,7 @@ export const generateDailyCustomers = async (day, onProgress) => {
     const categoryId = shuffledCategories[i % shuffledCategories.length];
 
     if (onProgress) {
-      onProgress(i + 1, count, `正在创建第${i + 1}位顾客...`);
+      onProgress(i + 1, count, `Creating customer ${i + 1}...`);
     }
 
     try {
@@ -864,7 +864,7 @@ export const generateDailyCustomers = async (day, onProgress) => {
         config: customer,
       });
     } catch (error) {
-      console.error(`❌ 第${i + 1}个顾客生成失败:`, error);
+      console.error(`Customer ${i + 1} generation failed:`, error);
       const fallbackType = Object.keys(AI_CUSTOMER_TYPES)[i % 3];
       customers.push({
         id: `${day}-${i}`,
@@ -878,6 +878,6 @@ export const generateDailyCustomers = async (day, onProgress) => {
     }
   }
 
-  console.log(`✅ 第${day}天的顾客生成完成，共${customers.length}人`);
+  console.log(`Customer generation for day ${day} completed: ${customers.length} total`);
   return customers;
 };

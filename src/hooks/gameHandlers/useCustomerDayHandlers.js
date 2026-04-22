@@ -57,7 +57,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
       const nextId = customerFlow.dailyCustomers[customerFlow.currentCustomerIndex + 1]?.id;
       if (nextId) setActiveNpcId(nextId);
     } else if (dailyDone || shouldEndDayBecauseQueueExhausted) {
-      console.log(`📋 今日营业结束（总杯数: ${customerFlow.dailyCocktailCountRef.current}，顾客数: ${customerFlow.dailyCustomers.length}）`);
+      console.log(`📋 Business closed for today (total drinks: ${customerFlow.dailyCocktailCountRef.current}, guests: ${customerFlow.dailyCustomers.length})`);
       const ctxRef = customerFlow.switchContextRef.current;
       generateDailyMemoryRecord(ctxRef.currentDay, {
         customersServed: nextCustomersServed, successCount: ctxRef.daySuccessCount,
@@ -67,7 +67,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
       playSFX('success');
       queueActiveSlotGameStateSync('day_end');
     } else {
-      console.log('⏳ 等待下一位顾客生成...');
+      console.log('⏳ Waiting for the next guest to finish generating...');
       customerFlow.setIsLoadingCustomers(true);
       customerFlow.setCustomerLoadingProgress('Next guest arriving...');
 
@@ -78,7 +78,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
           if (capturedIndex < current.length - 1) {
             clearInterval(customerFlow.waitForCustomerIntervalRef.current);
             clearTimeout(customerFlow.waitForCustomerTimeoutRef.current);
-            console.log('✅ 新顾客已到达');
+            console.log('✅ New guest arrived');
             customerFlow.setIsLoadingCustomers(false);
             customerFlow.setCurrentCustomerIndex(prev => prev + 1);
           }
@@ -90,7 +90,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
         clearInterval(customerFlow.waitForCustomerIntervalRef.current);
         customerFlow.setDailyCustomers(current => {
           if (capturedIndex >= current.length - 1) {
-            console.log('⏰ 等待超时，今日营业结束');
+            console.log('⏰ Wait timed out, closing business for the day');
             customerFlow.setIsLoadingCustomers(false);
             const ctxRef = customerFlow.switchContextRef.current;
             generateDailyMemoryRecord(ctxRef.currentDay, {
@@ -153,7 +153,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
   customerFlow.handleCustomerLeaveRef.current = handleCustomerLeave;
 
   const handleDevSkipCustomer = useCallback(() => {
-    addToast('🔧 [DEV] 跳过当前顾客', 'info');
+    addToast('🔧 [DEV] Skipped the current guest', 'info');
     handleCustomerLeave('success_complete');
   }, [handleCustomerLeave, addToast]);
 
@@ -170,7 +170,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
           plainWaterCount: 0
         });
       } catch (e) {
-        console.warn('⚠️ 灯塔系统检查失败:', e);
+        console.warn('⚠️ Chapter system check failed:', e);
       }
     }
 
@@ -210,7 +210,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
 
     const dueChainEvents = checkPendingChains(nextDay);
     if (dueChainEvents.length > 0) {
-      console.log(`📖 第${nextDay}天有${dueChainEvents.length}个事件链事件到期`);
+      console.log(`📖 Day ${nextDay} has ${dueChainEvents.length} chain events due`);
       setTimeout(() => {
         const chainEvent = dueChainEvents[0];
         if (chainEvent.event) {
@@ -242,7 +242,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
         const forced = pool.find(c => c.id === forcedId);
         if (forced && !scheduledReturns.some(c => c.id === forced.id)) {
           scheduledReturns = [forced, ...scheduledReturns];
-          console.log('🧪 [DEV] 强制回头客插入今日队列:', forced.name);
+          console.log('🧪 [DEV] Forced return guest inserted into today\'s queue:', forced.name);
         }
       }
     } catch { /* ignore */ }
@@ -255,9 +255,9 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
           initialCustomers.push({
             id: `${nextDay}-return-${i}`, type: returnConfig.categoryId, config: returnConfig
           });
-          console.log('🔄 回头客加入今日队列:', returnConfig.name);
+          console.log('🔄 Return guest added to today\'s queue:', returnConfig.name);
         } catch (err) {
-          console.warn('⚠️ 回头客构建失败:', err);
+          console.warn('⚠️ Failed to build return guest:', err);
         }
       }
     }
@@ -268,7 +268,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
       initialCustomers.push({
         id: `${nextDay}-${initialCustomers.length}`, type: preloaded[i].categoryId, config: preloaded[i]
       });
-      console.log('✅ 使用预加载的第', nextDay, `天第${initialCustomers.length}位顾客:`, preloaded[i].name);
+      console.log('✅ Using preloaded guest for Day', nextDay, `slot ${initialCustomers.length}:`, preloaded[i].name);
     }
 
     // 角色池补位：优先使用未出现的 activeCharacterIds，不足再随机
@@ -291,7 +291,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
             config: customer
           });
         } catch (error) {
-          console.warn('⚠️ 角色池补位失败，进入降级逻辑:', error);
+          console.warn('⚠️ Failed to fill from character pool, entering fallback logic:', error);
           break;
         }
       }
@@ -314,7 +314,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
           id: `${nextDay}-0`, type: firstCustomer.categoryId, config: firstCustomer
         }]);
       } catch (error) {
-        console.error('❌ 顾客生成失败（仅自定义角色模式）:', error);
+        console.error('❌ Guest generation failed (custom-character mode only):', error);
         customerFlow.setDailyCustomers([]);
         addToast('No available characters found. Please return to New Game Setup and enable at least one character.', 'error');
       }

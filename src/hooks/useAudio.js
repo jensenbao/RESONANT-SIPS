@@ -32,7 +32,7 @@ export const useAudio = () => {
       audioManager.setSFXVolume(nextSfxVolume);
       audioManager.setMuted(nextMuted);
     } catch (error) {
-      console.error('加载音频设置失败:', error);
+      console.error('Failed to load audio settings:', error);
     }
   }, []);
 

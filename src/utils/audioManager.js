@@ -39,9 +39,9 @@ class AudioManager {
       this.sfxGainNode.connect(this.audioContext.destination);
       
       this.initialized = true;
-      console.log('音频系统初始化成功');
+      console.log('Audio system initialized successfully');
     } catch (e) {
-      console.error('音频系统初始化失败:', e);
+      console.error('Failed to initialize audio system:', e);
     }
   }
 
@@ -113,7 +113,7 @@ class AudioManager {
       this.bgmAudio.volume = this.bgmVolume;
       this.bgmAudio.play().then(() => {
         this._pendingBgmTrack = null;
-        console.log(`🎵 BGM 开始播放: ${track} (${src})`);
+        console.log(`BGM started: ${track} (${src})`);
       }).catch(() => {
         // 自动播放被阻止，等待用户首次交互后恢复
         this._pendingBgmTrack = track;
@@ -122,7 +122,7 @@ class AudioManager {
       this.currentBgmTrack = track;
       this.isBgmPlaying = true;
     } catch (e) {
-      console.error('BGM 播放失败:', e);
+      console.error('Failed to play BGM:', e);
     }
   }
 
@@ -218,7 +218,7 @@ class AudioManager {
       audio.volume = Math.min(1, this.sfxVolume * volume);
       audio.play().catch(() => {});
     } catch (e) {
-      console.warn('音效播放失败:', type, e);
+      console.warn('Failed to play sound effect:', type, e);
     }
   }
 

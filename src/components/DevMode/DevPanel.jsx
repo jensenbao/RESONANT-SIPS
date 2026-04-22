@@ -191,7 +191,7 @@ const DevPanel = ({
   };
 
   const handleResetGame = () => {
-    if (window.confirm('确定要重置所有游戏数据吗？此操作不可撤销！')) {
+    if (window.confirm('Reset all game data? This action cannot be undone.')) {
       if (devActions?.clearAllCache) {
         devActions.clearAllCache();
         window.location.reload();
@@ -201,7 +201,7 @@ const DevPanel = ({
 
   // 🆕 重置所有（包括教学、序幕、规则等全部 localStorage）
   const handleResetEverything = () => {
-    if (window.confirm('⚠️ 这将清除所有数据，包括教学进度、序幕、游戏存档等。\n确定要完全重置吗？')) {
+    if (window.confirm('⚠️ This will erase all data, including tutorial progress, prologue progress, and saves.\nDo you want to fully reset everything?')) {
       localStorage.clear();
       window.location.reload();
     }
@@ -270,7 +270,7 @@ const DevPanel = ({
   const handleUpdateMemoryPreview = useCallback(() => {
     if (!devGame?.aiConfig) return;
     const ctx = getRelevantMemoryContext(devGame.aiConfig);
-    setMemoryPreview(ctx || '（当前没有可注入的共享记忆/世界状态）');
+    setMemoryPreview(ctx || '(No shared memory or world-state context is available to inject right now.)');
   }, [devGame]);
 
   const handleRunABFeedback = useCallback(async () => {
@@ -330,19 +330,19 @@ const DevPanel = ({
       onMouseDown={handleMouseDown}
     >
       <div className="dev-panel-header">
-        <span className="dev-panel-title">🔧 开发者工具</span>
+        <span className="dev-panel-title">🔧 Developer Tools</span>
         <div className="dev-panel-controls">
           <button
             className="dev-panel-btn minimize"
             onClick={() => setIsMinimized(!isMinimized)}
-            title={isMinimized ? '展开' : '最小化'}
+            title={isMinimized ? 'Expand' : 'Minimize'}
           >
             {isMinimized ? '▢' : '—'}
           </button>
           <button
             className="dev-panel-btn close"
             onClick={onClose}
-            title="关闭"
+            title="Close"
           >
             ×
           </button>
@@ -354,7 +354,7 @@ const DevPanel = ({
           {/* 金币部分 */}
           <div className="dev-section">
             <div className="dev-section-header">
-              <span>💰 金币: <strong>{money}</strong></span>
+              <span>💰 Credits: <strong>{money}</strong></span>
             </div>
             <div className="dev-section-body">
               <div className="dev-btn-group">
@@ -368,10 +368,10 @@ const DevPanel = ({
                   type="number"
                   value={customMoney}
                   onChange={(e) => setCustomMoney(e.target.value)}
-                  placeholder="自定义金额"
+                  placeholder="Custom amount"
                   min="0"
                 />
-                <button onClick={handleSetMoney}>设置</button>
+                <button onClick={handleSetMoney}>Set</button>
               </div>
             </div>
           </div>
@@ -379,23 +379,23 @@ const DevPanel = ({
           {/* 解锁部分 */}
           <div className="dev-section">
             <div className="dev-section-header">
-              <span>🔓 解锁物品</span>
+              <span>🔓 Unlock Items</span>
             </div>
             <div className="dev-section-body">
               <div className="dev-btn-group">
-                <button onClick={() => handleUnlockCategory('glasses')}>全部杯型</button>
-                <button onClick={() => handleUnlockCategory('iceTypes')}>全部冰块</button>
+                <button onClick={() => handleUnlockCategory('glasses')}>All Glasses</button>
+                <button onClick={() => handleUnlockCategory('iceTypes')}>All Ice Types</button>
               </div>
               <div className="dev-btn-group">
-                <button onClick={() => handleUnlockCategory('garnishes')}>全部配料</button>
-                <button onClick={() => handleUnlockCategory('decorations')}>全部装饰</button>
+                <button onClick={() => handleUnlockCategory('garnishes')}>All Garnishes</button>
+                <button onClick={() => handleUnlockCategory('decorations')}>All Decorations</button>
               </div>
               <div className="dev-btn-group">
-                <button onClick={() => handleUnlockCategory('ingredients')}>全部原浆</button>
-                <button onClick={handleDiscoverAllCombos}>全部组合</button>
+                <button onClick={() => handleUnlockCategory('ingredients')}>All Ingredients</button>
+                <button onClick={handleDiscoverAllCombos}>All Combos</button>
               </div>
               <div className="dev-btn-group">
-                <button onClick={handleUnlockAll} className="primary">一键全解锁</button>
+                <button onClick={handleUnlockAll} className="primary">Unlock Everything</button>
               </div>
             </div>
           </div>
@@ -404,7 +404,7 @@ const DevPanel = ({
           {setTrustLevel && (
             <div className="dev-section">
               <div className="dev-section-header">
-                <span>💖 信任度: <strong>{Math.round((trustLevel || 0) * 100)}%</strong></span>
+                <span>💖 Trust: <strong>{Math.round((trustLevel || 0) * 100)}%</strong></span>
               </div>
               <div className="dev-section-body">
                 <div className="dev-btn-group">
@@ -420,7 +420,7 @@ const DevPanel = ({
                     checked={lockTrust}
                     onChange={(e) => setLockTrust(e.target.checked)}
                   />
-                  <span>锁定信任度（暂不支持）</span>
+                  <span>Lock trust value (not supported yet)</span>
                 </label>
               </div>
             </div>
@@ -430,18 +430,18 @@ const DevPanel = ({
           {customerRealEmotions && customerRealEmotions.length > 0 && (
             <div className="dev-section">
               <div className="dev-section-header">
-                <span>👁️ 情绪透视</span>
+                <span>👁️ Emotion Inspector</span>
               </div>
               <div className="dev-section-body">
                 <button
                   onClick={() => setShowEmotions(!showEmotions)}
                   className={showEmotions ? 'active' : ''}
                 >
-                  {showEmotions ? '隐藏 Top3 情绪' : '显示 Top3 情绪'}
+                  {showEmotions ? 'Hide Top 3 Emotions' : 'Show Top 3 Emotions'}
                 </button>
                 {showEmotions && (
                   <div className="dev-emotions-reveal">
-                    <span>Top3 情绪: </span>
+                    <span>Top 3 emotions: </span>
                     {customerRealEmotions.map((emotion, idx) => (
                       <span key={idx} className="dev-emotion-tag">
                         {getEmotionName(emotion)}
@@ -457,16 +457,16 @@ const DevPanel = ({
           {onAutoTest && (
             <div className="dev-section">
               <div className="dev-section-header">
-                <span>🤖 自动测试</span>
-                {autoTestRunning && <span className="dev-running-badge">运行中</span>}
+                <span>🤖 Auto Test</span>
+                {autoTestRunning && <span className="dev-running-badge">Running</span>}
               </div>
               <div className="dev-section-body">
                 <div className="dev-auto-status">
-                  <span>状态: {
-                    autoTestRunning ? '⚡ 自动运行中...' :
-                    guessedCorrectly ? '🍸 调酒模式' :
-                    emotionGuessMode ? '🎯 猜测模式' :
-                    '💬 对话模式'
+                  <span>Status: {
+                    autoTestRunning ? '⚡ Auto-running...' :
+                    guessedCorrectly ? '🍸 Mixing Mode' :
+                    emotionGuessMode ? '🎯 Guess Mode' :
+                    '💬 Dialogue Mode'
                   }</span>
                 </div>
                 <div className="dev-btn-group">
@@ -474,17 +474,17 @@ const DevPanel = ({
                     onClick={() => onAutoTest(false)}
                     className={autoTestRunning ? 'danger' : 'primary'}
                   >
-                    {autoTestRunning ? '⏹ 停止' : '▶ 单次测试'}
+                    {autoTestRunning ? '⏹ Stop' : '▶ Run Once'}
                   </button>
                   <button
                     onClick={() => onAutoTest(true)}
                     className={autoTestRunning ? 'danger' : 'gold'}
                   >
-                    {autoTestRunning ? '⏹ 停止' : '🔄 循环测试'}
+                    {autoTestRunning ? '⏹ Stop' : '🔄 Loop Test'}
                   </button>
                 </div>
                 <div className="dev-info">
-                  <span>自动猜对情绪 → 调酒 → 递酒</span>
+                  <span>Auto-guess emotions → mix → serve</span>
                 </div>
               </div>
             </div>
@@ -494,12 +494,12 @@ const DevPanel = ({
           {setCurrentDay && (
             <div className="dev-section">
               <div className="dev-section-header">
-                <span>🎮 游戏控制</span>
+                <span>🎮 Game Controls</span>
               </div>
               <div className="dev-section-body">
                 <div className="dev-btn-group">
-                  <button onClick={handleSkipCustomer}>跳过顾客</button>
-                  <button onClick={handleCompleteCustomer}>完成3杯任务</button>
+                  <button onClick={handleSkipCustomer}>Skip Guest</button>
+                  <button onClick={handleCompleteCustomer}>Complete 3-Drink Goal</button>
                 </div>
                 <div className="dev-day-control">
                   <span>Day: {currentDay}</span>
@@ -508,28 +508,28 @@ const DevPanel = ({
                 </div>
                 {customerSuccessCount !== undefined && (
                   <div className="dev-info">
-                    <span>当前顾客进度: {customerSuccessCount}/3</span>
+                    <span>Current guest progress: {customerSuccessCount}/3</span>
                   </div>
                 )}
 
                 {/* 直接跳转章节 */}
                 {devGame?.jumpToChapter && (
                   <>
-                    <div className="dev-section-subtitle">直接跳转章节</div>
+                    <div className="dev-section-subtitle">Jump to Chapter</div>
                     <div className="dev-btn-group">
                       {[1, 2, 3, 4, 5].map(ch => (
                         <button
                           key={ch}
                           onClick={() => handleJumpToChapter(ch)}
                           className={devGame?.chapterId === ch ? 'active' : ''}
-                          title={`跳转到第${ch}章`}
+                          title={`Jump to Chapter ${ch}`}
                         >
-                          第{ch}章
+                          Chapter {ch}
                         </button>
                       ))}
                     </div>
                     <div className="dev-info">
-                      <span>直接跳转章节，无需走门槛条件。当前: 第{devGame?.chapterId || '?'}章</span>
+                      <span>Jump straight to a chapter without meeting gate conditions. Current: Chapter {devGame?.chapterId || '?'}</span>
                     </div>
                   </>
                 )}
@@ -541,61 +541,61 @@ const DevPanel = ({
           {devGame && (
             <div className="dev-section">
               <div className="dev-section-header">
-                <span>🧪 AI质量测试台</span>
+                <span>🧪 AI Quality Lab</span>
               </div>
               <div className="dev-section-body">
                 <div className="dev-info">
                   <span>
-                    章节: {devGame.chapterId ?? '-'} · 判定模式: <strong>{devGame.mixingMode ?? '-'}</strong>
+                    Chapter: {devGame.chapterId ?? '-'} · Judgment mode: <strong>{devGame.mixingMode ?? '-'}</strong>
                   </span>
                 </div>
 
                 <div className="dev-btn-group">
-                  <button onClick={() => handlePrepareChapterGate(2)}>准备 1→2</button>
-                  <button onClick={() => handlePrepareChapterGate(3)}>准备 2→3</button>
-                  <button onClick={() => handlePrepareChapterGate(4)}>准备 3→4</button>
-                  <button onClick={() => handlePrepareChapterGate(5)}>准备 4→5</button>
+                  <button onClick={() => handlePrepareChapterGate(2)}>Prep 1→2</button>
+                  <button onClick={() => handlePrepareChapterGate(3)}>Prep 2→3</button>
+                  <button onClick={() => handlePrepareChapterGate(4)}>Prep 3→4</button>
+                  <button onClick={() => handlePrepareChapterGate(5)}>Prep 4→5</button>
                 </div>
                 <div className="dev-btn-group">
-                  <button onClick={handleRunChapterCheck} className="gold">运行章节检查</button>
+                  <button onClick={handleRunChapterCheck} className="gold">Run Chapter Check</button>
                 </div>
                 <div className="dev-info">
-                  <span>提示：准备门槛后点击“运行章节检查”，即可立刻看到章节转场与 AI 开场白。</span>
+                  <span>Tip: after preparing a gate, click "Run Chapter Check" to preview the chapter transition and AI opening line immediately.</span>
                 </div>
 
                 <hr className="dev-divider" />
 
-                <div className="dev-section-subtitle">回头客（连贯性 / 十字路口）</div>
+                <div className="dev-section-subtitle">Returning Guests (Continuity / Crossroads)</div>
                 <div className="dev-input-group">
                   <select value={selectedReturnId} onChange={(e) => setSelectedReturnId(e.target.value)}>
-                    {returnCustomers.length === 0 && <option value="">（暂无回头客）</option>}
+                    {returnCustomers.length === 0 && <option value="">(No returning guests yet)</option>}
                     {returnCustomers.map(c => (
                       <option key={c.id} value={c.id}>
                         {c.name} · {c.characterArc?.currentPhase || 'unknown'} · visits:{c.relationship?.totalVisits || 1}
                       </option>
                     ))}
                   </select>
-                  <button onClick={handleCreateTestReturnCustomer}>+样例</button>
+                  <button onClick={handleCreateTestReturnCustomer}>+Sample</button>
                 </div>
                 <div className="dev-btn-group">
-                  <button onClick={handleScheduleSelectedReturnTomorrow} disabled={!selectedReturnId}>安排明天可来访</button>
-                  <button onClick={handleInsertSelectedReturnNext} disabled={!selectedReturnId}>插入今日下一位</button>
+                  <button onClick={handleScheduleSelectedReturnTomorrow} disabled={!selectedReturnId}>Schedule for Tomorrow</button>
+                  <button onClick={handleInsertSelectedReturnNext} disabled={!selectedReturnId}>Insert as Next Today</button>
                 </div>
                 <div className="dev-btn-group">
-                  <button onClick={handleLockReturnCustomerDailyFirst} disabled={!selectedReturnId} className="primary">锁定为每日首位</button>
-                  <button onClick={handleClearLockReturnCustomer} className="danger">取消锁定</button>
+                  <button onClick={handleLockReturnCustomerDailyFirst} disabled={!selectedReturnId} className="primary">Lock as First Daily Guest</button>
+                  <button onClick={handleClearLockReturnCustomer} className="danger">Clear Lock</button>
                 </div>
                 <div className="dev-info">
-                  <span>锁定后，每天开始时会强制插入该回头客，便于连续跟完 3-5 次来访弧光。</span>
+                  <span>When locked, this returning guest is forced in at the start of each day so you can follow a full 3-5 visit arc continuously.</span>
                 </div>
 
                 <hr className="dev-divider" />
 
-                <div className="dev-section-subtitle">记忆注入预览</div>
+                <div className="dev-section-subtitle">Memory Injection Preview</div>
                 <div className="dev-btn-group">
-                  <button onClick={handleUpdateMemoryPreview}>刷新预览</button>
+                  <button onClick={handleUpdateMemoryPreview}>Refresh Preview</button>
                   {memoryPreview && (
-                    <button onClick={() => navigator.clipboard?.writeText(memoryPreview)}>复制</button>
+                    <button onClick={() => navigator.clipboard?.writeText(memoryPreview)}>Copy</button>
                   )}
                 </div>
                 {memoryPreview && (
@@ -604,25 +604,25 @@ const DevPanel = ({
 
                 <hr className="dev-divider" />
 
-                <div className="dev-section-subtitle">A/B 调酒反馈对比（同一顾客，两杯极端态度）</div>
+                <div className="dev-section-subtitle">A/B Drink Feedback Comparison (same guest, two extreme attitudes)</div>
                 <div className="dev-btn-group">
                   <button onClick={handleRunABFeedback} className={abRunning ? 'danger' : 'primary'} disabled={abRunning}>
-                    {abRunning ? '运行中...' : '运行 A/B 对比'}
+                    {abRunning ? 'Running...' : 'Run A/B Comparison'}
                   </button>
                 </div>
                 {abResult?.error && (
-                  <div className="dev-info"><span>错误: {abResult.error}</span></div>
+                  <div className="dev-info"><span>Error: {abResult.error}</span></div>
                 )}
                 {abResult && !abResult.error && (
                   <div className="dev-ab-grid">
                     <div className="dev-ab-col">
-                      <div className="dev-ab-title">A：直面问题 + 承认苦涩</div>
-                      <div className="dev-info"><span>态度：{abResult.A.attitude.summary}</span></div>
+                      <div className="dev-ab-title">A: Face it directly + acknowledge bitterness</div>
+                      <div className="dev-info"><span>Attitude: {abResult.A.attitude.summary}</span></div>
                       <div className="dev-ab-output">{abResult.A.result?.feedback || JSON.stringify(abResult.A.result)}</div>
                     </div>
                     <div className="dev-ab-col">
-                      <div className="dev-ab-title">B：先休息 + 给予希望</div>
-                      <div className="dev-info"><span>态度：{abResult.B.attitude.summary}</span></div>
+                      <div className="dev-ab-title">B: Rest first + offer hope</div>
+                      <div className="dev-info"><span>Attitude: {abResult.B.attitude.summary}</span></div>
                       <div className="dev-ab-output">{abResult.B.result?.feedback || JSON.stringify(abResult.B.result)}</div>
                     </div>
                   </div>
@@ -634,15 +634,15 @@ const DevPanel = ({
           {/* 数据管理 */}
           <div className="dev-section">
             <div className="dev-section-header">
-              <span>📦 数据管理</span>
+              <span>📦 Data Management</span>
             </div>
             <div className="dev-section-body">
               <div className="dev-btn-group">
-                <button onClick={handleExportData}>导出存档</button>
-                <button onClick={handleResetGame} className="danger">重置游戏</button>
+                <button onClick={handleExportData}>Export Save</button>
+                <button onClick={handleResetGame} className="danger">Reset Game</button>
               </div>
               <div className="dev-btn-group">
-                <button onClick={handleResetEverything} className="danger">🗑️ 重置所有（含教学/序幕）</button>
+                <button onClick={handleResetEverything} className="danger">🗑️ Reset Everything (incl. tutorial/prologue)</button>
               </div>
               <div className="dev-info">
                 <span>存储使用: {storageInfo.usedKB} KB</span>
@@ -652,7 +652,7 @@ const DevPanel = ({
 
           {/* 快捷键提示 */}
           <div className="dev-footer">
-            <span>Ctrl+Shift+D 切换面板</span>
+            <span>Ctrl+Shift+D toggles the panel</span>
           </div>
         </div>
       )}

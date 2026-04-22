@@ -26,7 +26,7 @@ const ShopPage = ({ onBack, unlockedItems = {}, onShopPurchase }) => {
 
       setToastList(prev => [...prev, {
         id: Date.now(),
-        message: `🎉 成功购买：${itemName}`,
+        message: `🎉 Unlocked: ${itemName}`,
         type: 'success'
       }]);
     }
@@ -39,9 +39,9 @@ const ShopPage = ({ onBack, unlockedItems = {}, onShopPurchase }) => {
   return (
     <div className="shop-page">
       <div className="shop-page-header">
-        <button className="back-button" onClick={onBack}>← 返回</button>
-        <h1>🛒 商店</h1>
-        <div className="shop-money-display">🎁 全部免费解锁</div>
+        <button className="back-button" onClick={onBack}>← Back</button>
+        <h1>🛒 Shop</h1>
+        <div className="shop-money-display">🎁 All unlocks are free</div>
       </div>
 
       <div className="shop-page-content">

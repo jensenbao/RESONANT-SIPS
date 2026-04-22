@@ -31,7 +31,7 @@ const AdvancedGuidePopup = ({ guide, onDismiss }) => {
           ))}
         </div>
         <button className="guide-dismiss" onClick={onDismiss}>
-          知道了
+          Got it
         </button>
       </div>
     </>

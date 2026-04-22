@@ -10,14 +10,14 @@ export const EMOTION_IDS_8 = [
 ];
 
 export const EMOTION_NAME_MAP_CN = {
-  joy: '喜悦',
-  trust: '信任',
-  fear: '恐惧',
-  surprise: '惊讶',
-  sadness: '悲伤',
-  disgust: '厌恶',
-  anger: '愤怒',
-  anticipation: '期待',
+  joy: 'Joy',
+  trust: 'Trust',
+  fear: 'Fear',
+  surprise: 'Surprise',
+  sadness: 'Sadness',
+  disgust: 'Disgust',
+  anger: 'Anger',
+  anticipation: 'Anticipation',
 };
 
 const LEGACY_TO_PLUTCHIK = {

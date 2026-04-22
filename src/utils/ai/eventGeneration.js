@@ -8,7 +8,7 @@ import { extractCleanJSON, tryRepairTruncatedJSON } from './jsonUtils.js';
 import { callDeepSeekAPIHelper, callGeminiAPIHelper } from './sharedApi.js';
 
 export const generateBarEvent = async (context) => {
-  console.log('⚡ 开始AI生成事件...');
+  console.log('⚡ Starting AI event generation...');
 
   try {
     const prompt = generatePrompt(PROMPT_TYPES.GENERATE_EVENT, context);
@@ -23,14 +23,14 @@ export const generateBarEvent = async (context) => {
     const result = parseEventJSON(response);
 
     if (result) {
-      console.log('✅ 事件生成成功:', result.type);
+      console.log('✅ Event generated successfully:', result.type);
       return result;
     }
 
-    console.warn('⚠️ 事件JSON解析失败');
+    console.warn('⚠️ Failed to parse event JSON');
     return null;
   } catch (error) {
-    console.error('❌ 事件生成失败:', error);
+    console.error('❌ Event generation failed:', error);
     return null;
   }
 };
@@ -40,7 +40,7 @@ const callGeminiAPIForEvent = async (prompt) => {
 
   if (apiType === 'deepseek') {
     const text = await callDeepSeekAPIHelper(prompt, { temperature: 0.85, max_tokens: 4096 });
-    console.log('📥 事件生成原始返回:', text);
+    console.log('📥 Raw event generation response:', text);
     return text;
   }
 
@@ -52,17 +52,17 @@ const callGeminiAPIForEvent = async (prompt) => {
     candidateCount: 1,
     label: 'Gemini',
   });
-  console.log('📥 事件生成原始返回:', text);
+  console.log('📥 Raw event generation response:', text);
   return text;
 };
 
 const parseEventJSON = (response) => {
   if (!response || typeof response !== 'string') {
-    console.warn('⚠️ 事件响应为空或非字符串:', response);
+    console.warn('⚠️ Event response is empty or not a string:', response);
     return null;
   }
 
-  console.log('🔍 解析事件JSON，原始长度:', response.length);
+  console.log('🔍 Parsing event JSON, raw length:', response.length);
 
   const cleaned = extractCleanJSON(response);
   if (!cleaned) return null;
@@ -77,10 +77,10 @@ const parseEventJSON = (response) => {
         const parsed = JSON.parse(jsonMatch[0]);
         return validateEvent(parsed);
       } catch (e2) {
-        console.log('⚠️ 事件JSON不完整，尝试修复...');
+        console.log('⚠️ Event JSON is incomplete, attempting repair...');
         const repaired = tryRepairTruncatedJSON(jsonMatch[0]);
         if (repaired) {
-          console.log('✅ 事件JSON修复成功');
+          console.log('✅ Event JSON repaired successfully');
           return validateEvent(repaired);
         }
       }
@@ -90,13 +90,13 @@ const parseEventJSON = (response) => {
     if (jsonStart) {
       const repaired = tryRepairTruncatedJSON(jsonStart[0]);
       if (repaired) {
-        console.log('✅ 从截断文本修复事件JSON成功');
+        console.log('✅ Successfully repaired event JSON from truncated text');
         return validateEvent(repaired);
       }
     }
 
-    console.error('❌ 事件JSON解析最终失败');
-    console.error('📄 原始内容:', cleaned.substring(0, 300));
+    console.error('❌ Event JSON parsing failed after all recovery attempts');
+    console.error('📄 Raw content:', cleaned.substring(0, 300));
   }
   return null;
 };
@@ -109,7 +109,7 @@ const validateEvent = (parsed) => {
   const duration = validDurations.includes(parsed.duration) ? parsed.duration : 'immediate';
   const narrative = typeof parsed.narrative === 'string' && parsed.narrative.length > 0
     ? parsed.narrative
-    : '酒吧里发生了一些有趣的事情。';
+    : 'Something interesting happened in the bar.';
 
   const effects = parsed.effects || {};
   const validatedEffects = {
@@ -125,7 +125,7 @@ const validateEvent = (parsed) => {
   let choices = [];
   if (Array.isArray(parsed.choices)) {
     choices = parsed.choices.slice(0, 2).map((choice) => ({
-      text: typeof choice.text === 'string' ? choice.text : '继续',
+      text: typeof choice.text === 'string' ? choice.text : 'Continue',
       effect: choice.effect || {},
     }));
   }

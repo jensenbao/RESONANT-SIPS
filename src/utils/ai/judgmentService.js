@@ -14,7 +14,7 @@ const ensureEnglishFeedback = (text, fallbackText) => {
 export const callAIForCocktailJudgmentWithEmotionChange = async (params) => {
   const { aiConfig, trustLevel, emotionState, cocktailRecipe, dialogueHistory } = params;
   
-  console.log('🍸⚡ 开始合并调用：调酒判断+情绪变化...');
+  console.log('🍸⚡ Starting combined call: cocktail judgment + emotion change...');
   const startTime = Date.now();
   
   try {
@@ -34,11 +34,11 @@ export const callAIForCocktailJudgmentWithEmotionChange = async (params) => {
     const result = parseCombinedJudgmentJSON(response, params);
     
     const elapsed = Date.now() - startTime;
-    console.log(`✅ 合并调用完成，耗时 ${elapsed}ms:`, result);
+    console.log(`✅ Combined call completed in ${elapsed}ms:`, result);
     
     return result;
   } catch (error) {
-    console.error('❌ 合并调用失败:', error);
+    console.error('❌ Combined call failed:', error);
     // 降级：使用简单规则
     return getFallbackCombinedJudgment(params);
   }
@@ -53,7 +53,7 @@ const callGeminiAPIForCombinedJudgment = async (prompt) => {
   // 使用 DeepSeek
   if (apiType === 'deepseek') {
     const text = await callDeepSeekAPIHelper(prompt, { temperature: 0.4, max_tokens: 4096 });
-    console.log('📥 合并判断原始返回:', text);
+    console.log('📥 Raw combined judgment response:', text);
     return text;
   }
   
@@ -65,7 +65,7 @@ const callGeminiAPIForCombinedJudgment = async (prompt) => {
     candidateCount: 1,
     label: 'Gemini',
   });
-  console.log('📥 合并判断原始返回:', text);
+  console.log('📥 Raw combined judgment response:', text);
   return text;
 };
 
@@ -97,7 +97,7 @@ const parseCombinedJudgmentJSON = (response, params) => {
         const parsed = JSON.parse(jsonMatch[0]);
         return validateCombinedResult(parsed, params);
       } catch (e2) {
-        console.log('⚠️ JSON解析失败，尝试手动提取...');
+        console.log('⚠️ JSON parsing failed, attempting manual extraction...');
         return extractFromTruncatedCombinedJSON(cleanedResponse, params);
       }
     }
@@ -117,7 +117,7 @@ const extractFromTruncatedCombinedJSON = (text, params) => {
   if (successMatch) {
     const success = successMatch[1].toLowerCase() === 'true';
     const satisfaction = satisfactionMatch ? parseFloat(satisfactionMatch[1]) : (success ? 0.6 : 0.4);
-    const feedback = feedbackMatch ? feedbackMatch[1] : (success ? '这杯酒不错。' : '不太对味。');
+    const feedback = feedbackMatch ? feedbackMatch[1] : (success ? 'This drink is pretty good.' : 'This does not taste quite right.');
     
     // 使用降级的情绪变化
     const fallbackEmotions = getFallbackEmotionChangeSimple(params, success);
@@ -241,7 +241,7 @@ const getFallbackCombinedJudgment = (params) => {
 export const callAIForCocktailJudgment = async (params) => {
   const { aiConfig, trustLevel, emotionState, cocktailRecipe, dialogueHistory } = params;
   
-  console.log('🍸 开始调用AI判断调酒...');
+  console.log('🍸 Starting AI cocktail judgment...');
   
   try {
     // 生成 prompt
@@ -260,14 +260,14 @@ export const callAIForCocktailJudgment = async (params) => {
     const result = parseCocktailJudgmentJSON(response);
     
     if (result) {
-      console.log('✅ AI调酒判断成功:', result);
+      console.log('✅ AI cocktail judgment succeeded:', result);
       return result;
     } else {
-      console.warn('⚠️ JSON解析失败，使用降级判断');
+      console.warn('⚠️ JSON parsing failed, using fallback judgment');
       return getFallbackCocktailJudgment(params, response);
     }
   } catch (error) {
-    console.error('❌ AI调酒判断失败:', error);
+    console.error('❌ AI cocktail judgment failed:', error);
     // 降级：使用简单规则判断
     return getFallbackCocktailJudgment(params, null);
   }
@@ -282,7 +282,7 @@ const callGeminiAPIForCocktailJudgment = async (prompt) => {
   // 使用 DeepSeek
   if (apiType === 'deepseek') {
     const text = await callDeepSeekAPIHelper(prompt, { temperature: 0.5, max_tokens: 4096 });
-    console.log('📥 调酒判断原始返回:', text);
+    console.log('📥 Raw cocktail judgment response:', text);
     return text;
   }
   
@@ -294,7 +294,7 @@ const callGeminiAPIForCocktailJudgment = async (prompt) => {
     candidateCount: 1,
     label: 'Gemini',
   });
-  console.log('📥 调酒判断原始返回:', text);
+  console.log('📥 Raw cocktail judgment response:', text);
   return text;
 };
 
@@ -327,7 +327,7 @@ const parseCocktailJudgmentJSON = (response) => {
         return validateCocktailJudgment(parsed);
       } catch (e2) {
         // JSON 被截断，尝试手动提取字段
-        console.log('⚠️ JSON被截断，尝试手动提取字段...');
+        console.log('⚠️ JSON was truncated, attempting manual field extraction...');
         return extractFromTruncatedJSON(cleanedResponse);
       }
     }
@@ -364,7 +364,7 @@ const extractFromTruncatedJSON = (text) => {
     
     // 如果至少提取到了 success，就返回结果
     if (success !== null) {
-      console.log('✅ 从截断JSON中提取成功:', { success, satisfaction, feedback });
+      console.log('✅ Successfully extracted data from truncated JSON:', { success, satisfaction, feedback });
       return {
         success,
         satisfaction: satisfaction !== null ? Math.max(0, Math.min(1, satisfaction)) : (success ? 0.6 : 0.4),
@@ -373,7 +373,7 @@ const extractFromTruncatedJSON = (text) => {
       };
     }
   } catch (e) {
-    console.error('❌ 提取截断JSON失败:', e);
+    console.error('❌ Failed to extract data from truncated JSON:', e);
   }
   
   return null;
@@ -430,7 +430,7 @@ const getFallbackCocktailJudgment = (params, rawResponse) => {
     success,
     satisfaction,
     feedback,
-    reason: success ? '降级判断：调酒成功' : '降级判断：调酒失败'
+    reason: success ? 'Fallback judgment: cocktail succeeded' : 'Fallback judgment: cocktail failed'
   };
 };
 
@@ -444,10 +444,10 @@ const getFallbackCocktailJudgment = (params, rawResponse) => {
 export const callAIForEmotionChange = async (params) => {
   const { aiConfig, currentEmotions, cocktailEmotions, wasSuccessful, dialogueHistory } = params;
   
-  console.log('🎭 开始调用AI生成情绪变化...');
-  console.log('📊 当前情绪:', currentEmotions);
-  console.log('🍸 酒的情绪:', cocktailEmotions);
-  console.log('✅ 是否成功:', wasSuccessful);
+  console.log('🎭 Starting AI emotion-change generation...');
+  console.log('📊 Current emotions:', currentEmotions);
+  console.log('🍸 Cocktail emotions:', cocktailEmotions);
+  console.log('✅ Was successful:', wasSuccessful);
   
   try {
     // 生成 prompt
@@ -472,14 +472,14 @@ export const callAIForEmotionChange = async (params) => {
     const result = parseEmotionChangeJSON(response);
     
     if (result) {
-      console.log('✅ AI情绪变化生成成功:', result);
+      console.log('✅ AI emotion change generated successfully:', result);
       return result;
     } else {
-      console.warn('⚠️ JSON解析失败，使用降级情绪变化');
+      console.warn('⚠️ JSON parsing failed, using fallback emotion change');
       return getFallbackEmotionChange(params);
     }
   } catch (error) {
-    console.error('❌ AI情绪变化生成失败:', error);
+    console.error('❌ AI emotion change generation failed:', error);
     // 降级：使用简单规则
     return getFallbackEmotionChange(params);
   }
@@ -494,7 +494,7 @@ const callGeminiAPIForEmotionChange = async (prompt) => {
   // 使用 DeepSeek
   if (apiType === 'deepseek') {
     const text = await callDeepSeekAPIHelper(prompt, { temperature: 0.4, max_tokens: 4096 });
-    console.log('📥 情绪变化原始返回:', text);
+    console.log('📥 Raw emotion-change response:', text);
     return text;
   }
   
@@ -506,7 +506,7 @@ const callGeminiAPIForEmotionChange = async (prompt) => {
     candidateCount: 1,
     label: 'Gemini',
   });
-  console.log('📥 情绪变化原始返回:', text);
+  console.log('📥 Raw emotion-change response:', text);
   return text;
 };
 
@@ -538,7 +538,7 @@ const parseEmotionChangeJSON = (response) => {
         const parsed = JSON.parse(jsonMatch[0]);
         return validateEmotionChangeResult(parsed);
       } catch (e2) {
-        console.log('⚠️ 情绪变化JSON解析失败');
+        console.log('⚠️ Emotion-change JSON parsing failed');
         return null;
       }
     }
@@ -615,7 +615,7 @@ const getFallbackEmotionChange = (params) => {
     }
   }
   
-  console.log('📊 降级情绪变化:', { surface: newSurface, reality: newReality });
+  console.log('📊 Fallback emotion change:', { surface: newSurface, reality: newReality });
   
   return {
     surface: newSurface,
@@ -633,9 +633,9 @@ const getFallbackEmotionChange = (params) => {
 export const callAIForTrustJudgment = async (params) => {
   const { aiConfig, trustLevel, emotionState, playerInput, dialogueHistory } = params;
   
-  console.log('💬 开始调用AI判断对话信任度...');
-  console.log('📝 玩家输入:', playerInput);
-  console.log('📊 当前信任度:', trustLevel);
+  console.log('💬 Starting AI trust judgment for dialogue...');
+  console.log('📝 Player input:', playerInput);
+  console.log('📊 Current trust level:', trustLevel);
   
   try {
     // 生成 prompt
@@ -660,14 +660,14 @@ export const callAIForTrustJudgment = async (params) => {
     const result = parseTrustJudgmentJSON(response);
     
     if (result) {
-      console.log('✅ AI信任度判断成功:', result);
+      console.log('✅ AI trust judgment succeeded:', result);
       return result;
     } else {
-      console.warn('⚠️ JSON解析失败，使用降级判断');
+      console.warn('⚠️ JSON parsing failed, using fallback judgment');
       return getFallbackTrustJudgment(params);
     }
   } catch (error) {
-    console.error('❌ AI信任度判断失败:', error);
+    console.error('❌ AI trust judgment failed:', error);
     // 降级：使用简单规则
     return getFallbackTrustJudgment(params);
   }
@@ -682,7 +682,7 @@ const callGeminiAPIForTrustJudgment = async (prompt) => {
   // 使用 DeepSeek
   if (apiType === 'deepseek') {
     const text = await callDeepSeekAPIHelper(prompt, { temperature: 0.3, max_tokens: 2048 });
-    console.log('📥 信任度判断原始返回:', text);
+    console.log('📥 Raw trust-judgment response:', text);
     return text;
   }
   
@@ -694,7 +694,7 @@ const callGeminiAPIForTrustJudgment = async (prompt) => {
     candidateCount: 1,
     label: 'Gemini',
   });
-  console.log('📥 信任度判断原始返回:', text);
+  console.log('📥 Raw trust-judgment response:', text);
   return text;
 };
 
@@ -727,7 +727,7 @@ const parseTrustJudgmentJSON = (response) => {
         return validateTrustJudgmentResult(parsed);
       } catch (e2) {
         // JSON不完整，尝试修复
-        console.log('⚠️ 尝试修复不完整的JSON...');
+        console.log('⚠️ Attempting to repair incomplete JSON...');
         return tryFixIncompleteJSON(cleanedResponse);
       }
     }
@@ -748,17 +748,17 @@ const tryFixIncompleteJSON = (response) => {
     
     // 尝试提取 reason 值（可能不完整）
     const reasonMatch = response.match(/"reason"\s*:\s*"([^"]*)(?:"|$)/);
-    const reason = reasonMatch ? reasonMatch[1] : '对话评估';
+    const reason = reasonMatch ? reasonMatch[1] : 'Dialogue evaluation';
     
-    console.log('✅ 从不完整JSON中提取: change=', change, 'reason=', reason);
+    console.log('✅ Extracted from incomplete JSON: change=', change, 'reason=', reason);
     
     return validateTrustJudgmentResult({
       change,
-      reason: reason || '对话评估'
+      reason: reason || 'Dialogue evaluation'
     });
   }
   
-  console.log('⚠️ 无法从不完整JSON中提取数据');
+  console.log('⚠️ Could not extract data from incomplete JSON');
   return null;
 };
 
@@ -773,7 +773,7 @@ const validateTrustJudgmentResult = (parsed) => {
   change = Math.max(-0.15, Math.min(0.15, change));
   
   // 确保 reason 是字符串
-  const reason = typeof parsed.reason === 'string' ? parsed.reason : '对话评估';
+  const reason = typeof parsed.reason === 'string' ? parsed.reason : 'Dialogue evaluation';
   
   return {
     change,
@@ -792,7 +792,7 @@ const getFallbackTrustJudgment = (params) => {
   
   // 消息太短
   if (message.length < 3) {
-    return { change: -0.03, reason: '回复太短' };
+    return { change: -0.03, reason: 'Reply too short' };
   }
   
   // 重复消息
@@ -801,32 +801,32 @@ const getFallbackTrustJudgment = (params) => {
     .slice(-3)
     .map(h => h.content);
   if (recentPlayerMessages.includes(message)) {
-    return { change: -0.05, reason: '重复回复' };
+    return { change: -0.05, reason: 'Repeated reply' };
   }
   
   // 只有数字和标点
   if (/^[\d\s\.,!?。，！？]+$/.test(message)) {
-    return { change: -0.03, reason: '无意义回复' };
+    return { change: -0.03, reason: 'Meaningless reply' };
   }
   
   // 包含关心词汇
   const caringWords = ['怎么了', '还好吗', '没关系', '理解', '辛苦', '加油', '陪你', '听你说', '关心'];
   const hasCaring = caringWords.some(word => message.includes(word));
   if (hasCaring) {
-    return { change: 0.06, reason: '表达关心' };
+    return { change: 0.06, reason: 'Showed care' };
   }
   
   // 包含提问
   if (message.includes('？') || message.includes('?')) {
-    return { change: 0.04, reason: '主动提问' };
+    return { change: 0.04, reason: 'Asked proactively' };
   }
   
   // 普通回复
   if (message.length >= 10) {
-    return { change: 0.02, reason: '正常交流' };
+    return { change: 0.02, reason: 'Normal conversation' };
   }
   
-  return { change: 0, reason: '普通回复' };
+  return { change: 0, reason: 'Ordinary reply' };
 };
 
 // 生成快捷追问选项

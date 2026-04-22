@@ -84,14 +84,14 @@ export const useCustomerFlow = () => {
     const nextIndex = currentCustomerIndex + 1;
     if (nextIndex < dailyCustomers.length) {
       setNextCustomerGenerationFailed(false);
-      console.log('⏭️ 下一个顾客已存在，跳过生成');
+      console.log('⏭️ Next guest already exists, skipping generation');
       return;
     }
 
     // 每日顾客上限 或 总杯数达标 → 预加载下一天
     if (dailyCustomers.length >= MAX_CUSTOMERS_PER_DAY || dailyCocktailCountRef.current >= TARGET_DAILY_COCKTAILS) {
       if (!isPreloadingNextDay && !preloadedNextDayCustomer) {
-        console.log('🔄 今日顾客已满，开始预加载下一天的顾客...');
+        console.log('🔄 Today is full, starting preload for the next day\'s guests...');
         setIsPreloadingNextDay(true);
         try {
           const activeCharacterIds = getActiveCharacterIds();
@@ -110,9 +110,9 @@ export const useCustomerFlow = () => {
 
           setPreloadedNextDayCustomer(first);
           setPreloadedSecondCustomer(second);
-          console.log('✅ 下一天2位顾客预加载完成:', first.name, ',', second.name);
+          console.log('✅ Preloaded two guests for the next day:', first.name, ',', second.name);
         } catch (error) {
-          console.error('❌ 预加载下一天顾客失败（仅自定义角色模式）:', error);
+          console.error('❌ Failed to preload next day guests (custom-character mode only):', error);
         } finally {
           setIsPreloadingNextDay(false);
         }
@@ -120,7 +120,7 @@ export const useCustomerFlow = () => {
       return;
     }
 
-    console.log('🔄 开始在后台生成下一个顾客...');
+    console.log('🔄 Starting background generation for the next guest...');
     setIsGeneratingNextCustomer(true);
     setNextCustomerGenerationFailed(false);
     try {
@@ -139,10 +139,10 @@ export const useCustomerFlow = () => {
       };
       setDailyCustomers(prev => [...prev, newCustomer]);
       setNextCustomerGenerationFailed(false);
-      console.log('✅ 下一个顾客生成完成:', newCustomer.config.name);
+      console.log('✅ Next guest generated:', newCustomer.config.name);
     } catch (error) {
       setNextCustomerGenerationFailed(true);
-      console.error('❌ 后台生成顾客失败（仅自定义角色模式）:', error);
+      console.error('❌ Background guest generation failed (custom-character mode only):', error);
     } finally {
       setIsGeneratingNextCustomer(false);
     }

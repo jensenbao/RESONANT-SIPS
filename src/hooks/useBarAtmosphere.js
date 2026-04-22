@@ -46,10 +46,10 @@ export const useBarAtmosphere = () => {
     setIsGenerating(true);
     // 氛围仅作为背景展示，不再走AI生成。
     void recentCrossroadsSummaries;
-    console.log(`🌍 开始为第${day}天生成背景氛围（本地模板）...`);
+    console.log(`Generating background atmosphere for day ${day} with local templates...`);
 
     const fallback = getFallbackAtmosphere(day, recentAtmospheresRef.current);
-    console.log('✅ 使用本地氛围模板:', fallback.weather);
+    console.log('Using local atmosphere template:', fallback.weather);
     const finalFallback = stripAtmosphereEffects(fallback);
     setAtmosphere(finalFallback);
     setShowAtmosphereOverlay(true);

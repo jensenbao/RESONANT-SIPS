@@ -11,7 +11,7 @@ export const clearAllGameCache = () => {
   ];
   
   keys.forEach(key => localStorage.removeItem(key));
-  console.log('✓ 所有游戏缓存已清除');
+  console.log('All game cache has been cleared');
 };
 
 // 仅清除当前AI的对话记录
@@ -19,7 +19,7 @@ export const clearCurrentAIMemory = (aiType) => {
   const memory = JSON.parse(localStorage.getItem('bartender_short_memory') || '{}');
   delete memory[aiType];
   localStorage.setItem('bartender_short_memory', JSON.stringify(memory));
-  console.log(`✓ ${aiType} 的对话记录已清除`);
+  console.log(`${aiType} conversation history has been cleared`);
 };
 
 // 在浏览器控制台直接运行：

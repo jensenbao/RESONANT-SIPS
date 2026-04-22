@@ -14,11 +14,11 @@ import { interpretCocktailAttitude } from '../utils/cocktailAttitude.js';
 import audioManager from '../utils/audioManager.js';
 
 const MIXING_STEPS = [
-  { id: 'glass', name: '选择杯型', icon: '🍸' },
-  { id: 'ice', name: '加入冰块', icon: '🧊' },
-  { id: 'ingredient', name: '混合原液', icon: '🥃' },
-  { id: 'decoration', name: '点缀装饰', icon: '✨' },
-  { id: 'preview', name: '确认递酒', icon: '✅' }
+  { id: 'glass', name: 'Choose Glass', icon: '🍸' },
+  { id: 'ice', name: 'Add Ice', icon: '🧊' },
+  { id: 'ingredient', name: 'Mix Ingredients', icon: '🥃' },
+  { id: 'decoration', name: 'Add Decoration', icon: '✨' },
+  { id: 'preview', name: 'Confirm Serve', icon: '✅' }
 ];
 
 const createEmptyRecipe = () => ({

@@ -71,7 +71,7 @@ export const useGameInit = (ctx) => {
 
     const initializeFirstCustomer = async () => {
       if (tutorial.isTutorialMode) {
-        console.log('📚 教学模式：使用固定教学顾客');
+        console.log('📚 Tutorial mode: using the fixed tutorial guest');
         customerFlow.setDailyCustomers([{
           id: `${day}-0`, type: TUTORIAL_CUSTOMER.categoryId, config: TUTORIAL_CUSTOMER
         }]);
@@ -83,7 +83,7 @@ export const useGameInit = (ctx) => {
       // 🆕 尝试从会话恢复
       const session = getGameSession();
       if (session && session.day === day && session.dailyCustomers?.length > 0) {
-        console.log(`🔄 从会话恢复第 ${day} 天（顾客${session.currentCustomerIndex + 1}/${session.dailyCustomers.length}）`);
+        console.log(`🔄 Restored Day ${day} from session (guest ${session.currentCustomerIndex + 1}/${session.dailyCustomers.length})`);
         customerFlow.setDailyCustomers(session.dailyCustomers);
         customerFlow.setCurrentCustomerIndex(session.currentCustomerIndex || 0);
         customerFlow.setCustomerSuccessCount(session.customerSuccessCount || 0);
@@ -116,11 +116,11 @@ export const useGameInit = (ctx) => {
         return;
       }
 
-      console.log(`🔄 初始化第 ${day} 天...`);
+      console.log(`🔄 Initializing Day ${day}...`);
       await generateAtmosphere(day);
 
       if (preloadedFirstCustomer) {
-        console.log('✅ 使用预加载的第一位顾客:', preloadedFirstCustomer.name);
+        console.log('✅ Using preloaded first guest:', preloadedFirstCustomer.name);
         customerFlow.setDailyCustomers([{
           id: `${day}-0`, type: preloadedFirstCustomer.categoryId, config: preloadedFirstCustomer
         }]);
@@ -139,7 +139,7 @@ export const useGameInit = (ctx) => {
           id: `${day}-0`, type: firstCustomer.categoryId, config: firstCustomer
         }]);
       } catch (error) {
-        console.error('❌ 第一位顾客生成失败（仅自定义角色模式）:', error);
+        console.error('❌ Failed to generate the first guest (custom-character mode only):', error);
         const isNoActiveCharacters = error?.message === 'no_active_characters';
         if (isNoActiveCharacters) {
           customerFlow.setDailyCustomers([]);
@@ -235,7 +235,7 @@ export const useGameInit = (ctx) => {
       customerFlow.setCustomerSuccessCount(0);
       customerFlow.customerCocktailCountRef.current = 0;
       customerFlow.setCustomerCocktailCount(0);
-      console.log('🤖 [自动测试] 重置酒杯计数，顾客数据已记录');
+      console.log('🤖 [Auto Test] Reset drink counter and recorded guest data');
     }
   }, [customerFlow.customerCocktailCount, progress.autoTestRunning]);
 
@@ -300,7 +300,7 @@ export const useGameInit = (ctx) => {
           targetHint: cocktailFlow.targetHint
         });
       } catch (e) {
-        console.warn('⚠️ 会话保存失败（可能超出配额）:', e.message);
+        console.warn('⚠️ Failed to save session data (possibly over quota):', e.message);
       }
     }, 1000);
     return () => clearTimeout(timer);

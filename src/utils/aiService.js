@@ -97,7 +97,7 @@ export const callAIAPI = async (type, params, onStreamChunk = null) => {
   const prompt = generatePrompt(type, params);
 
   if (apiType === 'none') {
-    throw new Error('未配置可用 API Key，请先配置 .env.local');
+    throw new Error('No available API key is configured. Please update .env.local first.');
   }
   
   if (DEBUG_CONFIG.logPrompts) {
@@ -117,14 +117,14 @@ export const callAIAPI = async (type, params, onStreamChunk = null) => {
       // Google Gemini API（支持流式）
       return await callGeminiAPI(prompt, onStreamChunk);
     } else if (apiType === 'xunfei') {
-      // 讯飞星火API
+      // Xunfei Spark API
       return await callXunfeiAPI(prompt);
     } else if (apiType === 'baidu') {
-      // 百度文心一言API
+      // Baidu ERNIE API
       return await callBaiduAPI(prompt);
     }
   } catch (error) {
-    console.error('AI API调用失败:', error);
+    console.error('AI API call failed:', error);
     throw error;
   }
 };
@@ -139,8 +139,8 @@ const callDeepSeekAPI = async (prompt, onStreamChunk = null) => {
       return await callDeepSeekAPIStreaming(prompt, onStreamChunk);
     }
     
-    console.log('🔵 DeepSeek API调用开始');
-    console.log('📝 Prompt长度:', prompt.length, '字符');
+    console.log('DeepSeek API request started');
+    console.log('Prompt length:', prompt.length, 'characters');
     
     const response = await fetch(config.endpoint, {
       method: 'POST',
@@ -158,8 +158,8 @@ const callDeepSeekAPI = async (prompt, onStreamChunk = null) => {
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error('❌ DeepSeek API错误:', errorData);
-      throw new Error(`DeepSeek API调用失败: ${response.status} ${response.statusText}`);
+      console.error('DeepSeek API error:', errorData);
+      throw new Error(`DeepSeek API request failed: ${response.status} ${response.statusText}`);
     }
     
     const data = await response.json();
@@ -168,7 +168,7 @@ const callDeepSeekAPI = async (prompt, onStreamChunk = null) => {
       console.log('=== DeepSeek Response ===');
       console.log('Full Response:', data);
       if (data.usage) {
-        console.log('📊 Token使用:', data.usage);
+        console.log('Token usage:', data.usage);
       }
       console.log('========================');
     }
@@ -176,22 +176,22 @@ const callDeepSeekAPI = async (prompt, onStreamChunk = null) => {
     // 提取回应文本
     if (data.choices && data.choices.length > 0) {
       let text = data.choices[0].message?.content || '';
-      console.log('✅ DeepSeek原始返回:', text);
+      console.log('DeepSeek raw response:', text);
 
       text = finalizeDialogueText(text);
-      console.log('✅ 最终返回:', text);
+      console.log('Final response:', text);
 
       if (!text || text.trim().length === 0) {
-        throw new Error('API返回空内容');
+        throw new Error('API returned empty content');
       }
 
       return text;
     }
     
-    console.error('❌ 响应格式异常:', data);
-    throw new Error('DeepSeek返回格式异常');
+    console.error('Unexpected response format:', data);
+    throw new Error('DeepSeek returned an invalid response format');
   } catch (error) {
-    console.error('❌ DeepSeek API调用失败:', error);
+    console.error('DeepSeek API request failed:', error);
     throw error;
   }
 };
@@ -200,8 +200,8 @@ const callDeepSeekAPI = async (prompt, onStreamChunk = null) => {
 const callDeepSeekAPIStreaming = async (prompt, onStreamChunk) => {
   const config = API_CONFIG.deepseek;
   
-  console.log('🔵 DeepSeek 流式API调用开始');
-  console.log('📝 Prompt长度:', prompt.length, '字符');
+  console.log('DeepSeek streaming API request started');
+  console.log('Prompt length:', prompt.length, 'characters');
   
   const response = await fetch(config.endpoint, {
     method: 'POST',
@@ -220,8 +220,8 @@ const callDeepSeekAPIStreaming = async (prompt, onStreamChunk) => {
   
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('❌ DeepSeek 流式API错误:', errorText);
-    throw new Error(`DeepSeek API调用失败: ${response.status}`);
+    console.error('DeepSeek streaming API error:', errorText);
+    throw new Error(`DeepSeek API request failed: ${response.status}`);
   }
   
   const reader = response.body.getReader();
@@ -234,7 +234,7 @@ const callDeepSeekAPIStreaming = async (prompt, onStreamChunk) => {
       const { done, value } = await reader.read();
       
       if (done) {
-        console.log('✅ 流式响应完成，总长度:', fullText.length);
+        console.log('Streaming response completed, total length:', fullText.length);
         break;
       }
       
@@ -273,7 +273,7 @@ const callDeepSeekAPIStreaming = async (prompt, onStreamChunk) => {
   
   let text = finalizeDialogueText(fullText);
   
-  console.log('✅ 流式响应最终结果:', text);
+  console.log('Final streaming response:', text);
   return text;
 };
 
@@ -292,8 +292,8 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
 
     const url = `${config.endpoint}/${config.model}:generateContent?key=${config.apiKey}`;
 
-    console.log('🔵 Gemini API调用开始');
-    console.log('📝 Prompt长度:', prompt.length, '字符');
+    console.log('Gemini API request started');
+    console.log('Prompt length:', prompt.length, 'characters');
 
     const requestBody = {
       contents: [{
@@ -322,8 +322,8 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
     
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('❌ Gemini API错误:', errorData);
-      throw new Error(`Gemini API调用失败: ${response.status} ${response.statusText}`);
+      console.error('Gemini API error:', errorData);
+      throw new Error(`Gemini API request failed: ${response.status} ${response.statusText}`);
     }
     
     const data = await response.json();
@@ -332,7 +332,7 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
       console.log('=== Gemini Response ===');
       console.log('Full Response:', data);
       if (data.usageMetadata) {
-        console.log('📊 Token使用:', data.usageMetadata);
+        console.log('Token usage:', data.usageMetadata);
       }
       console.log('=====================');
     }
@@ -342,23 +342,23 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
       const candidate = data.candidates[0];
       
       // 检查截断原因
-      console.log('📊 对话finishReason:', candidate.finishReason);
+      console.log('Dialogue finishReason:', candidate.finishReason);
       
       // 检查是否被安全过滤阻止
       if (candidate.finishReason === 'SAFETY') {
-        console.warn('⚠️ 响应被安全过滤阻止');
-        console.log('安全评级:', candidate.safetyRatings);
-        throw new Error('内容被安全过滤阻止，请尝试调整prompt');
+        console.warn('Response was blocked by safety filters');
+        console.log('Safety ratings:', candidate.safetyRatings);
+        throw new Error('The response was blocked by safety filters. Try adjusting the prompt.');
       }
       
       // 检查是否因token限制被截断
       if (candidate.finishReason === 'MAX_TOKENS') {
-        console.warn('⚠️ 对话响应因token限制被截断');
+        console.warn('Dialogue response was truncated by the token limit');
       }
       
       if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
         let text = candidate.content.parts[0].text;
-        console.log('✅ Gemini原始返回:', text);
+        console.log('Gemini raw response:', text);
         
         text = text.trim();
         
@@ -366,15 +366,15 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
         const hasProperEnding = /[。！？.!?]$/.test(text);
         
         if (!hasProperEnding) {
-          console.warn('⚠️ 检测到不完整的句子:', text);
+          console.warn('Detected an incomplete sentence:', text);
           
           // 扩展的不完整词列表
           const incompleteWords = [
-            '还', '有', '很', '的', '地', '得',  // 单字不完整
-            '下的', '中的', '上的', '时的',      // X的结构
-            '让', '使', '而', '但', '却',        // 连词
-            '感觉', '觉得', '认为', '希望',      // 感受词（如果是最后就不完整）
-            '口感', '味道', '氛围',              // 名词（如果后面没有动词就不完整）
+            '还', '有', '很', '的', '地', '得',
+            '下的', '中的', '上的', '时的',
+            '让', '使', '而', '但', '却',
+            '感觉', '觉得', '认为', '希望',
+            '口感', '味道', '氛围',
           ];
           
           // 检查是否以不完整词结尾
@@ -383,7 +383,7 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
           });
           
           if (isIncomplete) {
-            console.log('🔍 检测到典型不完整模式，尝试修复...');
+            console.log('Detected a common incomplete pattern, attempting repair...');
             
             // 找到最后一个句号或逗号之前的内容
             const lastPeriod = text.lastIndexOf('。');
@@ -392,11 +392,11 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
             if (lastPeriod > 0) {
               // 有完整句子，直接截取到句号
               text = text.substring(0, lastPeriod + 1);
-              console.log('✅ 截取到上一个句号');
+              console.log('Trimmed to the previous sentence ending');
             } else if (lastComma > text.length * 0.3) {
               // 有逗号且位置合理，截取到逗号前加句号
               text = text.substring(0, lastComma) + '。';
-              console.log('✅ 截取到逗号位置');
+              console.log('Trimmed to the previous comma position');
             } else {
               // 找不到合适的截断点，删除不完整的词
               for (const word of incompleteWords) {
@@ -406,7 +406,7 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
                   // 如果移除后还有内容，并且以有效字符结尾
                   if (withoutWord.length > 5 && /[\u4e00-\u9fa5a-zA-Z]$/.test(withoutWord)) {
                     text = withoutWord + '.';
-                    console.log('✅ 移除不完整词并添加句号');
+                    console.log('Removed incomplete ending and added a period');
                     break;
                   }
                 }
@@ -420,34 +420,34 @@ const callGeminiAPI = async (prompt, onStreamChunk = null) => {
             // 如果以逗号结尾，可能是省略效果
             if (lastChar === '，' || lastChar === ',') {
               text = text.substring(0, text.length - 1) + '……';
-              console.log('✅ 逗号转省略号');
+              console.log('Converted trailing comma to ellipsis');
             } else if (/[\u4e00-\u9fa5a-zA-Z0-9]/.test(lastChar)) {
               // 以正常字符结尾，添加省略号表示未尽之意
               text = text + '……';
-              console.log('✅ 添加省略号');
+              console.log('Added ellipsis');
             } else {
               text = text + '.';
-              console.log('✅ 添加句号');
+              console.log('Added period');
             }
           }
         }
         
         text = finalizeDialogueText(text, { preferEllipsis: true });
         
-        console.log('✅ 最终返回:', text);
+        console.log('Final response:', text);
         
         if (!text || text.trim().length === 0) {
-          throw new Error('API返回空内容');
+          throw new Error('API returned empty content');
         }
         
         return text;
       }
     }
     
-    console.error('❌ 响应格式异常:', data);
-    throw new Error('Gemini返回格式异常');
+    console.error('Unexpected response format:', data);
+    throw new Error('Gemini returned an invalid response format');
   } catch (error) {
-    console.error('❌ Gemini API调用失败:', error);
+    console.error('Gemini API request failed:', error);
     throw error;
   }
 };
@@ -477,7 +477,7 @@ const callGeminiViaOpenAICompatible = async (prompt, onStreamChunk = null) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Gemini(OpenAI兼容)调用失败: ${response.status} ${errorText}`);
+      throw new Error(`Gemini (OpenAI-compatible) request failed: ${response.status} ${errorText}`);
     }
 
     const reader = response.body.getReader();
@@ -533,13 +533,13 @@ const callGeminiViaOpenAICompatible = async (prompt, onStreamChunk = null) => {
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error(`Gemini(OpenAI兼容)调用失败: ${response.status} ${errorText}`);
+    throw new Error(`Gemini (OpenAI-compatible) request failed: ${response.status} ${errorText}`);
   }
 
   const data = await response.json();
   let text = data?.choices?.[0]?.message?.content || '';
   text = finalizeDialogueText(text);
-  if (!text) throw new Error('Gemini(OpenAI兼容)返回空内容');
+  if (!text) throw new Error('Gemini (OpenAI-compatible) returned empty content');
   return text;
 };
 
@@ -548,8 +548,8 @@ const callGeminiAPIStreaming = async (prompt, onStreamChunk) => {
   const config = API_CONFIG.gemini;
   const url = `${config.endpoint}/${config.model}:streamGenerateContent?key=${config.apiKey}&alt=sse`;
 
-  console.log('🔵 Gemini 流式API调用开始');
-  console.log('📝 Prompt长度:', prompt.length, '字符');
+  console.log('Gemini streaming API request started');
+  console.log('Prompt length:', prompt.length, 'characters');
 
   const requestBody = {
     contents: [{
@@ -577,8 +577,8 @@ const callGeminiAPIStreaming = async (prompt, onStreamChunk) => {
   
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('❌ Gemini 流式API错误:', errorText);
-    throw new Error(`Gemini API调用失败: ${response.status}`);
+    console.error('Gemini streaming API error:', errorText);
+    throw new Error(`Gemini API request failed: ${response.status}`);
   }
   
   const reader = response.body.getReader();
@@ -591,7 +591,7 @@ const callGeminiAPIStreaming = async (prompt, onStreamChunk) => {
       const { done, value } = await reader.read();
       
       if (done) {
-        console.log('✅ 流式响应完成，总长度:', fullText.length);
+        console.log('Streaming response completed, total length:', fullText.length);
         break;
       }
       
@@ -630,7 +630,7 @@ const callGeminiAPIStreaming = async (prompt, onStreamChunk) => {
   
   let text = finalizeDialogueText(fullText);
   
-  console.log('✅ 流式响应最终结果:', text);
+  console.log('Final streaming response:', text);
   return text;
 };
 
@@ -638,7 +638,7 @@ const callGeminiAPIStreaming = async (prompt, onStreamChunk) => {
 const callXunfeiAPI = async (prompt) => {
   // TODO: 实现讯飞星火API调用
   // 这里需要WebSocket连接和签名验证
-  console.warn('讯飞星火API尚未实现');
+  console.warn('Xunfei Spark API is not implemented yet');
   throw new Error('xunfei_api_not_implemented');
 };
 
@@ -674,7 +674,7 @@ const callBaiduAPI = async (prompt) => {
     const data = await response.json();
     return data.result || '...';
   } catch (error) {
-    console.error('百度API调用失败:', error);
+    console.error('Baidu API request failed:', error);
     throw error;
   }
 };

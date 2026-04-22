@@ -19,8 +19,8 @@ export const callDeepSeekAPIHelper = async (prompt, options = {}) => {
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({}));
-    console.error('❌ DeepSeek API错误:', errorData);
-    throw new Error(`DeepSeek API调用失败: ${response.status}`);
+    console.error('❌ DeepSeek API error:', errorData);
+    throw new Error(`DeepSeek API request failed: ${response.status}`);
   }
 
   const data = await response.json();
@@ -29,14 +29,14 @@ export const callDeepSeekAPIHelper = async (prompt, options = {}) => {
     return data.choices[0].message?.content || '';
   }
 
-  throw new Error('DeepSeek返回格式异常');
+  throw new Error('DeepSeek returned an unexpected response format');
 };
 
 export const callGeminiAPIHelper = async (prompt, options = {}) => {
   const config = API_CONFIG.gemini;
 
   if (!config.enabled) {
-    throw new Error('没有启用的API');
+    throw new Error('No API provider is enabled');
   }
 
   const {
@@ -70,13 +70,13 @@ export const callGeminiAPIHelper = async (prompt, options = {}) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`${label}(OpenAI兼容)调用失败: ${response.status} ${errorText}`);
+      throw new Error(`${label} (OpenAI-compatible) request failed: ${response.status} ${errorText}`);
     }
 
     const data = await response.json();
     const text = data?.choices?.[0]?.message?.content;
     if (!text) {
-      throw new Error(`${label}(OpenAI兼容)返回格式异常`);
+      throw new Error(`${label} (OpenAI-compatible) returned an unexpected response format`);
     }
 
     return String(text);
@@ -112,8 +112,8 @@ export const callGeminiAPIHelper = async (prompt, options = {}) => {
     } catch {
       // Keep raw text when body is not valid JSON.
     }
-    console.error(`❌ ${label} API错误:`, errorData);
-    throw new Error(`${label} API调用失败: ${response.status}`);
+    console.error(`❌ ${label} API error:`, errorData);
+    throw new Error(`${label} API request failed: ${response.status}`);
   }
 
   const data = await response.json();
@@ -126,5 +126,5 @@ export const callGeminiAPIHelper = async (prompt, options = {}) => {
     }
   }
 
-  throw new Error(`${label}返回格式异常`);
+  throw new Error(`${label} returned an unexpected response format`);
 };

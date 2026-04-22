@@ -77,7 +77,7 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
       // 事件触发点1 已移到 handleSendMessage 中（玩家发送第一条消息后），
       // 避免开场白后挂机也会自动弹出事件
     } catch (error) {
-      console.error('开始对话失败:', error);
+      console.error('Failed to start conversation:', error);
       const fallback = '...It is a quiet night.';
       dialogue.updateLastMessage(fallback);
       appendActiveNpcEvent({
@@ -122,9 +122,9 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
         try {
           const realityEmotions = Array.isArray(aiConfig.emotionMask?.reality) ? aiConfig.emotionMask.reality : [];
           const tutorialAiConfig = {
-            ...aiConfig, name: '林澈',
-            personality: ['刚下班的中年人', '很累', '话少', '用省略号停顿', '只说自己的台词，禁止加旁白和动作描写'],
-            dialogueStyle: { ...aiConfig.dialogueStyle, tone: 'tired', length: 'short', features: ['话少', '停顿多', '回答简短', '只输出角色说的话'] }
+            ...aiConfig, name: 'Lin Che',
+            personality: ['a middle-aged person just off work', 'very tired', 'speaks little', 'uses ellipses as pauses', 'only speaks in direct dialogue with no narration or action text'],
+            dialogueStyle: { ...aiConfig.dialogueStyle, tone: 'tired', length: 'short', features: ['few words', 'frequent pauses', 'brief replies', 'dialogue only'] }
           };
           response = await callAIAPI(PROMPT_TYPES.RESPONSE, {
             aiConfig: tutorialAiConfig, trustLevel,
@@ -250,13 +250,13 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
             // 1. 暖场保护：前2轮对话，负面变化减半，且下限为 -0.03
             if (playerMsgNum <= 2 && change < 0) {
               change = Math.max(change * 0.5, -0.03);
-              console.log(`🛡️ 暖场保护：负面变化已减轻 (轮次${playerMsgNum})`);
+              console.log(`🛡️ Early-round protection: negative change softened (round ${playerMsgNum})`);
             }
             
             // 2. 隐喻难度校准：高隐喻顾客的负面变化封顶
             if (metaphorLvl === 'high' && change < 0) {
               change = Math.max(change, -0.05); // 高隐喻顾客单轮最多扣 0.05
-              console.log(`🎭 隐喻校准：高隐喻顾客负面变化已封顶`);
+              console.log('🎭 Metaphor calibration: capped negative change for high-metaphor guest');
             } else if (metaphorLvl === 'medium' && change < 0) {
               change = Math.max(change, -0.08); // 中隐喻顾客单轮最多扣 0.08
             }
@@ -264,7 +264,7 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
             // 3. 底线保护：信任度不会因单次对话从正常区间直接掉到危险区
             if (trustLevel >= 0.2 && trustLevel + change < 0.1) {
               change = 0.1 - trustLevel; // 最多掉到 0.1，不会直接归零
-              console.log(`🛡️ 底线保护：防止信任度骤降至危险区`);
+              console.log('🛡️ Safety floor protection: prevented trust from dropping straight into danger');
             }
             
             // 4. 正面倾斜：高隐喻顾客的正面变化略微增加（奖励勇于交流）
@@ -315,8 +315,8 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
       }
       queueActiveSlotGameStateSync('dialogue_turn');
     } catch (error) {
-      console.error('发送消息失败:', error);
-      const fallback = '......我有点走神了，你可以再说一遍吗？';
+      console.error('Failed to send message:', error);
+      const fallback = '...I got a little distracted. Could you say that again?';
       dialogue.updateLastMessage(fallback);
       appendActiveNpcEvent({
         role: 'ai',

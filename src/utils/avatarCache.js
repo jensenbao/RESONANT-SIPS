@@ -53,7 +53,7 @@ export const saveAvatarToCache = async (key, imageBase64, isReturnCustomer = fal
 
     await evictOldAvatars();
   } catch (e) {
-    console.error('❌ 保存头像缓存失败:', e);
+    console.error('Failed to save avatar cache:', e);
   }
 };
 
@@ -116,7 +116,7 @@ const evictOldAvatars = async () => {
       store.delete(all[i]);
     }
   } catch (e) {
-    console.error('⚠️ LRU 淘汰失败:', e);
+    console.error('LRU eviction failed:', e);
   }
 };
 
@@ -129,9 +129,9 @@ export const clearAvatarCache = async () => {
     const tx = db.transaction(STORE_NAME, 'readwrite');
     tx.objectStore(STORE_NAME).clear();
     await new Promise((resolve) => { tx.oncomplete = resolve; });
-    console.log('✅ 头像缓存已清空');
+    console.log('Avatar cache cleared');
   } catch (e) {
-    console.error('❌ 清空头像缓存失败:', e);
+    console.error('Failed to clear avatar cache:', e);
   }
 };
 

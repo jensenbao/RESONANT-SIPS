@@ -96,7 +96,7 @@ export const useBarEvents = () => {
 
     // 🆕 如果有强制事件（事件链），直接使用，不占用每日随机事件名额
     if (forceEvent) {
-      console.log('📖 触发事件链事件:', forceEvent.narrative?.substring(0, 30));
+      console.log('Triggering chained event:', forceEvent.narrative?.substring(0, 30));
       setCurrentEvent(forceEvent);
       setShowEventNotification(true);
       recentEventNarrativesRef.current = [
@@ -136,7 +136,7 @@ export const useBarEvents = () => {
       }
     }
 
-    console.log(`⚡ 触发事件，类型: ${selectedType}`);
+    console.log(`Triggering event of type: ${selectedType}`);
 
     let event = null;
 
@@ -152,16 +152,16 @@ export const useBarEvents = () => {
       
       if (event) {
         event.id = `event_${event.type}_${Date.now()}`;
-        console.log('✅ AI事件生成成功:', event.narrative);
+        console.log('AI event generated successfully:', event.narrative);
       }
     } catch (error) {
-      console.warn('⚠️ AI事件生成失败，使用降级模板:', error);
+      console.warn('AI event generation failed, using fallback template:', error);
     }
 
     // 降级：使用模板
     if (!event) {
       event = getFallbackEvent(selectedType, recentEventNarrativesRef.current);
-      console.log('⚠️ 使用降级事件模板:', event?.narrative?.substring(0, 20));
+      console.log('Using fallback event template:', event?.narrative?.substring(0, 20));
     }
 
     if (event) {
@@ -214,7 +214,7 @@ export const useBarEvents = () => {
         duration: restriction.duration || currentEvent.duration
       };
       setActiveRestrictions(prev => [...prev, newRestriction]);
-      console.log('🔒 激活物品约束:', newRestriction);
+      console.log('Activated item restriction:', newRestriction);
     }
 
     console.log(`🎯 玩家选择: "${choice.text}"`, effect);
@@ -294,7 +294,7 @@ export const useBarEvents = () => {
     if (due.length > 0) {
       setPendingChains(remaining);
       savePendingChains(remaining);
-      console.log(`📖 事件链: ${due.length}个到期事件, ${remaining.length}个待触发`);
+      console.log(`Event chain status: ${due.length} due, ${remaining.length} pending`);
     }
     
     return due;
@@ -320,7 +320,7 @@ export const useBarEvents = () => {
     const chain = available[Math.floor(Math.random() * available.length)];
     startedChainsRef.current.add(chain.id);
 
-    console.log(`📖 启动事件链: ${chain.name} (${chain.id})`);
+    console.log(`Starting event chain: ${chain.name} (${chain.id})`);
 
     // 注册后续事件
     const followUps = chain.events

@@ -43,7 +43,7 @@ export const useAutoTest = (ctx) => {
   };
 
   progress.autoTestFnsRef.current.serveCocktail = (conditions, loop) => {
-    addToast('🤖 [自动测试] 调制鸡尾酒...', 'info');
+    addToast('🤖 [Auto Test] Mixing a cocktail...', 'info');
     const availIngr = unlockedItems.ingredients || INITIAL_UNLOCKED_INGREDIENTS;
     const glass = (unlockedItems.glasses || ['martini'])[0];
     const maxPortions = GLASS_TYPES[glass]?.maxPortions || 2;
@@ -66,7 +66,7 @@ export const useAutoTest = (ctx) => {
     const finalChk = checkTargetConditions(finalMix, conditions);
     const recipe = { glass, ice: (unlockedItems.iceTypes || ['no_ice'])[0], ingredients: bestPortions, garnish: null, decoration: null, mixture: finalMix, targetCheck: finalChk, timestamp: Date.now() };
     progress.autoTestRef.current = setTimeout(() => {
-      addToast(`🤖 [自动测试] 递酒！(${finalChk.allMet ? '满足条件' : '未满足'})`, finalChk.allMet ? 'success' : 'warning');
+      addToast(`🤖 [Auto Test] Serving the drink! (${finalChk.allMet ? 'target met' : 'target missed'})`, finalChk.allMet ? 'success' : 'warning');
       handleServeCocktail(recipe);
       if (loop) progress.autoTestRef.current = setTimeout(() => progress.autoTestFnsRef.current.runRound(true), 4000);
       else progress.setAutoTestRunning(false);
@@ -82,10 +82,10 @@ export const useAutoTest = (ctx) => {
     }
     const realEmotions = emotionSystem.dynamicCustomerEmotions.reality.length > 0
       ? emotionSystem.dynamicCustomerEmotions.reality : (aiConfig?.emotionMask?.reality || []);
-    if (realEmotions.length === 0) { addToast('🔧 [自动测试] 无法获取顾客情绪', 'error'); progress.autoTestFnsRef.current.stopAutoTest(); return; }
+    if (realEmotions.length === 0) { addToast('🔧 [Auto Test] Unable to read guest emotions', 'error'); progress.autoTestFnsRef.current.stopAutoTest(); return; }
     if (cocktailFlow.guessedCorrectly) { progress.autoTestFnsRef.current.serveCocktail(cocktailFlow.targetConditions, loop); return; }
 
-    addToast('🤖 [自动测试] 开始猜测情绪...', 'info');
+    addToast('🤖 [Auto Test] Guessing emotions...', 'info');
     cocktailFlow.setEmotionGuessMode(true);
     emotionSystem.setSelectedEmotions([]);
     progress.autoTestRef.current = setTimeout(() => {
@@ -95,7 +95,7 @@ export const useAutoTest = (ctx) => {
         cocktailFlow.setEmotionGuessMode(false);
         cocktailFlow.setLastCorrectGuesses(realEmotions);
         playSFX('success');
-        addToast(`🤖 [自动测试] 猜对: ${realEmotions.map(e => EMOTIONS[e]?.name).join('、')}`, 'success');
+        addToast(`🤖 [Auto Test] Correct guess: ${realEmotions.map(e => EMOTIONS[e]?.name).join(', ')}`, 'success');
         const target = generateSolvableTarget(realEmotions[0], unlockedItems.ingredients || INITIAL_UNLOCKED_INGREDIENTS);
         if (target) {
           let conds = target.conditions;
@@ -113,7 +113,7 @@ export const useAutoTest = (ctx) => {
   const handleAutoTest = useCallback((loop = false) => {
     if (progress.autoTestRunning) { progress.autoTestFnsRef.current.stopAutoTest(); return; }
     progress.setAutoTestRunning(true);
-    addToast(`🤖 [自动测试] ${loop ? '循环模式启动' : '单次测试启动'}`, 'info');
+    addToast(`🤖 [Auto Test] ${loop ? 'Loop mode started' : 'Single run started'}`, 'info');
     progress.autoTestFnsRef.current.runRound(loop);
   }, [progress.autoTestRunning, addToast]);
 

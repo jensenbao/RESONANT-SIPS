@@ -141,14 +141,14 @@ export const getActiveAPIName = () => {
   const type = getActiveAPIType();
   if (type === 'deepseek') return 'DeepSeek';
   if (type === 'gemini') return 'Google Gemini';
-  return '未配置';
+  return 'Not configured';
 };
 
 export const hasUsableAPI = () => getActiveAPIType() !== 'none';
 
 export const getAPIUnavailableReason = () => {
   if (hasUsableAPI()) return '';
-  return '未检测到可用 API Key。请在 .env.local 中配置 VITE_DEEPSEEK_API_KEY 或 VITE_GEMINI_API_KEY。';
+  return 'No usable API key was detected. Configure VITE_DEEPSEEK_API_KEY or VITE_GEMINI_API_KEY in .env.local.';
 };
 
 export const PROMPT_TYPES = {

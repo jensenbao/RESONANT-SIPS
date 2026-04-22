@@ -214,9 +214,9 @@ export const buildNpcDecisionContext = async () => {
       .join('\n');
 
     const memoryContext = [
-      profile?.name ? `角色：${profile.name}` : '',
-      memory?.summary ? `历史摘要：${memory.summary}` : '',
-      recentLines ? `最近会话:\n${recentLines}` : '',
+      profile?.name ? `Character: ${profile.name}` : '',
+      memory?.summary ? `History Summary: ${memory.summary}` : '',
+      recentLines ? `Recent Conversation:\n${recentLines}` : '',
     ]
       .filter(Boolean)
       .join('\n');
@@ -344,7 +344,7 @@ export const shouldRunMigration = async () => {
   return hasLegacy;
 };
 
-export const migrateFromLocalStorage = async (slotName = '迁移存档') => {
+export const migrateFromLocalStorage = async (slotName = 'Migrated Save') => {
   const legacyStorage = collectLegacyStorageSnapshot();
   const data = await request('POST', '/api/save/migrate/localstorage', {
     slotName,

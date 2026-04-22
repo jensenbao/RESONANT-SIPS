@@ -139,7 +139,7 @@ const baseMeta = (slotId, name = null) => {
   const timestamp = now();
   return {
     slotId,
-    name: name || `存档 ${slotId}`,
+    name: name || `Save ${slotId}`,
     createdAt: timestamp,
     updatedAt: timestamp,
     lastPlayedAt: null,
@@ -281,7 +281,7 @@ const migrateFromLegacyPayload = async (payload = {}) => {
   const progress = legacy.bartender_progress || {};
   const unlockedItems = legacy.bartender_unlocked || DEFAULT_UNLOCKED;
 
-  const slotId = await createSlot({ name: payload?.slotName || '迁移存档' });
+  const slotId = await createSlot({ name: payload?.slotName || 'Migrated Save' });
 
   const gameState = mergeGameState({
     day: progress.day || 1,
@@ -309,7 +309,7 @@ const migrateFromLegacyPayload = async (payload = {}) => {
     const profile = {
       version: 1,
       npcId,
-      name: customer?.name || customer?.originalConfig?.name || '未知顾客',
+      name: customer?.name || customer?.originalConfig?.name || 'Unknown Guest',
       categoryId: customer?.category || customer?.originalConfig?.categoryId || 'workplace',
       initialProfile: customer?.originalConfig || {},
       metadata: {
@@ -345,7 +345,7 @@ const migrateFromLegacyPayload = async (payload = {}) => {
     await ensureNpcIndexHas(slotId, npcId);
   }
 
-  await touchMeta(slotId, { name: payload?.slotName || '迁移存档' });
+  await touchMeta(slotId, { name: payload?.slotName || 'Migrated Save' });
   return slotId;
 };
 

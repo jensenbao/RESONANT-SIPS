@@ -2,8 +2,8 @@
   "customerCategories": {
     "workplace": {
       "id": "workplace",
-      "category": "职场人士",
-      "description": "在职场中打拼的人，可能是白领、管理者、创业者等",
+      "category": "Working Professionals",
+      "description": "People navigating workplace pressure, such as office workers, managers, or founders",
       "ageRange": [
         25,
         45
@@ -16,14 +16,14 @@
         "👩‍💼"
       ],
       "personalityPool": [
-        "理性",
-        "掩饰",
-        "嘴硬",
-        "疲惫",
-        "要强",
-        "完美主义",
-        "工作狂",
-        "焦虑"
+        "rational",
+        "guarded",
+        "prideful",
+        "tired",
+        "driven",
+        "perfectionist",
+        "workaholic",
+        "anxious"
       ],
       "toneOptions": [
         "formal",
@@ -35,11 +35,11 @@
         "medium"
       ],
       "featurePool": [
-        "避重就轻",
-        "公式化回答",
-        "情绪压抑",
-        "职场术语多",
-        "反问较多"
+        "dodges the core issue",
+        "formulaic answers",
+        "emotionally restrained",
+        "heavy workplace jargon",
+        "asks counter-questions often"
       ],
       "surfaceEmotionPool": [
         "trust",
@@ -91,8 +91,8 @@
     },
     "artistic": {
       "id": "artistic",
-      "category": "文艺青年",
-      "description": "热爱艺术、文学、音乐的人，感性且富有想象力",
+      "category": "Artistic Souls",
+      "description": "People drawn to art, literature, and music; emotional and imaginative",
       "ageRange": [
         20,
         35
@@ -105,13 +105,13 @@
         "✍️"
       ],
       "personalityPool": [
-        "感性",
-        "隐喻",
-        "敏感",
-        "浪漫",
-        "忧郁",
-        "理想主义",
-        "怀旧"
+        "emotional",
+        "metaphorical",
+        "sensitive",
+        "romantic",
+        "melancholic",
+        "idealistic",
+        "nostalgic"
       ],
       "toneOptions": [
         "poetic",
@@ -123,11 +123,11 @@
         "long"
       ],
       "featurePool": [
-        "大量比喻",
-        "反问句",
-        "意识流",
-        "诗意表达",
-        "引用典故"
+        "heavy metaphor use",
+        "rhetorical questions",
+        "stream of consciousness",
+        "poetic phrasing",
+        "literary references"
       ],
       "surfaceEmotionPool": [
         "surprise",
@@ -183,8 +183,8 @@
     },
     "student": {
       "id": "student",
-      "category": "学生",
-      "description": "在校学生或刚毕业的年轻人，面临学业、社交、成长的压力",
+      "category": "Students",
+      "description": "Students or recent graduates facing pressure from studies, social life, and growing up",
       "ageRange": [
         18,
         25
@@ -197,13 +197,13 @@
         "🎮"
       ],
       "personalityPool": [
-        "单纯",
-        "直接",
-        "易慌",
-        "敏感",
-        "好奇",
-        "迷茫",
-        "热情"
+        "simple-hearted",
+        "direct",
+        "easily flustered",
+        "sensitive",
+        "curious",
+        "lost",
+        "enthusiastic"
       ],
       "toneOptions": [
         "casual",
@@ -215,11 +215,11 @@
         "medium"
       ],
       "featurePool": [
-        "语气词多",
-        "重复表达",
-        "情绪外显",
-        "网络用语",
-        "自我怀疑"
+        "lots of fillers",
+        "repeats themselves",
+        "emotionally transparent",
+        "internet slang",
+        "self-doubt"
       ],
       "surfaceEmotionPool": [
         "fear",
@@ -275,8 +275,8 @@
     },
     "midlife": {
       "id": "midlife",
-      "category": "中年危机者",
-      "description": "人到中年，面临家庭、事业、健康等多重压力的人",
+      "category": "Midlife Crossroads",
+      "description": "People facing layered pressure around family, career, and health in midlife",
       "ageRange": [
         40,
         55
@@ -289,12 +289,12 @@
         "🚗"
       ],
       "personalityPool": [
-        "沉稳",
-        "隐忍",
-        "迷茫",
-        "怀旧",
-        "责任感强",
-        "疲惫"
+        "steady",
+        "restrained",
+        "uncertain",
+        "nostalgic",
+        "highly responsible",
+        "worn out"
       ],
       "toneOptions": [
         "tired",
@@ -306,11 +306,11 @@
         "short"
       ],
       "featurePool": [
-        "叹气多",
-        "回忆过去",
-        "话说一半",
-        "沉默较多",
-        "自嘲"
+        "sighs often",
+        "talks about the past",
+        "leaves thoughts unfinished",
+        "frequent silence",
+        "self-deprecating humor"
       ],
       "surfaceEmotionPool": [
         "trust",
@@ -367,20 +367,20 @@
   "aiCustomerTypes": {
     "workplace": {
       "id": "workplace",
-      "name": "职场精英·林澈",
+      "name": "Workplace Ace · Lin Che",
       "avatar": "👔",
       "personality": [
-        "理性",
-        "掩饰",
-        "嘴硬"
+        "rational",
+        "guarded",
+        "prideful"
       ],
       "dialogueStyle": {
         "tone": "formal",
         "length": "short",
         "features": [
-          "避重就轻",
-          "公式化回答",
-          "情绪压抑"
+          "dodges the core issue",
+          "formulaic answers",
+          "emotionally restrained"
         ]
       },
       "emotionMask": {
@@ -408,29 +408,29 @@
         ]
       },
       "initialDialogue": [
-        "您好，我只是路过，随便坐坐。",
-        "工作？挺好的，一切都在掌控之中。",
-        "不，我不需要什么特别的酒，普通的就好。"
+        "Hello. I was just passing by and thought I would sit for a while.",
+        "Work? It is fine. Everything is under control.",
+        "No, I do not need anything special. Something ordinary is enough."
       ],
       "triggerKeywords": {
         "work": [
-          "工作",
-          "加班",
-          "项目",
-          "同事",
-          "老板"
+          "work",
+          "overtime",
+          "project",
+          "colleague",
+          "boss"
         ],
         "emotion": [
-          "累",
-          "压力",
-          "孤独",
-          "疲惫"
+          "tired",
+          "pressure",
+          "lonely",
+          "exhausted"
         ],
         "hobby": [
-          "兴趣",
-          "爱好",
-          "休息",
-          "放松"
+          "hobby",
+          "interest",
+          "rest",
+          "relax"
         ]
       },
       "memoryStyle": "comparative",
@@ -438,20 +438,20 @@
     },
     "artistic": {
       "id": "artistic",
-      "name": "文艺青年·苏瑾",
+      "name": "Artistic Soul · Su Jin",
       "avatar": "🎨",
       "personality": [
-        "感性",
-        "隐喻",
-        "敏感"
+        "emotional",
+        "metaphorical",
+        "sensitive"
       ],
       "dialogueStyle": {
         "tone": "poetic",
         "length": "medium",
         "features": [
-          "大量比喻",
-          "反问句",
-          "意识流"
+          "heavy metaphor use",
+          "rhetorical questions",
+          "stream of consciousness"
         ]
       },
       "emotionMask": {
@@ -479,28 +479,28 @@
         ]
       },
       "initialDialogue": [
-        "这里的灯光，像是被时间稀释过的月光...",
-        "你说，过去的事情会像酒一样越陈越香吗？",
-        "我在想，如果情绪能被装进玻璃杯里，会是什么味道。"
+        "The light here feels like moonlight thinned out by time...",
+        "Do you think the past ages like liquor, growing deeper with time?",
+        "I was wondering what emotions would taste like if they could be poured into a glass."
       ],
       "triggerKeywords": {
         "past": [
-          "以前",
-          "那时",
-          "曾经",
-          "回忆"
+          "before",
+          "back then",
+          "once",
+          "memory"
         ],
         "dream": [
-          "梦想",
-          "未来",
-          "希望",
-          "想要"
+          "dream",
+          "future",
+          "hope",
+          "want"
         ],
         "feeling": [
-          "感觉",
-          "觉得",
-          "心情",
-          "情绪"
+          "feel",
+          "think",
+          "mood",
+          "emotion"
         ]
       },
       "memoryStyle": "associative",
@@ -508,20 +508,20 @@
     },
     "newbie": {
       "id": "newbie",
-      "name": "萌新学生·小夏",
+      "name": "New Student · Xia Xia",
       "avatar": "🎒",
       "personality": [
-        "单纯",
-        "直接",
-        "易慌"
+        "simple-hearted",
+        "direct",
+        "easily flustered"
       ],
       "dialogueStyle": {
         "tone": "casual",
         "length": "long",
         "features": [
-          "语气词多",
-          "重复表达",
-          "情绪外显"
+          "lots of fillers",
+          "repeats themselves",
+          "emotionally transparent"
         ]
       },
       "emotionMask": {
@@ -549,28 +549,28 @@
         ]
       },
       "initialDialogue": [
-        "呜呜呜，老板你这里能躲一躲吗？我真的不知道该怎么办了...",
-        "我是不是特别没用啊？什么事都做不好...",
-        "你能听我说说吗？我真的好害怕..."
+        "Can I hide out here for a bit? I really do not know what to do...",
+        "Am I just useless? It feels like I cannot do anything right...",
+        "Can you listen to me for a moment? I am really scared..."
       ],
       "triggerKeywords": {
         "school": [
-          "学校",
-          "考试",
-          "作业",
-          "老师"
+          "school",
+          "exam",
+          "homework",
+          "teacher"
         ],
         "social": [
-          "朋友",
-          "同学",
-          "关系",
-          "社交"
+          "friend",
+          "classmate",
+          "relationship",
+          "social"
         ],
         "self": [
-          "自己",
-          "能力",
-          "做不到",
-          "害怕"
+          "self",
+          "ability",
+          "cannot do it",
+          "afraid"
         ]
       },
       "memoryStyle": "emotional",

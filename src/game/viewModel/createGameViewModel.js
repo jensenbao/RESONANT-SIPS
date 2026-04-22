@@ -46,20 +46,20 @@ export const createGameViewModel = ({
   const result = showCocktailResult
     ? {
         isSuccess: Boolean(showCocktailResult.isSuccess),
-        title: showCocktailResult.isSuccess ? '共鸣成立' : '差一点火候'
+        title: showCocktailResult.isSuccess ? 'Resonance Achieved' : 'Almost There'
       }
     : null;
 
-  let statusText = '先听，再猜，再调，这一杯才会有灵魂。';
+  let statusText = 'Listen first, read the mood, then mix. That is how a drink finds its soul.';
 
   if (result) {
     statusText = result.isSuccess
-      ? '这杯酒已经准确击中了对方此刻的情绪。'
-      : '还没调到点上，但舞台已经开始说话了。';
+      ? 'This drink landed exactly on their current emotions.'
+      : 'It is not quite there yet, but the stage has started to answer back.';
   } else if (guessedCorrectly) {
     statusText = hasRecipe
-      ? '调酒模式已开启，吧台会把你的选择放大成演出。'
-      : '开始选杯、加冰、配比，舞台会实时回应每一步。';
+      ? 'Mixing mode is live. The bar will amplify every choice into the performance.'
+      : 'Start with the glass, ice, and ratios. The stage will react to each step in real time.';
   }
 
   return {
@@ -71,7 +71,7 @@ export const createGameViewModel = ({
       archetype: aiConfig?.categoryId || aiConfig?.type || 'guest',
       avatar: aiConfig?.avatar || '👤',
       isReturnCustomer: Boolean(aiConfig?.isReturnCustomer),
-      name: aiConfig?.name || '匿名来客'
+      name: aiConfig?.name || 'Anonymous Guest'
     },
     day: currentDay || 1,
     focusLabel: guessedCorrectly ? 'Mixing Mode' : 'Observation Mode',

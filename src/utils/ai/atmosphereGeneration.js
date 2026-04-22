@@ -9,7 +9,7 @@ import { extractCleanJSON, tryRepairTruncatedJSON } from './jsonUtils.js';
 import { callDeepSeekAPIHelper, callGeminiAPIHelper } from './sharedApi.js';
 
 export const generateDailyAtmosphere = async (day, recentAtmospheres = [], recentCrossroadsSummaries = []) => {
-  console.log(`🌍 开始生成第${day}天的氛围...`);
+  console.log(`Starting atmosphere generation for day ${day}...`);
 
   try {
     const prompt = generatePrompt(PROMPT_TYPES.GENERATE_ATMOSPHERE, {
@@ -28,14 +28,14 @@ export const generateDailyAtmosphere = async (day, recentAtmospheres = [], recen
     const result = parseAtmosphereJSON(response);
 
     if (result) {
-      console.log('✅ 氛围生成成功:', result.weather, result.lighting);
+      console.log('Atmosphere generated successfully:', result.weather, result.lighting);
       return result;
     }
 
-    console.warn('⚠️ 氛围JSON解析失败');
+    console.warn('Failed to parse atmosphere JSON');
     return null;
   } catch (error) {
-    console.error('❌ 氛围生成失败:', error);
+    console.error('Atmosphere generation failed:', error);
     return null;
   }
 };
@@ -45,7 +45,7 @@ const callGeminiAPIForAtmosphere = async (prompt) => {
 
   if (apiType === 'deepseek') {
     const text = await callDeepSeekAPIHelper(prompt, { temperature: 0.8, max_tokens: 4096 });
-    console.log('📥 氛围生成原始返回:', text.substring(0, 200));
+    console.log('Atmosphere raw response:', text.substring(0, 200));
     return text;
   }
 
@@ -57,17 +57,17 @@ const callGeminiAPIForAtmosphere = async (prompt) => {
     candidateCount: 1,
     label: 'Gemini',
   });
-  console.log('📥 氛围生成原始返回:', text.substring(0, 200));
+  console.log('Atmosphere raw response:', text.substring(0, 200));
   return text;
 };
 
 const parseAtmosphereJSON = (response) => {
   if (!response || typeof response !== 'string') {
-    console.warn('⚠️ 氛围响应为空或非字符串');
+    console.warn('Atmosphere response is empty or not a string');
     return null;
   }
 
-  console.log('🔍 解析氛围JSON，原始长度:', response.length);
+  console.log('Parsing atmosphere JSON, raw length:', response.length);
 
   const cleaned = extractCleanJSON(response);
   if (!cleaned) return null;
@@ -82,10 +82,10 @@ const parseAtmosphereJSON = (response) => {
         const parsed = JSON.parse(jsonMatch[0]);
         return validateAtmosphere(parsed);
       } catch (e2) {
-        console.log('⚠️ JSON不完整，尝试修复...');
+        console.log('JSON is incomplete, attempting repair...');
         const repaired = tryRepairTruncatedJSON(jsonMatch[0]);
         if (repaired) {
-          console.log('✅ JSON修复成功');
+          console.log('JSON repaired successfully');
           return validateAtmosphere(repaired);
         }
       }
@@ -95,13 +95,13 @@ const parseAtmosphereJSON = (response) => {
     if (jsonStart) {
       const repaired = tryRepairTruncatedJSON(jsonStart[0]);
       if (repaired) {
-        console.log('✅ 从截断文本修复JSON成功');
+        console.log('Successfully repaired JSON from truncated text');
         return validateAtmosphere(repaired);
       }
     }
 
-    console.error('❌ 氛围JSON解析最终失败');
-    console.error('📄 原始内容:', cleaned.substring(0, 300));
+    console.error('Atmosphere JSON parsing failed after all recovery attempts');
+    console.error('Raw content:', cleaned.substring(0, 300));
   }
   return null;
 };
@@ -144,7 +144,7 @@ const validateAtmosphere = (parsed) => {
     music,
     crowdLevel,
     scent: typeof parsed.scent === 'string' ? parsed.scent : '',
-    narrative: typeof parsed.narrative === 'string' ? parsed.narrative : '今晚的酒吧很安静。',
+    narrative: typeof parsed.narrative === 'string' ? parsed.narrative : 'The bar feels especially quiet tonight.',
     modifiers: {
       trustBonus,
       emotionBias,

@@ -22,7 +22,7 @@ export const interpretCocktailAttitude = (mixture, isPlainWater = false, recipe 
       approach: 'gentle',
       tone: 'honest',
       depth: 'lighten',
-      summary: '调酒师没有调酒。他只是倒了一杯白水放在你面前。有时候人不需要酒——只需要有人在这里。',
+      summary: 'The bartender did not make a cocktail. They simply placed a glass of water in front of you. Sometimes people do not need a drink. They just need someone to stay.',
       feelingSummary: '',
       isWater: true
     };
@@ -51,40 +51,40 @@ export const interpretCocktailAttitude = (mixture, isPlainWater = false, recipe 
   const attitudeKey = `${attitude.approach}_${attitude.tone}_${attitude.depth}`;
   const attitudeSentences = {
     // confront (烈) 组合
-    confront_hopeful_reflective: '你该面对了——但别怕，想清楚了再走',
-    confront_hopeful_moderate: '去做吧，你比自己以为的更行',
-    confront_hopeful_lighten: '没什么大不了的，你能搞定',
-    confront_balanced_reflective: '事情就是这样，想想你真正要的是什么',
-    confront_balanced_moderate: '看清楚，然后做你的选择',
-    confront_balanced_lighten: '别想太多，该做的就去做',
-    confront_honest_reflective: '这条路不好走，但你清楚自己为什么在这里',
-    confront_honest_moderate: '没有人替你扛，但你扛得住',
-    confront_honest_lighten: '疼就疼了，站起来',
+    confront_hopeful_reflective: 'You have to face this, but do not panic. Think it through, then move.',
+    confront_hopeful_moderate: 'Go do it. You are more capable than you think.',
+    confront_hopeful_lighten: 'It is not bigger than you. You can handle it.',
+    confront_balanced_reflective: 'This is what it is. Ask yourself what you truly want.',
+    confront_balanced_moderate: 'See it clearly, then make your choice.',
+    confront_balanced_lighten: 'Do not overthink it. Do what needs to be done.',
+    confront_honest_reflective: 'This road is not easy, but you know why you are still on it.',
+    confront_honest_moderate: 'No one can carry it for you, but you can carry it.',
+    confront_honest_lighten: 'If it hurts, it hurts. Stand back up.',
 
     // moderate (中) 组合
-    moderate_hopeful_reflective: '慢慢来，好好想，会好的',
-    moderate_hopeful_moderate: '没那么糟，一步一步来',
-    moderate_hopeful_lighten: '放松一点，明天会更好',
-    moderate_balanced_reflective: '不急，但也别停下来，想想自己想要什么',
-    moderate_balanced_moderate: '就这样吧，不好不坏，继续走',
-    moderate_balanced_lighten: '别太较真，过去的就过去了',
-    moderate_honest_reflective: '确实不容易，但你比以前更懂了',
-    moderate_honest_moderate: '有些事就是这样，接受也是一种勇气',
-    moderate_honest_lighten: '算了吧，别为难自己',
+    moderate_hopeful_reflective: 'Take it slowly. Think it through. It can still get better.',
+    moderate_hopeful_moderate: 'It is not as bad as it feels. Just take it step by step.',
+    moderate_hopeful_lighten: 'Ease up a little. Tomorrow may feel lighter.',
+    moderate_balanced_reflective: 'There is no rush, but do not stop either. Ask what you really want.',
+    moderate_balanced_moderate: 'It is neither great nor terrible. Keep moving.',
+    moderate_balanced_lighten: 'Do not grip it so tightly. Let the past stay where it is.',
+    moderate_honest_reflective: 'It has not been easy, but you understand more now than before.',
+    moderate_honest_moderate: 'Some things simply are what they are. Acceptance is courage too.',
+    moderate_honest_lighten: 'Let it go for now. Do not be so hard on yourself.',
 
     // gentle (柔) 组合
-    gentle_hopeful_reflective: '先歇歇，你值得这杯酒，想通了再说',
-    gentle_hopeful_moderate: '今晚不用想那些，喝完会好一点',
-    gentle_hopeful_lighten: '什么都先放下，此刻就只是喝一杯',
-    gentle_balanced_reflective: '不急，慢慢想，我在这里',
-    gentle_balanced_moderate: '今晚只管喝酒，其他的明天再说',
-    gentle_balanced_lighten: '别管了，先歇一口气',
-    gentle_honest_reflective: '这杯酒不会解决任何问题，但至少你不用一个人待着',
-    gentle_honest_moderate: '没关系，什么都不用说',
-    gentle_honest_lighten: '累了就累了，不丢人'
+    gentle_hopeful_reflective: 'Rest for a moment. You deserve this drink. We can talk after you breathe.',
+    gentle_hopeful_moderate: 'You do not have to think about all of that tonight. This may help a little.',
+    gentle_hopeful_lighten: 'Set everything down for now. In this moment, just have a drink.',
+    gentle_balanced_reflective: 'There is no rush. Think slowly. I am here.',
+    gentle_balanced_moderate: 'Just drink tonight. The rest can wait until tomorrow.',
+    gentle_balanced_lighten: 'Leave it alone for a moment. Catch your breath first.',
+    gentle_honest_reflective: 'This drink will not solve everything, but at least you do not have to sit with it alone.',
+    gentle_honest_moderate: 'It is okay. You do not have to say anything.',
+    gentle_honest_lighten: 'If you are tired, you are tired. There is no shame in that.'
   };
 
-  const baseSummary = attitudeSentences[attitudeKey] || '我在这里，你想说就说';
+  const baseSummary = attitudeSentences[attitudeKey] || 'I am here. If you want to talk, talk.';
 
   // === 材料 feeling 融合 ===
   // 收集各部分的 feeling，每种角色只取一条
@@ -113,7 +113,7 @@ export const interpretCocktailAttitude = (mixture, isPlainWater = false, recipe 
     feelingSummary = mainFeeling;
     if (subFeeling) {
       // 两种原料间用转折/递进连接
-      const connectors = ['，然后', '，又', '——同时', '，混着'];
+      const connectors = [', then ', ', and then ', ' while ', ' mixed with '];
       const conn = connectors[Math.abs(hashStr(mainFeeling + subFeeling)) % connectors.length];
       feelingSummary += `${conn}${subFeeling}`;
     }
@@ -121,7 +121,7 @@ export const interpretCocktailAttitude = (mixture, isPlainWater = false, recipe 
       feelingSummary += `。${vesselFeeling}`;
     }
     if (finishFeeling) {
-      feelingSummary += `。最后——${finishFeeling}`;
+      feelingSummary += `. Finally, ${finishFeeling}`;
     }
   }
 

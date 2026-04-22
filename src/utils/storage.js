@@ -154,7 +154,7 @@ export const saveShortMemory = (aiType, data) => {
 
     return true;
   } catch (error) {
-    console.error('保存短期记忆失败:', error);
+    console.error('Failed to save short-term memory:', error);
     return false;
   }
 };
@@ -164,7 +164,7 @@ export const getShortMemory = (aiType) => {
     const allMemory = JSON.parse(localStorage.getItem(STORAGE_KEYS.SHORT_MEMORY) || '{}');
     return allMemory[aiType] || null;
   } catch (error) {
-    console.error('读取短期记忆失败:', error);
+    console.error('Failed to load short-term memory:', error);
     return null;
   }
 };
@@ -176,7 +176,7 @@ export const clearShortMemory = (aiType) => {
     localStorage.setItem(STORAGE_KEYS.SHORT_MEMORY, JSON.stringify(allMemory));
     return true;
   } catch (error) {
-    console.error('清除短期记忆失败:', error);
+    console.error('Failed to clear short-term memory:', error);
     return false;
   }
 };
@@ -198,7 +198,7 @@ export const saveCocktailRecipe = (recipe) => {
     localStorage.setItem(STORAGE_KEYS.LONG_MEMORY, JSON.stringify(recipes));
     return true;
   } catch (error) {
-    console.error('保存调酒配方失败:', error);
+    console.error('Failed to save cocktail recipe:', error);
     return false;
   }
 };
@@ -207,7 +207,7 @@ export const getCocktailRecipes = () => {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.LONG_MEMORY) || '[]');
   } catch (error) {
-    console.error('读取调酒配方失败:', error);
+    console.error('Failed to load cocktail recipes:', error);
     return [];
   }
 };
@@ -239,7 +239,7 @@ export const saveDiscoveredCombo = (comboId, comboData) => {
     localStorage.setItem(STORAGE_KEYS.DISCOVERED_COMBOS, JSON.stringify(combos));
     return !combos[comboId] || combos[comboId].count === 1; // 返回是否是首次发现
   } catch (error) {
-    console.error('保存黄金组合失败:', error);
+    console.error('Failed to save discovered combo:', error);
     return false;
   }
 };
@@ -248,7 +248,7 @@ export const getDiscoveredCombos = () => {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.DISCOVERED_COMBOS) || '{}');
   } catch (error) {
-    console.error('读取黄金组合失败:', error);
+    console.error('Failed to load discovered combos:', error);
     return {};
   }
 };
@@ -268,7 +268,7 @@ export const saveGameProgress = (progress) => {
     queueActiveSlotGameStateSync('save_game_progress');
     return true;
   } catch (error) {
-    console.error('保存游戏进度失败:', error);
+    console.error('Failed to save game progress:', error);
     return false;
   }
 };
@@ -277,7 +277,7 @@ export const getGameProgress = () => {
   try {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.GAME_PROGRESS) || 'null');
   } catch (error) {
-    console.error('读取游戏进度失败:', error);
+    console.error('Failed to load game progress:', error);
     return null;
   }
 };
@@ -289,7 +289,7 @@ export const saveUnlockedItems = (items) => {
     queueActiveSlotGameStateSync('save_unlocked_items');
     return true;
   } catch (error) {
-    console.error('保存解锁内容失败:', error);
+    console.error('Failed to save unlocked items:', error);
     return false;
   }
 };
@@ -306,7 +306,7 @@ export const getUnlockedItems = () => {
 
     return defaultUnlocked;
   } catch (error) {
-    console.error('读取解锁内容失败:', error);
+    console.error('Failed to load unlocked items:', error);
     return null;
   }
 };
@@ -317,7 +317,7 @@ export const saveSettings = (settings) => {
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
     return true;
   } catch (error) {
-    console.error('保存设置失败:', error);
+    console.error('Failed to save settings:', error);
     return false;
   }
 };
@@ -332,7 +332,7 @@ export const getSettings = () => {
     const settings = JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS) || 'null');
     return settings || defaultSettings;
   } catch (error) {
-    console.error('读取设置失败:', error);
+    console.error('Failed to load settings:', error);
     return null;
   }
 };
@@ -346,7 +346,7 @@ export const getCustomCharacterIds = () => {
     }
     return normalizeCharacterIds(JSON.parse(raw));
   } catch (error) {
-    console.error('读取自定义角色失败:', error);
+    console.error('Failed to load custom character IDs:', error);
     return normalizeCharacterIds([...DEFAULT_INITIAL_CHARACTER_IDS, ...getKnownAddedCharacterIds()]);
   }
 };
@@ -369,7 +369,7 @@ export const saveCustomCharacterIds = (ids) => {
     queueActiveSlotGameStateSync('save_custom_character_ids');
     return normalized;
   } catch (error) {
-    console.error('保存自定义角色失败:', error);
+    console.error('Failed to save custom character IDs:', error);
     return [];
   }
 };
@@ -412,7 +412,7 @@ export const getActiveCharacterIds = () => {
     const normalized = normalizeCharacterIds(raw).filter((id) => custom.includes(id));
     return normalized;
   } catch (error) {
-    console.error('读取可出现角色失败:', error);
+    console.error('Failed to load active character IDs:', error);
     return getCustomCharacterIds();
   }
 };
@@ -430,7 +430,7 @@ export const saveActiveCharacterIds = (ids) => {
     queueActiveSlotGameStateSync('save_active_character_ids');
     return normalized;
   } catch (error) {
-    console.error('保存可出现角色失败:', error);
+    console.error('Failed to save active character IDs:', error);
     return [];
   }
 };
@@ -449,7 +449,7 @@ export const clearAllCache = () => {
     });
     return true;
   } catch (error) {
-    console.error('清除缓存失败:', error);
+    console.error('Failed to clear cache:', error);
     return false;
   }
 };
@@ -491,7 +491,7 @@ export const saveDailyMemory = (dayMemory) => {
     localStorage.setItem(STORAGE_KEYS.DAILY_MEMORIES, JSON.stringify(memories));
     queueActiveSlotGameStateSync('save_daily_memory');
     return true;
-  } catch (e) { console.error('保存日记忆失败:', e); return false; }
+  } catch (e) { console.error('Failed to save daily memory:', e); return false; }
 };
 
 export const getDailyMemories = () => {
@@ -508,7 +508,7 @@ export const savePlayerProfile = (profile) => {
   try {
     localStorage.setItem(STORAGE_KEYS.PLAYER_PROFILE, JSON.stringify({ ...profile, lastUpdated: Date.now() }));
     return true;
-  } catch (e) { console.error('保存玩家画像失败:', e); return false; }
+  } catch (e) { console.error('Failed to save player profile:', e); return false; }
 };
 
 export const getPlayerProfile = () => {
@@ -523,7 +523,7 @@ export const saveWorldState = (state) => {
   try {
     localStorage.setItem(STORAGE_KEYS.WORLD_STATE, JSON.stringify(state));
     return true;
-  } catch (e) { console.error('保存世界状态失败:', e); return false; }
+  } catch (e) { console.error('Failed to save world state:', e); return false; }
 };
 
 export const getWorldState = () => {
@@ -570,7 +570,7 @@ export const saveReturnCustomers = (customers) => {
     localStorage.setItem(STORAGE_KEYS.RETURN_CUSTOMERS, JSON.stringify(limited));
     queueActiveSlotGameStateSync('save_return_customers');
     return true;
-  } catch (e) { console.error('保存回头客失败:', e); return false; }
+  } catch (e) { console.error('Failed to save return customers:', e); return false; }
 };
 
 export const getReturnCustomers = () => {
@@ -621,7 +621,7 @@ export const getStorageUsage = () => {
       usedMB: (totalSize / 1024 / 1024).toFixed(2)
     };
   } catch (error) {
-    console.error('获取存储使用情况失败:', error);
+    console.error('Failed to get storage usage:', error);
     return null;
   }
 };
@@ -636,7 +636,7 @@ export const savePendingChains = (chains) => {
   try {
     localStorage.setItem(STORAGE_KEYS.PENDING_EVENT_CHAINS, JSON.stringify(chains));
   } catch (error) {
-    console.error('保存事件链失败:', error);
+    console.error('Failed to save pending event chains:', error);
   }
 };
 
@@ -649,7 +649,7 @@ export const getPendingChains = () => {
     const data = localStorage.getItem(STORAGE_KEYS.PENDING_EVENT_CHAINS);
     return data ? JSON.parse(data) : [];
   } catch (error) {
-    console.error('读取事件链失败:', error);
+    console.error('Failed to load pending event chains:', error);
     return [];
   }
 };
@@ -675,7 +675,7 @@ export const saveChapterState = (state) => {
   try {
     localStorage.setItem(STORAGE_KEYS.CHAPTER_STATE, JSON.stringify(state));
     return true;
-  } catch (e) { console.error('保存章节状态失败:', e); return false; }
+  } catch (e) { console.error('Failed to save chapter state:', e); return false; }
 };
 
 export const getChapterState = () => {
@@ -689,7 +689,7 @@ export const saveMemoryFragments = (fragments) => {
   try {
     localStorage.setItem(STORAGE_KEYS.MEMORY_FRAGMENTS, JSON.stringify(fragments));
     return true;
-  } catch (e) { console.error('保存回忆碎片失败:', e); return false; }
+  } catch (e) { console.error('Failed to save memory fragments:', e); return false; }
 };
 
 export const getMemoryFragments = () => {
@@ -708,7 +708,7 @@ export const saveGameSession = (session) => {
     const data = JSON.stringify({ ...session, savedAt: Date.now() });
     // 超过 2MB 则放弃保存（避免撑爆 localStorage）
     if (data.length > 2 * 1024 * 1024) {
-      console.warn('⚠️ 会话数据过大，跳过保存:', (data.length / 1024).toFixed(0), 'KB');
+      console.warn('Session data is too large, skipping save:', (data.length / 1024).toFixed(0), 'KB');
       return false;
     }
     localStorage.setItem(STORAGE_KEYS.GAME_SESSION, data);
@@ -716,7 +716,7 @@ export const saveGameSession = (session) => {
     return true;
   } catch (e) {
     // 配额超限时静默失败，不影响游戏
-    console.warn('⚠️ 保存会话失败:', e.message);
+    console.warn('Failed to save game session:', e.message);
     return false;
   }
 };

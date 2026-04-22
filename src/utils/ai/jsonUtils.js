@@ -7,7 +7,7 @@ export const extractCleanJSON = (response) => {
   const codeBlockMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (codeBlockMatch) {
     cleaned = codeBlockMatch[1].trim();
-    console.log('📝 从完整代码块中提取JSON');
+    console.log('📝 Extracted JSON from a complete code block');
     return cleaned;
   }
 
@@ -16,7 +16,7 @@ export const extractCleanJSON = (response) => {
   if (startMatch) {
     cleaned = startMatch[1].trim();
     cleaned = cleaned.replace(/```\s*$/, '').trim();
-    console.log('📝 从不完整代码块中提取JSON（可能被截断）');
+    console.log('📝 Extracted JSON from an incomplete code block (possibly truncated)');
     return cleaned;
   }
 
@@ -53,7 +53,7 @@ export const tryRepairTruncatedJSON = (text) => {
   try {
     return JSON.parse(repaired);
   } catch (e) {
-    console.log('⚠️ JSON修复尝试失败:', e.message);
+    console.log('⚠️ JSON repair attempt failed:', e.message);
     return null;
   }
 };
