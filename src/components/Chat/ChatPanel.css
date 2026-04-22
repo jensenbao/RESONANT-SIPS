@@ -1198,7 +1198,7 @@
   min-width: 0;
   min-height: 0;
   margin-top: 0;
-  padding: 8px 0 14px;
+  padding: 8px 0 18px;
   overflow: visible;
 }
 
@@ -1228,6 +1228,7 @@
   margin-right: auto;
   margin-left: clamp(6px, 1vw, 16px);
   margin-top: auto;
+  margin-bottom: 10px;
 }
 
 .chat-stage .ai-message {
@@ -1511,4 +1512,45 @@
     max-height: 84vh;
     border-radius: 18px;
   }
+}
+
+/* ========================================
+   Final Bubble Anchor Lock
+   Left bubble: bottom-anchored, grows upward
+   Right bubble: top-anchored, grows downward
+   ======================================== */
+
+.chat-stage {
+  overflow: hidden;
+}
+
+.chat-stage__messages {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.chat-stage .message {
+  position: absolute;
+  margin: 0;
+  max-width: min(42vw, 430px);
+}
+
+.chat-stage .player-message {
+  left: clamp(6px, 1vw, 16px);
+  bottom: 12px;
+  right: auto;
+  margin: 0;
+  align-items: flex-end;
+}
+
+.chat-stage .ai-message {
+  top: 0;
+  right: clamp(420px, 54vw, 620px);
+  left: auto;
+  bottom: auto;
+  margin: 0;
+  align-items: flex-start;
 }
