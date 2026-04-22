@@ -365,7 +365,7 @@ const GamePage = ({
   const hasHighPriorityOverlay = ['ending', 'chapter_transition', 'memory_fragment', 'tutorial_complete', 'day_transition'].includes(activeOverlay);
   const showNoCustomerRecoveryActions = !customerFlow.isLoadingCustomers
     && customerFlow.dailyCustomers.length === 0
-    && String(customerFlow.customerLoadingProgress || '').includes('未找到首位顾客');
+    && String(customerFlow.customerLoadingProgress || '').includes('No first guest found');
 
   if ((!customerFlow.isGameReady || customerFlow.dailyCustomers.length === 0 || customerFlow.isLoadingCustomers) && !hasHighPriorityOverlay) {
     return (
