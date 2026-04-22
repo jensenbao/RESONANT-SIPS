@@ -48,19 +48,19 @@ const SettingsPage = ({ onBack }) => {
     <div className="settings-page">
       <div className="settings-header">
         <button className="back-button" onClick={onBack}>
-          返回
+          Back
         </button>
-        <h1>设置</h1>
+        <h1>Settings</h1>
       </div>
 
       <div className="settings-content">
         <section className="settings-section">
-          <h2>音效设置</h2>
+          <h2>Audio</h2>
 
           <div className="setting-item">
             <div className="setting-info">
-              <label>音效开关</label>
-              <p className="setting-description">启用或关闭游戏声音</p>
+              <label>Sound toggle</label>
+              <p className="setting-description">Enable or disable game audio</p>
             </div>
             <label className="toggle-switch">
               <input
@@ -74,8 +74,8 @@ const SettingsPage = ({ onBack }) => {
 
           <div className="setting-item">
             <div className="setting-info">
-              <label>背景音乐音量</label>
-              <p className="setting-description">调整背景音乐大小</p>
+              <label>BGM Volume</label>
+              <p className="setting-description">Adjust background music volume</p>
             </div>
             <div className="volume-control">
               <input
@@ -93,8 +93,8 @@ const SettingsPage = ({ onBack }) => {
 
           <div className="setting-item">
             <div className="setting-info">
-              <label>音效音量</label>
-              <p className="setting-description">调整按钮与交互反馈音量</p>
+              <label>SFX Volume</label>
+              <p className="setting-description">Adjust button and interaction sound volume</p>
             </div>
             <div className="volume-control">
               <input
@@ -112,15 +112,15 @@ const SettingsPage = ({ onBack }) => {
         </section>
 
         <section className="settings-section">
-          <h2>存储管理</h2>
+          <h2>Storage</h2>
 
           <div className="storage-info">
             <div className="storage-item">
-              <span className="storage-label">已使用存储</span>
+              <span className="storage-label">Used storage</span>
               <span className="storage-value">{storageInfo?.usedKB} KB</span>
             </div>
             <div className="storage-item">
-              <span className="storage-label">约 {storageInfo?.usedMB} MB</span>
+              <span className="storage-label">Approx. {storageInfo?.usedMB} MB</span>
             </div>
           </div>
 
@@ -128,28 +128,28 @@ const SettingsPage = ({ onBack }) => {
             className={`clear-cache-button ${showClearConfirm ? 'confirm' : ''}`}
             onClick={handleClearCache}
           >
-            {showClearConfirm ? '再次点击确认清除' : '清除所有缓存'}
+            {showClearConfirm ? 'Click again to confirm' : 'Clear all cache'}
           </button>
 
           <p className="cache-warning">
-            清除缓存会删除所有游戏进度、对话记录和解锁内容。
+            Clearing cache will remove all progress, chat history, and unlocks.
           </p>
         </section>
 
         {import.meta.env.VITE_DEBUG_MODE === 'true' && (
           <section className="settings-section">
-            <h2>AI 配置</h2>
+            <h2>AI Configuration</h2>
 
             <div className="api-status">
               <div className="status-item">
-                <span className="status-label">当前模式</span>
+                <span className="status-label">Current mode</span>
                 <span className={`status-badge ${getActiveAPIType() === 'none' ? 'mock' : 'gemini'}`}>
-                  {getActiveAPIType() === 'none' ? '未配置' : getActiveAPIName()}
+                  {getActiveAPIType() === 'none' ? 'Not configured' : getActiveAPIName()}
                 </span>
               </div>
               {getActiveAPIType() !== 'none' && (
                 <div className="status-item">
-                  <span className="status-label">模型</span>
+                  <span className="status-label">Model</span>
                   <span className="status-badge gemini">
                     {getActiveAPIConfig()?.model || '-'}
                   </span>
@@ -160,60 +160,60 @@ const SettingsPage = ({ onBack }) => {
             <p className="api-info">
               {getActiveAPIType() !== 'none' ? (
                 <>
-                  当前使用 <strong>{getActiveAPIName()}</strong>
-                  （{getActiveAPIConfig()?.model || '-'}）。
+                  Using <strong>{getActiveAPIName()}</strong>
+                  ({getActiveAPIConfig()?.model || '-'}).
                 </>
               ) : (
                 <>
-                  尚未配置可用 API Key，请在 <strong>.env.local</strong> 中完成配置后重启。
+                  No API key configured yet. Add one in <strong>.env.local</strong> and restart.
                 </>
               )}
               <br />
-              当前保留了通用图像生成配置，后续可直接接入其他生图功能。
+              Image generation config is reserved for future integrations.
             </p>
           </section>
         )}
 
         {import.meta.env.VITE_DEBUG_MODE === 'true' && (
           <section className="settings-section">
-            <h2>调试选项</h2>
+            <h2>Debug Options</h2>
 
             <div className="debug-info">
               <div className="debug-item">
-                <span>显示情绪参数</span>
-                <span className="debug-status">{DEBUG_CONFIG.showEmotionParams ? '是' : '否'}</span>
+                <span>Show emotion params</span>
+                <span className="debug-status">{DEBUG_CONFIG.showEmotionParams ? 'Yes' : 'No'}</span>
               </div>
               <div className="debug-item">
-                <span>显示信任度</span>
-                <span className="debug-status">{DEBUG_CONFIG.showTrustLevel ? '是' : '否'}</span>
+                <span>Show trust level</span>
+                <span className="debug-status">{DEBUG_CONFIG.showTrustLevel ? 'Yes' : 'No'}</span>
               </div>
               <div className="debug-item">
-                <span>显示配方适配度</span>
-                <span className="debug-status">{DEBUG_CONFIG.showCompatibility ? '是' : '否'}</span>
+                <span>Show recipe compatibility</span>
+                <span className="debug-status">{DEBUG_CONFIG.showCompatibility ? 'Yes' : 'No'}</span>
               </div>
               <div className="debug-item">
-                <span>控制台输出 Prompt</span>
-                <span className="debug-status">{DEBUG_CONFIG.logPrompts ? '是' : '否'}</span>
+                <span>Log prompts in console</span>
+                <span className="debug-status">{DEBUG_CONFIG.logPrompts ? 'Yes' : 'No'}</span>
               </div>
             </div>
 
             <p className="debug-info-text">
-              调试选项可在 <code>src/config/api.js</code> 中修改。
+              Debug options can be changed in <code>src/config/api.js</code>.
             </p>
           </section>
         )}
 
         <section className="settings-section">
-          <h2>关于游戏</h2>
+          <h2>About</h2>
 
           <div className="about-info">
             <p><strong>Resonant Sips</strong></p>
-            <p>版本：0.1.0</p>
+            <p>Version: 0.1.0</p>
             <p className="about-description">
-              通过与 AI 顾客进行多轮对话，识别其真实情绪，调制专属鸡尾酒并改变情绪状态。
+              Talk with AI guests, identify true emotions, and mix tailored cocktails that shift their state.
             </p>
             <p className="tech-stack">
-              技术栈：React 18 / Vite / LocalStorage
+              Stack: React 18 / Vite / LocalStorage
             </p>
           </div>
         </section>

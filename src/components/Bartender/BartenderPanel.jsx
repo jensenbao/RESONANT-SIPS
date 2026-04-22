@@ -9,7 +9,7 @@ const BartenderPanel = ({
   unlockedIceTypes = [],
   unlockedDecorations = [],
   disabled = false,
-  disabledMessage = '\u8bf7\u5148\u731c\u6d4b\u987e\u5ba2\u7684\u771f\u5b9e\u60c5\u7eea',
+  disabledMessage = 'Please guess the guest\'s true emotions first',
   targetHint = '',
   mixingMode = 'strict',
   guessedCorrectly = false,
@@ -28,7 +28,7 @@ const BartenderPanel = ({
     return (
       <div className="bartender-panel disabled">
         <div className="bartender-header">
-          <h3>{'\ud83c\udf78 \u8c03\u9152\u53f0'}</h3>
+          <h3>{'🍸 Mixing Station'}</h3>
         </div>
         <div className="disabled-overlay">
           <div className="disabled-message">
@@ -44,12 +44,12 @@ const BartenderPanel = ({
     return (
       <div className="bartender-panel bartender-panel--stage">
         <div className="bartender-header">
-          <h3>{'\ud83c\udf78 \u8c03\u9152\u53f0'}</h3>
+          <h3>{'🍸 Mixing Station'}</h3>
           <button
             className="reset-btn"
             type="button"
             onClick={onBackToDialogue}
-            title={'\u8fd4\u56de\u5bf9\u8bdd'}
+            title={'Back to dialogue'}
           >
             {'\u21a9'}
           </button>
@@ -59,8 +59,8 @@ const BartenderPanel = ({
           <div className="bartender-emotion-step__header">
             <div>
               <div className="bartender-emotion-step__eyebrow">Step 0/5</div>
-              <h4>先在调酒台确认情绪</h4>
-              <p>把你的判断带进杯子里。先选 3 种情绪，确认后再进入杯型与配方步骤。</p>
+              <h4>Confirm emotions before mixing</h4>
+              <p>Bring your judgment into the glass. Pick 3 emotions first, then confirm to continue to glass and recipe steps.</p>
             </div>
             <div className="bartender-emotion-step__count">
               {selectedEmotions.length}/3
@@ -92,7 +92,7 @@ const BartenderPanel = ({
 
           <div className="bartender-emotion-step__actions">
             <button className="bartender-emotion-step__ghost" type="button" onClick={onCancelEmotionGuess}>
-              返回对话
+              Back to dialogue
             </button>
             <button
               className="bartender-emotion-step__confirm"
@@ -100,7 +100,7 @@ const BartenderPanel = ({
               onClick={onConfirmEmotionGuess}
               disabled={selectedEmotions.length < 3}
             >
-              确认猜测 ({selectedEmotions.length}/3)
+              Confirm guess ({selectedEmotions.length}/3)
             </button>
           </div>
         </div>
@@ -111,12 +111,12 @@ const BartenderPanel = ({
   return (
     <div className="bartender-panel bartender-panel--stage">
       <div className="bartender-header">
-        <h3>{'\ud83c\udf78 \u8c03\u9152\u53f0'}</h3>
+        <h3>{'🍸 Mixing Station'}</h3>
         <div className="bartender-header__actions">
-          <button className="reset-btn" type="button" onClick={onBackToDialogue} title={'\u8fd4\u56de\u5bf9\u8bdd'}>
+          <button className="reset-btn" type="button" onClick={onBackToDialogue} title={'Back to dialogue'}>
             {'\u21a9'}
           </button>
-          <button className="reset-btn" type="button" onClick={session.handleReset} title={'\u91cd\u65b0\u5f00\u59cb'}>
+          <button className="reset-btn" type="button" onClick={session.handleReset} title={'Restart'}>
             {'\ud83d\udd04'}
           </button>
         </div>
@@ -134,7 +134,7 @@ const BartenderPanel = ({
       </div>
 
       <button className="plain-water-btn" type="button" onClick={session.handleServeWater}>
-        {'\ud83e\udd5b \u5012\u4e00\u676f\u767d\u6c34'}
+        {'🥛 Pour plain water'}
       </button>
     </div>
   );

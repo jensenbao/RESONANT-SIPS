@@ -32,12 +32,12 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
   const handleAddCharacter = async () => {
     const candidateId = String(customCharacterInput || '').trim();
     if (!candidateId) {
-      pushToast('请输入角色ID', 'warning');
+      pushToast('Please enter a character ID.', 'warning');
       return;
     }
 
     if (customCharacterIds.includes(candidateId)) {
-      pushToast('该角色已添加', 'warning');
+      pushToast('This character is already added.', 'warning');
       return;
     }
 
@@ -46,9 +46,9 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
     } catch (error) {
       const reason = String(error?.message || '');
       if (reason.includes('character_not_found')) {
-        pushToast('未找到该角色ID，请确认后重试', 'warning');
+        pushToast('Character ID not found. Please verify and try again.', 'warning');
       } else {
-        pushToast(`角色读取失败：${reason || '未知错误'}`, 'error');
+        pushToast(`Failed to load character: ${reason || 'Unknown error'}`, 'error');
       }
       return;
     }
@@ -56,11 +56,11 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
     const result = addCustomCharacterId(candidateId);
     if (!result.ok) {
       if (result.reason === 'invalid_format') {
-        pushToast('角色ID仅允许字母、数字、下划线和短横线', 'warning');
+        pushToast('Character ID allows only letters, numbers, underscores, and hyphens.', 'warning');
       } else if (result.reason === 'duplicate') {
-        pushToast('该角色已添加', 'warning');
+        pushToast('This character is already added.', 'warning');
       } else {
-        pushToast('添加角色失败', 'error');
+        pushToast('Failed to add character.', 'error');
       }
       return;
     }
@@ -69,24 +69,24 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
     setActiveCharacterIds(getActiveCharacterIds());
     setCustomCharacterInput('');
     onCharacterPoolChange?.();
-    pushToast('角色已添加并默认启用', 'success');
+    pushToast('Character added and enabled by default.', 'success');
   };
 
   const handleRemoveCharacter = (id) => {
     if (!canDisableCharacter(id, customCharacterIds)) {
-      pushToast('请先添加至少一个非预置角色，再取消默认角色。', 'warning');
+      pushToast('Add at least one non-preset character before disabling default ones.', 'warning');
       return;
     }
     removeCustomCharacterId(id);
     setCustomCharacterIds(getCustomCharacterIds());
     setActiveCharacterIds(getActiveCharacterIds());
     onCharacterPoolChange?.();
-    pushToast(`已移除角色 ${id}`, 'info');
+    pushToast(`Removed character ${id}.`, 'info');
   };
 
   const handleToggleCharacter = (id, checked) => {
     if (!checked && !canDisableCharacter(id, customCharacterIds)) {
-      pushToast('请先添加至少一个非预置角色，再取消默认角色。', 'warning');
+      pushToast('Add at least one non-preset character before disabling default ones.', 'warning');
       return;
     }
     const current = getActiveCharacterIds();
@@ -100,7 +100,7 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
 
   const handleConfirmStart = () => {
     if (!hasActiveCharacters) {
-      pushToast('请至少启用一个角色ID后再开始。', 'warning');
+      pushToast('Enable at least one character ID before starting.', 'warning');
       return;
     }
     onConfirmStart?.();
@@ -109,27 +109,27 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
   return (
     <div className="newgame-setup-page">
       <div className="newgame-setup-panel">
-        <h1 className="newgame-setup-title">新游戏配置</h1>
-        <p className="newgame-setup-desc">先配置可出现角色，再开始新游戏。当前为仅自定义角色模式。</p>
+        <h1 className="newgame-setup-title">New Game Setup</h1>
+        <p className="newgame-setup-desc">Configure which characters can appear before starting. Current mode: custom characters only.</p>
 
         <section className="newgame-role-panel">
-          <div className="newgame-role-title">角色池管理</div>
-          <p className="newgame-role-hint">输入角色ID（例如 5738g），勾选几个角色，当天就会来几位顾客。</p>
+          <div className="newgame-role-title">Character Pool</div>
+          <p className="newgame-role-hint">Enter a character ID (e.g. 5738g). The number of enabled characters determines how many guests appear that day.</p>
 
           <div className="newgame-role-input-row">
             <input
               className="newgame-role-input"
               value={customCharacterInput}
               onChange={(event) => setCustomCharacterInput(event.target.value)}
-              placeholder="输入角色ID"
+              placeholder="Enter character ID"
               maxLength={64}
             />
-            <button className="newgame-role-add-btn" onClick={handleAddCharacter} disabled={loading}>添加</button>
+            <button className="newgame-role-add-btn" onClick={handleAddCharacter} disabled={loading}>Add</button>
           </div>
 
           <div className="newgame-role-list">
             {customCharacterIds.length === 0 && (
-              <div className="newgame-role-empty">暂无已添加角色。请先添加至少一个角色ID。</div>
+              <div className="newgame-role-empty">No characters added yet. Please add at least one character ID.</div>
             )}
             {customCharacterIds.map((id) => {
               const locked = !canDisableCharacter(id, customCharacterIds);
@@ -143,14 +143,14 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
                       onChange={(event) => handleToggleCharacter(id, event.target.checked)}
                       disabled={loading || (locked && activeCharacterIds.includes(id))}
                     />
-                    <span>{id}{isPreset ? '（默认）' : ''}</span>
+                    <span>{id}{isPreset ? ' (Default)' : ''}</span>
                   </label>
                   <button
                     className="newgame-role-remove-btn"
                     onClick={() => handleRemoveCharacter(id)}
                     disabled={loading || locked}
                   >
-                    移除
+                    Remove
                   </button>
                 </div>
               );
@@ -159,9 +159,9 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
         </section>
 
         <div className="newgame-actions">
-          <button className="newgame-back-btn" onClick={onBack} disabled={loading}>返回</button>
+          <button className="newgame-back-btn" onClick={onBack} disabled={loading}>Back</button>
           <button className="newgame-start-btn" onClick={handleConfirmStart} disabled={loading || !hasActiveCharacters}>
-            {loading ? '创建中...' : '开始新游戏'}
+            {loading ? 'Creating...' : 'Start New Game'}
           </button>
         </div>
       </div>

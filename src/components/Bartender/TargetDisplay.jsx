@@ -54,7 +54,7 @@ const TargetDisplay = ({
     const conditionText = attrConditions.map(cond => {
       const opSymbol = { '>=': '≥', '<=': '≤', '>': '>', '<': '<', '=': '=' }[cond.op] || cond.op;
       return `${opSymbol}${cond.value}`;
-    }).join(' 且 ');
+    }).join(' and ');
 
     return (
       <div key={attrId} className={`attribute-row ${allConditionsMet ? 'met' : ''}`}>
@@ -140,9 +140,9 @@ const TargetDisplay = ({
   return (
     <div className="target-display">
       <div className="target-header">
-        <h4>🎯 目标配方</h4>
+        <h4>🎯 Target Profile</h4>
         {showHint && conditions.length === 0 && (
-          <span className="no-target-hint">选择情绪后显示目标</span>
+          <span className="no-target-hint">Target appears after emotion selection</span>
         )}
       </div>
       
@@ -165,7 +165,7 @@ const TargetDisplay = ({
       {/* 🆕 酒的态度实时预览 */}
       {attitude && (
         <div className="attitude-realtime">
-          <span className="attitude-realtime-label">🍸 这杯酒在说……</span>
+          <span className="attitude-realtime-label">🍸 This drink says...</span>
           <p className="attitude-realtime-text">"{attitude.summary}"</p>
         </div>
       )}
@@ -189,13 +189,13 @@ const StatusIndicator = ({ conditions, currentValues }) => {
       {allMet ? (
         <>
           <span className="status-icon">✅</span>
-          <span className="status-text">配方达标！可以递酒</span>
+          <span className="status-text">Target met! Ready to serve.</span>
         </>
       ) : (
         <>
           <span className="status-icon">⏳</span>
           <span className="status-text">
-            已满足 {metCount}/{conditions.length} 个条件
+            Met {metCount}/{conditions.length} conditions
           </span>
         </>
       )}

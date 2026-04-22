@@ -2,68 +2,68 @@
   "gameHints": {
     "reply_poor": {
       "icon": "💡",
-      "title": "对话提示",
-      "message": "回应太简短或重复了，尝试更用心地交流吧！信任度略有下降。"
+      "title": "Dialogue Tip",
+      "message": "Your reply was too short or repetitive. Try a more thoughtful response. Trust decreased slightly."
     },
     "cocktail_failed": {
       "icon": "🍸",
-      "title": "调酒提示",
-      "message": "调酒失败了！试着更多了解顾客的真实情绪。提示：真实情绪通常藏在表面情绪之下。"
+      "title": "Mixing Tip",
+      "message": "Mix failed. Try learning more about the guest's true emotions. Tip: true emotions are often hidden beneath surface emotions."
     },
     "trust_low": {
       "icon": "🔓",
-      "title": "信任度提示",
-      "message": "信任度较低时顾客会隐藏真实情绪。继续真诚对话来提升信任度吧！"
+      "title": "Trust Tip",
+      "message": "At low trust, guests hide their true emotions. Keep talking sincerely to raise trust."
     },
     "trust_medium": {
       "icon": "✨",
-      "title": "好消息",
-      "message": "信任度提升！顾客开始更自然地表达自己了。"
+      "title": "Good News",
+      "message": "Trust increased. The guest is starting to express themselves more naturally."
     },
     "trust_high": {
       "icon": "🎉",
-      "title": "信任度突破",
-      "message": "顾客完全信任你了！现在更适合直接判断对方真正的状态。"
+      "title": "Trust Breakthrough",
+      "message": "The guest fully trusts you now. This is a good time to judge their true state more directly."
     },
     "emotion_hint": {
       "icon": "🎭",
-      "title": "情绪识别",
-      "message": "表面情绪只是表层，关键是判断对方真正的状态。猜对了才能调酒成功。"
+      "title": "Emotion Reading",
+      "message": "Surface emotions are only the top layer. The key is reading the true state. Correct guesses lead to successful mixes."
     },
     "recipe_repeat": {
       "icon": "⚠️",
-      "title": "配方重复",
-      "message": "这个配方已经使用过了！请尝试不同的情绪组合。"
+      "title": "Recipe Repeated",
+      "message": "This recipe has already been used. Try a different emotion combination."
     },
     "guess_success": {
       "icon": "🎊",
-      "title": "猜测成功！",
-      "message": "恭喜！你成功识别了顾客的情绪，解锁了新的情绪元素！"
+      "title": "Guess Successful!",
+      "message": "Great job! You correctly identified the guest's emotions and unlocked new emotion elements."
     },
     "guess_failed": {
       "icon": "💔",
-      "title": "猜测失败",
-      "message": "很遗憾，这不是顾客的真实情绪。信任度大幅下降..."
+      "title": "Guess Failed",
+      "message": "Not quite. Those are not the guest's true emotions. Trust dropped significantly..."
     },
     "emotion_changed": {
       "icon": "💭",
-      "title": "情绪变化",
-      "message": "顾客喝完酒后，情绪似乎有了微妙的变化。"
+      "title": "Emotion Shift",
+      "message": "After the drink, the guest's emotions seem to have shifted subtly."
     },
     "emotion_improved": {
       "icon": "🌟",
-      "title": "情绪好转",
-      "message": "这杯酒触动了顾客！他的情绪正在向积极的方向转变。"
+      "title": "Emotion Improved",
+      "message": "This drink reached the guest. Their emotions are moving in a positive direction."
     },
     "dialogue_excellent": {
       "icon": "💝",
-      "title": "对话出色",
-      "message": "你的回应让顾客感到被深深理解！信任度大幅提升。"
+      "title": "Excellent Dialogue",
+      "message": "Your reply made the guest feel deeply understood. Trust increased greatly."
     },
     "dialogue_good": {
       "icon": "💬",
-      "title": "对话良好",
-      "message": "顾客感受到了你的关心，继续保持真诚的交流！"
+      "title": "Good Dialogue",
+      "message": "The guest felt your care. Keep the conversation sincere."
     }
   }
 }

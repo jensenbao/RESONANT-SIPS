@@ -3,8 +3,8 @@ import React from 'react';
 import CustomerAvatar from '../Avatar/CustomerAvatar.jsx';
 
 const PHASE_NAMES = {
-  introduction: '初见', escalation: '深入', turning_point: '转折',
-  resolution: '解决', epilogue: '尾声'
+  introduction: 'Introduction', escalation: 'Deepening', turning_point: 'Turning Point',
+  resolution: 'Resolution', epilogue: 'Epilogue'
 };
 
 /**
@@ -14,14 +14,14 @@ const ReturnCustomerOverlay = ({ customer, onContinue }) => {
   if (!customer) return null;
 
   const lastMemory = customer.relationship?.sharedHistory?.slice(-1)[0];
-  const phaseName = PHASE_NAMES[customer.characterArc?.currentPhase] || '未知';
+  const phaseName = PHASE_NAMES[customer.characterArc?.currentPhase] || 'Unknown';
 
   return (
     <div className="return-customer-overlay">
       <div className="return-customer-card">
         <div className="rc-header">
           <span className="rc-wave">👋</span>
-          <h3 className="rc-title">一位老朋友回来了</h3>
+          <h3 className="rc-title">An old friend has returned</h3>
         </div>
 
         <div className="rc-info">
@@ -35,19 +35,19 @@ const ReturnCustomerOverlay = ({ customer, onContinue }) => {
           </span>
           <div className="rc-details">
             <div className="rc-name">{customer.name}</div>
-            <div className="rc-visit">第 {(customer.relationship?.totalVisits || 0) + 1} 次来访 · {phaseName}</div>
+            <div className="rc-visit">Visit #{(customer.relationship?.totalVisits || 0) + 1} · {phaseName}</div>
           </div>
         </div>
 
         {lastMemory && (
           <div className="rc-memory">
-            <span className="rc-memory-label">💭 上次的记忆</span>
+            <span className="rc-memory-label">💭 Last memory</span>
             <p className="rc-memory-text">{lastMemory.summary}</p>
           </div>
         )}
 
         <button className="rc-continue-btn" onClick={onContinue}>
-          迎接TA
+          Welcome them
         </button>
       </div>
     </div>

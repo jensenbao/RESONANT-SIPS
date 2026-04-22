@@ -13,16 +13,16 @@ const MemoryFragment = ({ fragment, onDismiss }) => {
       <div className={`memory-fragment clarity-${fragment.clarity}`} onClick={e => e.stopPropagation()}>
         <div className="fragment-header">
           <span className="fragment-icon">◈</span>
-          <span className="fragment-label">回忆碎片</span>
+          <span className="fragment-label">Memory Fragment</span>
           <span className="fragment-clarity-badge">{
-            fragment.clarity === 'vague' ? '模糊' :
-            fragment.clarity === 'hazy' ? '朦胧' :
-            fragment.clarity === 'clear' ? '清晰' : '鲜明'
+            fragment.clarity === 'vague' ? 'Vague' :
+            fragment.clarity === 'hazy' ? 'Hazy' :
+            fragment.clarity === 'clear' ? 'Clear' : 'Vivid'
           }</span>
         </div>
         <p className="fragment-text">{fragment.content}</p>
         <button className="fragment-dismiss" onClick={onDismiss}>
-          继续
+          Continue
         </button>
       </div>
     </div>
@@ -39,7 +39,7 @@ export const MemoryFragmentInline = ({ fragment }) => {
     <div className={`memory-fragment-inline clarity-${fragment.clarity}`}>
       <div className="fragment-header-inline">
         <span className="fragment-icon">◈</span>
-        <span className="fragment-label">回忆碎片</span>
+        <span className="fragment-label">Memory Fragment</span>
       </div>
       <p className="fragment-text-inline">{fragment.content}</p>
     </div>

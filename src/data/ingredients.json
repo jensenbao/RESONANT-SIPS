@@ -2,222 +2,222 @@
   "baseSpirits": {
     "vodka": {
       "id": "vodka",
-      "name": "伏特加",
+      "name": "Vodka",
       "icon": "🍶",
       "category": "spirit",
       "thickness": 0,
       "sweetness": -1,
       "strength": 2,
-      "description": "纯净烈酒，中性口感",
-      "feeling": "像一句不加修饰的实话"
+      "description": "Clean spirit, neutral profile",
+      "feeling": "Like a plain, unedited truth"
     },
     "rum": {
       "id": "rum",
-      "name": "朗姆酒",
+      "name": "Rum",
       "icon": "🥃",
       "category": "spirit",
       "thickness": 1,
       "sweetness": 1,
       "strength": 2,
-      "description": "甘蔗烈酒，微甜醇厚",
-      "feeling": "像旧照片里那种褪色的甜"
+      "description": "Sugarcane spirit, mildly sweet and rich",
+      "feeling": "Like faded sweetness in an old photo"
     },
     "whiskey": {
       "id": "whiskey",
-      "name": "威士忌",
+      "name": "Whiskey",
       "icon": "🥃",
       "category": "spirit",
       "thickness": 2,
       "sweetness": 0,
       "strength": 3,
-      "description": "橡木陈酿，厚重浓郁",
-      "feeling": "像一个人坐了很久之后说出的第一句话"
+      "description": "Oak-aged, deep and full-bodied",
+      "feeling": "Like the first words after a long silence"
     },
     "tequila": {
       "id": "tequila",
-      "name": "龙舌兰",
+      "name": "Tequila",
       "icon": "🌵",
       "category": "spirit",
       "thickness": 1,
       "sweetness": -1,
       "strength": 3,
-      "description": "墨西哥烈酒，辛辣刺激",
-      "feeling": "像一个不耐烦的人在催你做决定"
+      "description": "Mexican spirit, spicy and assertive",
+      "feeling": "Like someone impatiently pushing you to decide"
     }
   },
   "juices": {
     "juice_orange": {
       "id": "juice_orange",
-      "name": "橙汁",
+      "name": "Orange Juice",
       "icon": "🍊",
       "category": "juice",
       "thickness": 1,
       "sweetness": 2,
       "strength": 0,
-      "description": "新鲜甜橙，甜蜜清爽",
-      "feeling": "像有人帮你拉开了窗帘"
+      "description": "Fresh orange, sweet and bright",
+      "feeling": "Like someone opening the curtains for you"
     },
     "juice_lemon": {
       "id": "juice_lemon",
-      "name": "柠檬汁",
+      "name": "Lemon Juice",
       "icon": "🍋",
       "category": "juice",
       "thickness": 0,
       "sweetness": -2,
       "strength": 0,
-      "description": "酸爽柠檬，开胃解腻",
-      "feeling": "像被冷水泼醒——难受但清醒了"
+      "description": "Sharp lemon, crisp and refreshing",
+      "feeling": "Like a splash of cold water—harsh but clarifying"
     },
     "juice_cranberry": {
       "id": "juice_cranberry",
-      "name": "蔓越莓汁",
+      "name": "Cranberry Juice",
       "icon": "🫐",
       "category": "juice",
       "thickness": 1,
       "sweetness": -1,
       "strength": 0,
-      "description": "微酸莓果，清爽回甘",
-      "feeling": "像一封写了又删的消息"
+      "description": "Tart berry profile with clean finish",
+      "feeling": "Like a message written and deleted"
     },
     "juice_mango": {
       "id": "juice_mango",
-      "name": "芒果汁",
+      "name": "Mango Juice",
       "icon": "🥭",
       "category": "juice",
       "thickness": 2,
       "sweetness": 3,
       "strength": 0,
-      "description": "热带芒果，浓郁香甜",
-      "feeling": "像沉进一个不想醒来的梦"
+      "description": "Tropical mango, rich and sweet",
+      "feeling": "Like sinking into a dream you do not want to leave"
     }
   },
   "mixers": {
     "soda": {
       "id": "soda",
-      "name": "苏打水",
+      "name": "Soda Water",
       "icon": "🫧",
       "category": "mixer",
       "thickness": -1,
       "sweetness": 0,
       "strength": -1,
-      "description": "气泡清爽，稀释烈度",
-      "feeling": "像把一句沉重的话说得轻描淡写"
+      "description": "Sparkling and light, reduces intensity",
+      "feeling": "Like delivering a heavy truth lightly"
     },
     "tonic": {
       "id": "tonic",
-      "name": "汤力水",
+      "name": "Tonic Water",
       "icon": "💧",
       "category": "mixer",
       "thickness": 0,
       "sweetness": -1,
       "strength": -1,
-      "description": "奎宁苦味，经典搭配",
-      "feeling": "像在笑话的结尾加了一句真心话"
+      "description": "Quinine bitterness, classic pairing",
+      "feeling": "Like adding one honest line after a joke"
     },
     "syrup": {
       "id": "syrup",
-      "name": "糖浆",
+      "name": "Syrup",
       "icon": "🍯",
       "category": "mixer",
       "thickness": 1,
       "sweetness": 3,
       "strength": 0,
-      "description": "纯甜糖浆，增加甜度",
-      "feeling": "像故意把坏消息说成好消息"
+      "description": "Pure sweet syrup, boosts sweetness",
+      "feeling": "Like deliberately framing bad news as good"
     },
     "cream": {
       "id": "cream",
-      "name": "奶油",
+      "name": "Cream",
       "icon": "🥛",
       "category": "mixer",
       "thickness": 3,
       "sweetness": 1,
       "strength": 0,
-      "description": "丝滑奶油，极致浓稠",
-      "feeling": "像一个不说话的拥抱"
+      "description": "Silky cream, extra body",
+      "feeling": "Like a quiet hug"
     },
     "coffee": {
       "id": "coffee",
-      "name": "浓缩咖啡",
+      "name": "Espresso",
       "icon": "☕",
       "category": "mixer",
       "thickness": 1,
       "sweetness": -2,
       "strength": 0,
-      "description": "咖啡苦香，提神醒脑",
-      "feeling": "像凌晨三点还亮着的灯"
+      "description": "Bitter aromatic coffee, awakening",
+      "feeling": "Like a light still on at 3 a.m."
     }
   },
   "liqueurs": {
     "triple_sec": {
       "id": "triple_sec",
-      "name": "橙皮酒",
+      "name": "Triple Sec",
       "icon": "🍊",
       "category": "liqueur",
       "thickness": 1,
       "sweetness": 2,
       "strength": 1,
-      "description": "橙皮甜酒，芳香馥郁",
-      "feeling": "像在苦涩里找到的一丝甜"
+      "description": "Orange liqueur, fragrant and sweet",
+      "feeling": "Like finding a trace of sweetness in bitterness"
     },
     "kahlua": {
       "id": "kahlua",
-      "name": "咖啡酒",
+      "name": "Kahlua",
       "icon": "☕",
       "category": "liqueur",
       "thickness": 2,
       "sweetness": 2,
       "strength": 1,
-      "description": "咖啡利口酒，甜苦交织",
-      "feeling": "像熬过长夜之后终于可以哭了"
+      "description": "Coffee liqueur, bittersweet",
+      "feeling": "Like finally being allowed to cry after a long night"
     },
     "baileys": {
       "id": "baileys",
-      "name": "百利甜",
+      "name": "Baileys",
       "icon": "🍫",
       "category": "liqueur",
       "thickness": 3,
       "sweetness": 3,
       "strength": 1,
-      "description": "奶油威士忌，丝滑甜蜜",
-      "feeling": "像被毯子裹住然后什么都不想管了"
+      "description": "Cream whiskey liqueur, smooth and sweet",
+      "feeling": "Like being wrapped in a blanket and letting go"
     },
     "sambuca": {
       "id": "sambuca",
-      "name": "茴香酒",
+      "name": "Sambuca",
       "icon": "⭐",
       "category": "liqueur",
       "thickness": 0,
       "sweetness": 1,
       "strength": 2,
-      "description": "茴香风味，香料浓郁",
-      "feeling": "像一种让人又爱又怕的固执"
+      "description": "Anise-flavored liqueur, rich spice",
+      "feeling": "Like a stubbornness both feared and loved"
     }
   },
   "ingredientCategories": [
     {
       "id": "spirit",
-      "name": "基酒",
+      "name": "Spirits",
       "icon": "🥃",
-      "description": "烈酒基底"
+      "description": "Spirit base"
     },
     {
       "id": "juice",
-      "name": "果汁",
+      "name": "Juices",
       "icon": "🍹",
-      "description": "新鲜果汁"
+      "description": "Fresh juices"
     },
     {
       "id": "mixer",
-      "name": "调味",
+      "name": "Mixers",
       "icon": "🫧",
-      "description": "调味剂"
+      "description": "Balancing modifiers"
     },
     {
       "id": "liqueur",
-      "name": "利口酒",
+      "name": "Liqueurs",
       "icon": "🍸",
-      "description": "甜味酒"
+      "description": "Sweet liqueurs"
     }
   ],
   "initialUnlockedIngredients": [

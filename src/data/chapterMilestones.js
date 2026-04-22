@@ -7,8 +7,8 @@
 export const CHAPTERS = [
   {
     id: 1,
-    title: '无名小店',
-    subtitle: '在这座城市最深的巷子里，你点亮了一盏灯。',
+    title: 'Nameless Bar',
+    subtitle: 'In the deepest alley of this city, you lit a single lamp.',
     conditions: {
       auto: true
     },
@@ -21,8 +21,8 @@ export const CHAPTERS = [
   },
   {
     id: 2,
-    title: '第一个回头客',
-    subtitle: '有人记住了这条巷子的路。',
+    title: 'First Returning Guest',
+    subtitle: 'Someone remembered the way to this alley.',
     conditions: {
       minDay: 3,
       hasReturnCustomer: true
@@ -36,8 +36,8 @@ export const CHAPTERS = [
   },
   {
     id: 3,
-    title: '巷子里的传说',
-    subtitle: '他们开始在低语中提起这个地方。',
+    title: 'Whispers in the Alley',
+    subtitle: 'People started mentioning this place in hushed voices.',
     conditions: {
       minDay: 7,
       returnCustomerEscalation: 1
@@ -51,8 +51,8 @@ export const CHAPTERS = [
   },
   {
     id: 4,
-    title: '霓虹之下',
-    subtitle: '这座城市有一万个去处，但有些人只来这里。',
+    title: 'Under Neon Light',
+    subtitle: 'This city offers countless destinations, yet some choose only this one.',
     conditions: {
       minDay: 13,
       returnCustomerTurningPoint: 1
@@ -66,8 +66,8 @@ export const CHAPTERS = [
   },
   {
     id: 5,
-    title: '最后一杯',
-    subtitle: '你终于知道自己为什么在这里了。',
+    title: 'The Last Glass',
+    subtitle: 'At last, you understand why you are here.',
     conditions: {
       minDay: 20,
       OR_totalCustomersServed: 100
@@ -85,34 +85,34 @@ export const CHAPTERS = [
  * 章节开场白降级文本
  */
 export const FALLBACK_CHAPTER_OPENINGS = {
-  1: '你点亮了吧台的灯。巷子外面在下雨。',
-  2: '今晚来的人，看起来不像是第一次。',
-  3: '有人在问路的时候提起了这间酒吧。',
-  4: '门外排起了不长不短的队。',
-  5: '你望向窗外的城市，忽然想不起来是哪一年来到这里的。'
+  1: 'You turned on the bar light. Outside the alley, it was raining.',
+  2: 'Tonight\'s visitor does not look like a first-timer.',
+  3: 'Someone mentioned this bar while asking for directions.',
+  4: 'A line formed outside the door—not too long, not too short.',
+  5: 'You look out at the city and suddenly cannot remember what year you first came here.'
 };
 
 /**
  * 结局触发条件
  */
 export const ENDING_CONDITIONS = [
-  { type: 'arc_complete', description: '至少一个回头客走完全部弧光' },
-  { type: 'day_limit', description: '累计天数达到50天' },
-  { type: 'all_fragments', description: '所有回忆碎片解锁' }
+  { type: 'arc_complete', description: 'At least one returning customer completes their full arc' },
+  { type: 'day_limit', description: 'Total days reach 50' },
+  { type: 'all_fragments', description: 'All memory fragments unlocked' }
 ];
 
 /**
  * 回忆碎片触发条件
  */
 export const FRAGMENT_TRIGGERS = [
-  { type: 'chapter_advance', description: '章节推进时必定触发一个碎片' },
-  { type: 'milestone', condition: 'totalCustomersServed >= 20', description: '服务满20人' },
-  { type: 'milestone', condition: 'totalCustomersServed >= 50', description: '服务满50人' },
-  { type: 'deep_trust', condition: 'customerTrust >= 0.9', description: '某顾客信任度达到90%+' },
-  { type: 'crossroads_resolved', description: '某回头客的十字路口被解决' },
-  { type: 'perfect_resonance', condition: 'mixingMode !== "strict"', description: '获得"完美共鸣"' },
-  { type: 'silence_used', condition: 'silenceCount >= 5', description: '累计使用5次沉默' },
-  { type: 'plain_water', condition: 'plainWaterCount >= 3', description: '累计递出3杯白水' }
+  { type: 'chapter_advance', description: 'Guaranteed fragment trigger on chapter progression' },
+  { type: 'milestone', condition: 'totalCustomersServed >= 20', description: 'Serve 20 customers' },
+  { type: 'milestone', condition: 'totalCustomersServed >= 50', description: 'Serve 50 customers' },
+  { type: 'deep_trust', condition: 'customerTrust >= 0.9', description: 'Any customer reaches 90%+ trust' },
+  { type: 'crossroads_resolved', description: 'A returning customer crossroads is resolved' },
+  { type: 'perfect_resonance', condition: 'mixingMode !== "strict"', description: 'Obtain "Perfect Resonance"' },
+  { type: 'silence_used', condition: 'silenceCount >= 5', description: 'Use silence 5 times in total' },
+  { type: 'plain_water', condition: 'plainWaterCount >= 3', description: 'Serve 3 glasses of plain water in total' }
 ];
 
 /**
@@ -121,16 +121,16 @@ export const FRAGMENT_TRIGGERS = [
  */
 export const CHAPTER_MECHANIC_HINTS = {
   1: null,
-  2: '数值依然重要，但不再是唯一的答案。\n'
-   + '注意每种材料传递的感觉——悬停可以看到。\n'
-   + '「这杯酒在说......」会告诉你，你的酒正在表达什么。',
-  3: '你已经不需要看数值了。\n'
-   + '只有顾客的情绪和你的酒之间的共鸣，才决定这杯酒对不对。\n'
-   + '用材料的感觉去组合你想说的话。',
+  2: 'Numbers still matter, but they are no longer the only answer.\n'
+   + 'Pay attention to the feeling each ingredient conveys—hover to inspect.\n'
+   + '"This drink says..." tells you what your drink is expressing.',
+  3: 'You no longer need to stare at numbers.\n'
+   + 'Only resonance between customer emotion and your drink decides whether it works.\n'
+   + 'Use ingredient feeling to compose what you want to say.',
   4: null,
-  5: '没有目标，没有提示。\n'
-   + '你面前只有一个人，和你手边的这些瓶瓶罐罐。\n'
-   + '你知道该怎么做。'
+  5: 'No target. No hint.\n'
+   + 'In front of you is one person, and beside your hand are these bottles.\n'
+   + 'You already know what to do.'
 };
 
 /**
@@ -138,11 +138,11 @@ export const CHAPTER_MECHANIC_HINTS = {
  * 帮助玩家适应从数值匹配到情感共鸣的过渡
  */
 export const TRANSITIONAL_FAILURE_HINTS = [
-  '也许该注意一下酒传达的态度了——它在说什么？',
-  '数值只是骨架，酒的感觉才是血肉。试着从材料的 feeling 出发。',
-  '这杯酒的"态度"和他此刻的心情合拍吗？',
-  '不必精确——问题不在于数字差了多少，而在于方向对不对。',
-  '悬停在材料上看看它们的 feeling，然后想想这个人需要听到什么。'
+  'Maybe it is time to focus on the attitude your drink conveys—what is it saying?',
+  'Numbers are only the skeleton; feeling is the flesh. Try building from ingredient feeling.',
+  'Does this drink\'s "attitude" match the customer\'s mood right now?',
+  'You do not need perfect precision—the key is direction, not tiny numeric gaps.',
+  'Hover ingredients to read their feeling, then think about what this person needs to hear.'
 ];
 
 /**
@@ -159,29 +159,29 @@ export const getTransitionalFailureHint = () => {
  */
 export const FALLBACK_ENDING_TEMPLATE = (params) => {
   const keyLine = params.keyCustomerName
-    ? `你还记得${params.keyCustomerName}。${params.keyCustomerOneLiner || '那个人来过，又走了。'}\n\n`
+    ? `You still remember ${params.keyCustomerName}. ${params.keyCustomerOneLiner || 'That person came, and then left.'}\n\n`
     : '';
-  return `收拾最后一个杯子的时候，你的手停了一下。
+  return `While cleaning the last glass, your hand paused.
 
-${params.totalDays || '?'}天。${params.totalCustomers || '?'}个人。
-每个人都带着自己的故事推开那扇门，坐下来，看着你。
-你从来不问他们为什么来。你只是调酒。
+${params.totalDays || '?'} days. ${params.totalCustomers || '?'} people.
+Each one pushed open that door with their own story, sat down, and looked at you.
+You never asked why they came. You only mixed drinks.
 
-${keyLine}窗外的霓虹灯还在闪。雨还在下。这座城市不会因为一间酒吧而改变。
-但也许有几个人——在某个深夜喝完那杯酒之后——改变了一点点。
+${keyLine}Neon still flickers outside the window. Rain is still falling. This city will not change because of one bar.
+But maybe a few people—after finishing that one drink on a certain late night—changed, just a little.
 
-你关掉吧台的灯。
-但你没有锁门。`.trim();
+You turn off the bar light.
+But you do not lock the door.`.trim();
 };
 
 /**
  * 碎片降级文本
  */
 export const FALLBACK_FRAGMENTS = {
-  vague: '有什么东西在搅动，像水底的淤泥被翻起。很快就沉下去了。',
-  hazy: '某个房间。光线从窗帘缝里漏进来。有人在说话，但听不清内容。',
-  clear: '手上的旧伤疤。你记得那把刀，记得那个厨房，记得有人叫你的名字。',
-  vivid: '你想起了一切。但你选择继续站在这里。'
+  vague: 'Something stirs, like silt lifted from the bottom of water. It settles again quickly.',
+  hazy: 'A certain room. Light leaks through a gap in the curtain. Someone is speaking, but the words are unclear.',
+  clear: 'An old scar on your hand. You remember the knife, the kitchen, and someone calling your name.',
+  vivid: 'You remember everything. And still, you choose to remain here.'
 };
 
 /**

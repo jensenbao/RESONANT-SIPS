@@ -456,7 +456,7 @@ const GamePage = ({
             cocktailFlow.handleStartEmotionGuess();
           }}
           disabled={dialogue.isLoading}
-          aria-label="前往调酒台"
+          aria-label="Go to mixing station"
         >
           <img
             className="mixing-entry-fab__pad-img"
@@ -483,7 +483,7 @@ const GamePage = ({
       {cocktailFlow.showServeAnim && <div className="serve-animation">馃嵏</div>}
 
       {showServeStoryAnim && (
-        <div className="serve-story-overlay" role="dialog" aria-label="递酒剧情动画">
+        <div className="serve-story-overlay" role="dialog" aria-label="Serve animation">
           <video
             key={serveStoryAnimKey}
             className="serve-story-video"
@@ -508,30 +508,30 @@ const GamePage = ({
       {cocktailFlow.showCocktailResult && (
         <div className={`cocktail-result-card ${cocktailFlow.showCocktailResult.isSuccess ? 'success' : ''}`}>
           <div className="result-icon">{cocktailFlow.showCocktailResult.isSuccess ? '🍸' : '💭'}</div>
-          <div className="result-title">{cocktailFlow.showCocktailResult.isSuccess ? '这杯酒送达了' : '这杯酒还没共鸣'}</div>
+          <div className="result-title">{cocktailFlow.showCocktailResult.isSuccess ? 'Drink delivered' : 'No resonance yet'}</div>
           <div className="result-stats">
             <div className={`result-stat ${(cocktailFlow.showCocktailResult.targetCheck?.results || []).some(c => c.attr === 'thickness' && !c.met) ? 'unmet' : 'met'}`}>
-              <span className="result-stat-label">稠度</span><span className="result-stat-value">{cocktailFlow.showCocktailResult.mixture.thickness?.toFixed(1) || '0'}</span>
+              <span className="result-stat-label">Body</span><span className="result-stat-value">{cocktailFlow.showCocktailResult.mixture.thickness?.toFixed(1) || '0'}</span>
             </div>
             <div className={`result-stat ${(cocktailFlow.showCocktailResult.targetCheck?.results || []).some(c => c.attr === 'sweetness' && !c.met) ? 'unmet' : 'met'}`}>
-              <span className="result-stat-label">甜度</span><span className="result-stat-value">{cocktailFlow.showCocktailResult.mixture.sweetness?.toFixed(1) || '0'}</span>
+              <span className="result-stat-label">Sweetness</span><span className="result-stat-value">{cocktailFlow.showCocktailResult.mixture.sweetness?.toFixed(1) || '0'}</span>
             </div>
             <div className={`result-stat ${(cocktailFlow.showCocktailResult.targetCheck?.results || []).some(c => c.attr === 'strength' && !c.met) ? 'unmet' : 'met'}`}>
-              <span className="result-stat-label">烈度</span><span className="result-stat-value">{cocktailFlow.showCocktailResult.mixture.strength?.toFixed(1) || '0'}</span>
+              <span className="result-stat-label">Strength</span><span className="result-stat-value">{cocktailFlow.showCocktailResult.mixture.strength?.toFixed(1) || '0'}</span>
             </div>
           </div>
           <div className="result-recipe-summary">
             {GLASS_TYPES[cocktailFlow.showCocktailResult.glass]?.icon} {GLASS_TYPES[cocktailFlow.showCocktailResult.glass]?.name || ''}
-            {cocktailFlow.showCocktailResult.ingredients?.length > 0 && ` · ${cocktailFlow.showCocktailResult.ingredients.length} 种原液`}
+            {cocktailFlow.showCocktailResult.ingredients?.length > 0 && ` · ${cocktailFlow.showCocktailResult.ingredients.length} ingredients`}
           </div>
           {cocktailFlow.showCocktailResult.judgment && (
             <div className="result-judgment">
-              <span className="judgment-mode">模式：{({ strict: '严格', transitional: '过渡', expressive: '共鸣', master: '大师' })[cocktailFlow.showCocktailResult.judgment.mixingMode] || cocktailFlow.showCocktailResult.judgment.mixingMode || '-'}</span>
+              <span className="judgment-mode">Mode: {({ strict: 'Strict', transitional: 'Transitional', expressive: 'Resonance', master: 'Master' })[cocktailFlow.showCocktailResult.judgment.mixingMode] || cocktailFlow.showCocktailResult.judgment.mixingMode || '-'}</span>
               {cocktailFlow.showCocktailResult.judgment.resonanceLabel && (
-                <span className="judgment-resonance"> · 共鸣：{cocktailFlow.showCocktailResult.judgment.resonanceLabel}</span>
+                <span className="judgment-resonance"> · Resonance: {cocktailFlow.showCocktailResult.judgment.resonanceLabel}</span>
               )}
               {cocktailFlow.showCocktailResult.judgment.method && (
-                <span className="judgment-method"> · 判定：{({ numeric: '数值', hybrid: '混合', resonance: '共鸣' })[cocktailFlow.showCocktailResult.judgment.method] || cocktailFlow.showCocktailResult.judgment.method}</span>
+                <span className="judgment-method"> · Method: {({ numeric: 'Numeric', hybrid: 'Hybrid', resonance: 'Resonance' })[cocktailFlow.showCocktailResult.judgment.method] || cocktailFlow.showCocktailResult.judgment.method}</span>
               )}
             </div>
           )}

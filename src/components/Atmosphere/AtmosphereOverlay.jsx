@@ -58,31 +58,31 @@ const AtmosphereOverlay = ({ atmosphere, day, onStart, isVisible }) => {
   if (!isVisible || !atmosphere) return null;
 
   const weatherIcon = WEATHER_ICONS[atmosphere.weather] || '🌙';
-  const weatherName = WEATHER_NAMES[atmosphere.weather] || '未知';
+  const weatherName = WEATHER_NAMES[atmosphere.weather] || 'Unknown';
   const musicIcon = MUSIC_ICONS[atmosphere.music] || '🎵';
-  const musicName = MUSIC_NAMES[atmosphere.music] || '未知';
+  const musicName = MUSIC_NAMES[atmosphere.music] || 'Unknown';
   const lightingIcon = LIGHTING_ICONS[atmosphere.lighting] || '💡';
-  const lightingName = LIGHTING_NAMES[atmosphere.lighting] || '未知';
+  const lightingName = LIGHTING_NAMES[atmosphere.lighting] || 'Unknown';
   const crowdIcon = CROWD_ICONS[atmosphere.crowdLevel] || '👥';
-  const crowdName = CROWD_NAMES[atmosphere.crowdLevel] || '未知';
+  const crowdName = CROWD_NAMES[atmosphere.crowdLevel] || 'Unknown';
 
   const modifiers = atmosphere.modifiers || {};
   const effects = [];
 
   if (modifiers.trustBonus > 0) {
-    effects.push({ text: `顾客更容易敞开心扉`, detail: `信任+${Math.round(modifiers.trustBonus * 100)}%`, positive: true });
+    effects.push({ text: `Guests open up more easily`, detail: `Trust +${Math.round(modifiers.trustBonus * 100)}%`, positive: true });
   } else if (modifiers.trustBonus < 0) {
-    effects.push({ text: `顾客更加警惕`, detail: `信任${Math.round(modifiers.trustBonus * 100)}%`, positive: false });
+    effects.push({ text: `Guests are more guarded`, detail: `Trust ${Math.round(modifiers.trustBonus * 100)}%`, positive: false });
   }
 
   if (modifiers.targetShift) {
     const { thickness, sweetness, strength } = modifiers.targetShift;
-    if (sweetness > 0) effects.push({ text: '偏好更甜的酒', detail: `甜度+${sweetness}`, positive: true });
-    if (sweetness < 0) effects.push({ text: '偏好更苦涩的酒', detail: `甜度${sweetness}`, positive: false });
-    if (thickness > 0) effects.push({ text: '偏好更浓稠的酒', detail: `浓稠度+${thickness}`, positive: true });
-    if (thickness < 0) effects.push({ text: '偏好更清爽的酒', detail: `浓稠度${thickness}`, positive: false });
-    if (strength > 0) effects.push({ text: '偏好更烈的酒', detail: `烈度+${strength}`, positive: true });
-    if (strength < 0) effects.push({ text: '偏好温和的酒', detail: `烈度${strength}`, positive: false });
+    if (sweetness > 0) effects.push({ text: 'Preference: sweeter drinks', detail: `Sweetness +${sweetness}`, positive: true });
+    if (sweetness < 0) effects.push({ text: 'Preference: drier/bitter drinks', detail: `Sweetness ${sweetness}`, positive: false });
+    if (thickness > 0) effects.push({ text: 'Preference: fuller body', detail: `Body +${thickness}`, positive: true });
+    if (thickness < 0) effects.push({ text: 'Preference: lighter body', detail: `Body ${thickness}`, positive: false });
+    if (strength > 0) effects.push({ text: 'Preference: stronger drinks', detail: `Strength +${strength}`, positive: true });
+    if (strength < 0) effects.push({ text: 'Preference: milder drinks', detail: `Strength ${strength}`, positive: false });
   }
 
   // 根据天气决定粒子类型
@@ -117,8 +117,8 @@ const AtmosphereOverlay = ({ atmosphere, day, onStart, isVisible }) => {
         {/* 天气与日期 */}
         <div className={`atmosphere-header ${phase >= 2 ? 'show' : ''}`}>
           <span className="atmosphere-weather-icon">{weatherIcon}</span>
-          <div className="atmosphere-day-label">第 {day} 天</div>
-          <h2 className="atmosphere-day-title">{weatherName}之夜</h2>
+          <div className="atmosphere-day-label">Day {day}</div>
+          <h2 className="atmosphere-day-title">{weatherName} Night</h2>
         </div>
 
         {/* 叙述文字 - 打字机效果 */}
@@ -145,7 +145,7 @@ const AtmosphereOverlay = ({ atmosphere, day, onStart, isVisible }) => {
         {ATMOSPHERE_EFFECTS_ENABLED && effects.length > 0 && (
           <div className={`atmosphere-effects ${phase >= 5 ? 'show' : ''}`}>
             <div className="effects-header">
-              <span className="effects-title">今晚影响</span>
+              <span className="effects-title">Tonight's Effects</span>
             </div>
             <div className="effects-grid">
               {effects.map((effect, index) => (
@@ -163,7 +163,7 @@ const AtmosphereOverlay = ({ atmosphere, day, onStart, isVisible }) => {
           className={`start-business-btn ${phase >= 6 ? 'show' : ''}`}
           onClick={onStart}
         >
-          <span className="btn-text">开始营业</span>
+          <span className="btn-text">Open for Business</span>
           <span className="btn-glow" />
         </button>
       </div>

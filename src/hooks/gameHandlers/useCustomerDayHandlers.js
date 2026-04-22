@@ -316,7 +316,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
       } catch (error) {
         console.error('❌ 顾客生成失败（仅自定义角色模式）:', error);
         customerFlow.setDailyCustomers([]);
-        addToast('未找到可用角色，请回到新游戏配置页启用至少一个角色。', 'error');
+        addToast('No available characters found. Please return to New Game Setup and enable at least one character.', 'error');
       }
       customerFlow.setIsLoadingCustomers(false);
     }

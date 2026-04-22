@@ -28,7 +28,7 @@ const EventNotification = ({ event, onChoice, onDismiss, isVisible }) => {
   if (!isVisible || !event) return null;
 
   const typeIcon = EVENT_TYPE_ICONS[event.type] || '⚡';
-  const typeName = EVENT_TYPE_NAMES[event.type] || '突发事件';
+  const typeName = EVENT_TYPE_NAMES[event.type] || 'Event';
 
   const handleChoice = (index) => {
     setSelectedChoice(index);
@@ -71,7 +71,7 @@ const EventNotification = ({ event, onChoice, onDismiss, isVisible }) => {
         {/* 无选择时的关闭按钮 */}
         {(!event.choices || event.choices.length === 0) && (
           <button className="event-dismiss-btn" onClick={onDismiss}>
-            了解
+            Got it
           </button>
         )}
       </div>

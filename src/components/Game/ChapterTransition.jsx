@@ -56,7 +56,7 @@ const ChapterTransition = ({ chapter, openingNarrative, onComplete }) => {
     }}>
       <div className="chapter-transition-content">
         <div className={`chapter-number-display ${visiblePhases('number') ? 'visible' : ''}`}>
-          第 {chapter.id} 章
+          Chapter {chapter.id}
         </div>
 
         <h1 className={`chapter-title-display ${visiblePhases('title') ? 'visible' : ''}`}>
@@ -79,7 +79,7 @@ const ChapterTransition = ({ chapter, openingNarrative, onComplete }) => {
           </p>
         )}
 
-        <div className="chapter-skip-hint">点击跳过</div>
+        <div className="chapter-skip-hint">Click to skip</div>
       </div>
     </div>
   );

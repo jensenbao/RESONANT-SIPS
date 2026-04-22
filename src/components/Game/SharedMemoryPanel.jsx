@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 
 const PHASE_NAMES = {
-  introduction: '初见', escalation: '深入', turning_point: '转折',
-  resolution: '解决', epilogue: '尾声'
+  introduction: 'Introduction', escalation: 'Deepening', turning_point: 'Turning Point',
+  resolution: 'Resolution', epilogue: 'Epilogue'
 };
 
 /**
@@ -20,7 +20,7 @@ const SharedMemoryPanel = ({ sharedHistory = [], intimacy = 0, currentPhase = 'i
     <div className={`shared-memory-panel ${collapsed ? 'sm-collapsed' : ''}`}>
       <div className="sm-header" onClick={() => setCollapsed(!collapsed)} style={{ cursor: 'pointer' }}>
         <span className="sm-icon">📖</span>
-        <span className="sm-title">共同记忆</span>
+        <span className="sm-title">Shared Memory</span>
         <span className="sm-stat" style={{ marginLeft: 'auto', fontSize: '11px' }}>
           📊 {Math.round(intimacy * 100)}% · 🎭 {PHASE_NAMES[currentPhase] || currentPhase}
         </span>
@@ -48,7 +48,7 @@ const SharedMemoryPanel = ({ sharedHistory = [], intimacy = 0, currentPhase = 'i
           {crossroads?.active && crossroads.dilemma && (
             <div className="sm-crossroads-active">
               <span className="sm-crossroads-icon">🔀</span>
-              <span className="sm-crossroads-text">正面临抉择：{crossroads.dilemma}</span>
+              <span className="sm-crossroads-text">At a crossroads: {crossroads.dilemma}</span>
             </div>
           )}
         </>

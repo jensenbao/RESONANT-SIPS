@@ -1,11 +1,11 @@
-// 教学完成画面组件
+// Tutorial completion modal component
 import React from 'react';
 import './TutorialCompleteModal.css';
 
 /**
- * 教学完成画面
+ * Tutorial completion screen
  * @param {Object} props
- * @param {Function} props.onContinue - 继续营业回调
+ * @param {Function} props.onContinue - Continue callback
  */
 const TutorialCompleteModal = ({ onContinue }) => {
   return (
@@ -13,23 +13,23 @@ const TutorialCompleteModal = ({ onContinue }) => {
       <div className="tutorial-complete-modal">
         <div className="tc-header">
           <span className="tc-icon">🌙</span>
-          <h2 className="tc-title">第一个夜晚结束了</h2>
+          <h2 className="tc-title">Your first night is over</h2>
         </div>
 
         <div className="tc-skills">
-          <h3 className="tc-subtitle">你学会了：</h3>
+          <h3 className="tc-subtitle">You learned:</h3>
           <div className="tc-skill-list">
             <div className="tc-skill">
               <span className="tc-skill-icon">💬</span>
-              <span className="tc-skill-text">与顾客对话，建立信任</span>
+              <span className="tc-skill-text">Talk with guests and build trust</span>
             </div>
             <div className="tc-skill">
               <span className="tc-skill-icon">🎭</span>
-              <span className="tc-skill-text">猜测表面背后的真实情绪</span>
+              <span className="tc-skill-text">Read true emotions behind the surface</span>
             </div>
             <div className="tc-skill">
               <span className="tc-skill-icon">🍸</span>
-              <span className="tc-skill-text">根据情绪调制鸡尾酒</span>
+              <span className="tc-skill-text">Mix cocktails based on emotion</span>
             </div>
           </div>
         </div>
@@ -37,28 +37,28 @@ const TutorialCompleteModal = ({ onContinue }) => {
         <div className="tc-divider" />
 
         <div className="tc-narrative">
-          <p>那位深夜访客放下酒杯，起身离开。</p>
-          <p>走到门口时，他回了一下头。</p>
-          <p>没说什么，但你觉得他会再来的。</p>
+          <p>The late-night visitor set down the glass and stood up to leave.</p>
+          <p>At the door, they looked back once.</p>
+          <p>They said nothing, but you feel they will return.</p>
         </div>
 
         <div className="tc-reward">
           <span className="tc-reward-icon">🎁</span>
-          <span className="tc-reward-text">已解锁自由调酒</span>
+          <span className="tc-reward-text">Free mixing unlocked</span>
         </div>
 
         <div className="tc-teaser">
-          <p className="tc-teaser-title">你学会了基础。接下来……</p>
+          <p className="tc-teaser-title">You learned the basics. Next...</p>
           <ul className="tc-teaser-list">
-            <li>🌙 有些客人会再次光临——他们记得你</li>
-            <li>🍸 每杯酒都有态度——它在替你说话</li>
-            <li>📖 你的故事也会慢慢浮现</li>
+            <li>🌙 Some guests will come back—they remember you</li>
+            <li>🍸 Every drink has an attitude—it speaks for you</li>
+            <li>📖 Your own story will slowly emerge</li>
           </ul>
-          <p className="tc-teaser-footer">不用着急。慢慢来。</p>
+          <p className="tc-teaser-footer">No rush. Take it slowly.</p>
         </div>
 
         <button className="tc-continue-btn" onClick={onContinue}>
-          继续营业
+          Continue Service
         </button>
       </div>
     </div>

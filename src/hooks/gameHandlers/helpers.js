@@ -1,13 +1,13 @@
 const ATTR_LABELS = {
-  thickness: '稠度',
-  sweetness: '甜度',
-  strength: '烈度'
+  thickness: 'Body',
+  sweetness: 'Sweetness',
+  strength: 'Strength'
 };
 
 const ATTR_ADJUST_HINTS = {
-  thickness: { higher: '更厚重一些', lower: '更轻盈一些' },
-  sweetness: { higher: '更甜一点', lower: '更干一点' },
-  strength: { higher: '更烈一点', lower: '更柔和一点' }
+  thickness: { higher: 'increase body', lower: 'lighten body' },
+  sweetness: { higher: 'make it sweeter', lower: 'make it drier' },
+  strength: { higher: 'make it stronger', lower: 'make it softer' }
 };
 
 const HIT_REWARD_TABLE = {
@@ -75,18 +75,18 @@ export const buildStrictJudgmentExplanation = (targetCheck) => {
   const results = Array.isArray(targetCheck?.results) ? targetCheck.results : [];
   if (results.length === 0) {
     return {
-      summary: '本次没有可复盘的目标维度。',
-      shortHint: '请先完成情绪猜测再调酒。',
+      summary: 'No target dimensions to review this round.',
+      shortHint: 'Complete emotion guessing before mixing.',
       details: []
     };
   }
 
   const unmet = results.filter(item => !item.met);
   if (unmet.length === 0) {
-    const labels = results.map(item => ATTR_LABELS[item.attr] || item.attr).join('、');
+    const labels = results.map(item => ATTR_LABELS[item.attr] || item.attr).join(', ');
     return {
-      summary: `三维目标全部命中（${labels}）。`,
-      shortHint: '三维目标全部命中。',
+      summary: `All dimensions matched (${labels}).`,
+      shortHint: 'All target dimensions matched.',
       details: []
     };
   }
@@ -99,7 +99,7 @@ export const buildStrictJudgmentExplanation = (targetCheck) => {
 
     const needHigher = currentValue < targetValue;
 
-    const hints = ATTR_ADJUST_HINTS[attr] || { higher: '提高一点', lower: '降低一点' };
+    const hints = ATTR_ADJUST_HINTS[attr] || { higher: 'increase a bit', lower: 'decrease a bit' };
     const action = (() => {
       if (item.op === '<=' || item.op === '<') {
         return currentValue > targetValue ? hints.lower : hints.higher;
@@ -110,12 +110,12 @@ export const buildStrictJudgmentExplanation = (targetCheck) => {
       return needHigher ? hints.higher : hints.lower;
     })();
 
-    return `${label}未达标（目标 ${item.op}${targetValue.toFixed(1)}，当前 ${currentValue.toFixed(1)}），建议${action}`;
+    return `${label} is off target (goal ${item.op}${targetValue.toFixed(1)}, current ${currentValue.toFixed(1)}). Suggestion: ${action}`;
   });
 
   return {
-    summary: `命中 ${targetCheck?.metCount || 0}/${targetCheck?.totalConditions || results.length} 个目标。`,
-    shortHint: details.slice(0, 2).join('；'),
+    summary: `Matched ${targetCheck?.metCount || 0}/${targetCheck?.totalConditions || results.length} targets.`,
+    shortHint: details.slice(0, 2).join('; '),
     details
   };
 };

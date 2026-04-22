@@ -24,9 +24,9 @@ const CustomerLeaveOverlay = ({ aiConfig, parting = 'neutral' }) => {
           />
         </div>
         <p className="leave-text">
-          {isSatisfied ? '😊 顾客满意地离开了！' : '🚶 顾客离开了。'}
+          {isSatisfied ? '😊 The guest leaves satisfied!' : '🚶 The guest has left.'}
         </p>
-        <p className="leave-subtext">下一位顾客即将到来...</p>
+        <p className="leave-subtext">The next guest is on the way...</p>
       </div>
     </div>
   );

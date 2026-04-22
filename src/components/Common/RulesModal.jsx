@@ -2,7 +2,7 @@ import React from 'react';
 import './RulesModal.css';
 
 /**
- * 游戏规则弹窗
+ * Game rules modal
  */
 const RulesModal = ({ onClose }) => {
   return (
@@ -10,194 +10,194 @@ const RulesModal = ({ onClose }) => {
       <div className="rules-modal" onClick={(e) => e.stopPropagation()}>
         <button className="rules-close" onClick={onClose}>×</button>
         
-        <h2 className="rules-title">🍸 杯中逸事 - 游戏规则</h2>
+        <h2 className="rules-title">🍸 Resonant Sips - Game Rules</h2>
         
         <div className="rules-content">
           <section className="rule-section endless-mode">
-            <h3>🌟 无尽模式</h3>
+            <h3>🌟 Endless Mode</h3>
             <ul>
-              <li>每位顾客需要<strong>成功调制 3 杯</strong>鸡尾酒才会满意离开</li>
-              <li>顾客初始<strong>0% 信任度</strong>，对话与调酒表现会持续影响后续交流</li>
-              <li>成功调酒获得<strong>💰 金币收入</strong>（金额根据配方满意度）</li>
-              <li>服务完当前顾客后进入<strong>日结算</strong>，可前往商店购买道具</li>
-              <li>下一天会迎来新的顾客，不断挑战！</li>
+              <li>Each customer needs <strong>3 successful cocktails</strong> before leaving satisfied</li>
+              <li>Customers start with <strong>0% trust</strong>; both dialogue and mixing performance affect later interactions</li>
+              <li>Successful cocktails grant <strong>💰 coin income</strong> (amount scales with recipe satisfaction)</li>
+              <li>After serving the current customer, you enter <strong>day settlement</strong> and can buy items in the shop</li>
+              <li>A new customer arrives the next day, so the challenge continues</li>
             </ul>
           </section>
 
           <section className="rule-section">
-            <h3>🎯 游戏目标</h3>
-            <p>经营你的赛博酒吧！通过与 AI 顾客对话，洞察他们<strong>表面情绪背后的真实感受</strong>，猜测真实情绪后调制出符合目标条件的专属鸡尾酒，赚取金币并解锁更多内容。</p>
+            <h3>🎯 Goal</h3>
+            <p>Run your cyber bar. Talk with AI customers, read the <strong>true feelings behind their surface emotions</strong>, then mix a cocktail that matches the target conditions to earn coins and unlock more content.</p>
           </section>
 
           <section className="rule-section">
-            <h3>💬 对话系统</h3>
+            <h3>💬 Dialogue System</h3>
             <ul>
-              <li><strong>快捷选项</strong>：点击 3-4 个预设问题快速推进对话</li>
-              <li><strong>自定义输入</strong>：在输入框中输入个性化回应，更深入交流</li>
-              <li><strong>信任度机制</strong>：对话越深入真诚，信任度越高，顾客越愿意敞开心扉</li>
-              <li>良好的对话能提升信任度（+3%~+8%），敷衍回应会降低信任度（-3%~-8%）</li>
+              <li><strong>Quick options</strong>: click 3-4 preset lines to advance the conversation fast</li>
+              <li><strong>Custom input</strong>: type your own response for deeper interaction</li>
+              <li><strong>Trust system</strong>: the more honest and meaningful the talk, the more trust you gain</li>
+              <li>Good dialogue raises trust (+3% to +8%); shallow replies reduce it (-3% to -8%)</li>
             </ul>
           </section>
 
           <section className="rule-section">
-            <h3>🎭 情绪识别与猜测</h3>
+            <h3>🎭 Emotion Reading & Guessing</h3>
             <ul>
-              <li><strong>表面情绪</strong>：AI 顾客伪装或表现出的情绪（对话开始时显示）</li>
-              <li><strong>真实情绪</strong>：AI 内心的真实感受（需要通过猜测解锁）</li>
-              <li><strong>猜测情绪</strong>：点击"🎯 猜测真实情绪"按钮，选择你认为的真实情绪</li>
-              <li><strong>猜对</strong>：解锁调酒功能 + 信任度 +10%</li>
-              <li><strong>猜错</strong>：信任度 <span className="danger">-5%~-7%</span>（连续猜错惩罚递增）</li>
+              <li><strong>Surface emotion</strong>: what the customer shows at first glance</li>
+              <li><strong>True emotion</strong>: what they actually feel inside (must be unlocked by guessing)</li>
+              <li><strong>Guess emotion</strong>: click the "🎯 Guess True Emotion" button and choose what you believe is real</li>
+              <li><strong>Correct guess</strong>: unlocks mixing + trust +10%</li>
+              <li><strong>Wrong guess</strong>: trust <span className="danger">-5% to -7%</span> (penalty increases on repeated misses)</li>
             </ul>
           </section>
 
           <section className="rule-section">
-            <h3>🍹 调酒规则（核心玩法）</h3>
+            <h3>🍹 Mixing Rules (Core Gameplay)</h3>
             <p style={{ fontSize: '0.95em', marginBottom: '12px', opacity: 0.9 }}>
-              <strong>❗必须先猜对真实情绪才能解锁调酒台！</strong>
+              <strong>❗You must guess the true emotion correctly before the mixing station unlocks.</strong>
             </p>
-            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>📋 调酒流程（6步）</h4>
+            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>📋 Mixing Flow (6 Steps)</h4>
             <ul>
-              <li><strong>步骤1：选择杯型</strong> - 不同杯型决定原浆容量（2-4份）</li>
-              <li><strong>步骤2：加入冰块</strong> - 影响浓稠度、甜度、烈度</li>
-              <li><strong>步骤3：混合原浆</strong>（核心）- 添加基酒、果汁、利口酒、其他</li>
-              <li><strong>步骤4：添加配料</strong>（可选）- 糖浆、薰衣草、柠檬片等</li>
-              <li><strong>步骤5：点缀装饰</strong>（可选）- 薄荷叶、樱桃、金箔等</li>
-              <li><strong>步骤6：确认递酒</strong> - 查看配方是否达标</li>
+              <li><strong>Step 1: Choose a glass</strong> - Glass type defines base capacity (2-4 portions)</li>
+              <li><strong>Step 2: Add ice</strong> - Affects thickness, sweetness, and strength</li>
+              <li><strong>Step 3: Mix base liquids</strong> (core) - Add spirits, juices, liqueurs, and others</li>
+              <li><strong>Step 4: Add garnish ingredients</strong> (optional) - Syrup, lavender, lemon slice, etc.</li>
+              <li><strong>Step 5: Add decoration</strong> (optional) - Mint leaf, cherry, gold leaf, etc.</li>
+              <li><strong>Step 6: Serve</strong> - Check whether the recipe meets the target</li>
             </ul>
 
-            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🎯 目标三维条件</h4>
+            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🎯 3D Target Conditions</h4>
             <p style={{ fontSize: '0.9em', marginBottom: '8px', opacity: 0.85 }}>
-              猜对情绪后，系统会生成基于真实情绪的<strong>三维目标条件</strong>：
+              After a correct guess, the system generates <strong>three target dimensions</strong> based on true emotion:
             </p>
             <ul>
-              <li><strong>🫗 浓稠度</strong>（Thickness）：口感的厚重程度（-10 到 +10）</li>
-              <li><strong>🍬 甜度</strong>（Sweetness）：甜味程度，负值为酸/苦（-10 到 +10）</li>
-              <li><strong>🔥 烈度</strong>（Strength）：酒精度（0 到 15）</li>
+              <li><strong>🫗 Thickness</strong>: body/heaviness of texture (-10 to +10)</li>
+              <li><strong>🍬 Sweetness</strong>: sweetness level (negative means sour/bitter) (-10 to +10)</li>
+              <li><strong>🔥 Strength</strong>: alcohol intensity (0 to 15)</li>
             </ul>
             <p style={{ fontSize: '0.9em', marginTop: '8px', opacity: 0.85 }}>
-              每个维度会显示目标范围（如：浓稠度 3-5），你需要通过选择合适的<strong>原浆、冰块、配料、装饰</strong>来达到目标！
+              Each dimension shows a target range (for example: Thickness 3-5). Reach it by choosing the right <strong>base liquids, ice, ingredients, and decorations</strong>.
             </p>
 
-            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🧪 原浆系统（核心）</h4>
+            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🧪 Base Liquid System (Core)</h4>
             <ul>
-              <li><strong>原浆分类</strong>：基酒（高烈度）、果汁（调甜度）、利口酒（调味）、其他（特殊）</li>
-              <li><strong>份数限制</strong>：根据杯型不同，可添加 2-4 份原浆</li>
-              <li><strong>每种最多</strong>：同一种原浆最多添加 2 份</li>
-              <li><strong>三维贡献</strong>：每种原浆都有不同的浓稠度、甜度、烈度贡献值</li>
-              <li>例：伏特加（浓稠0，甜-1，烈+2）、橙汁（浓稠+1，甜+2，烈0）</li>
+              <li><strong>Categories</strong>: spirits (high strength), juice (sweetness tuning), liqueur (flavor tuning), others (special)</li>
+              <li><strong>Portion limit</strong>: add 2-4 portions depending on glass type</li>
+              <li><strong>Per-item cap</strong>: each base liquid can be added up to 2 portions</li>
+              <li><strong>Dimension contribution</strong>: each liquid contributes differently to thickness/sweetness/strength</li>
+              <li>Example: Vodka (thickness 0, sweetness -1, strength +2), Orange juice (thickness +1, sweetness +2, strength 0)</li>
             </ul>
           </section>
 
           <section className="rule-section bonus-guide">
-            <h3>🎯 调酒成功条件</h3>
+            <h3>🎯 Success Conditions</h3>
             <ul>
-              <li><strong>核心条件</strong>：所有三维数值都在目标范围内</li>
-              <li><strong>满意度</strong>：数值越接近目标中心，满意度越高（0-100%）</li>
-              <li><strong>收入计算</strong>：基础价格 × 满意度倍率（0.8-1.2倍）</li>
-              <li><strong>失败惩罚</strong>：未达标调酒会降低信任度 -10%</li>
+              <li><strong>Core rule</strong>: all three dimensions must be inside target range</li>
+              <li><strong>Satisfaction</strong>: the closer to target center, the higher the score (0-100%)</li>
+              <li><strong>Income formula</strong>: base price × satisfaction multiplier (0.8-1.2x)</li>
+              <li><strong>Failure penalty</strong>: out-of-range cocktails reduce trust by -10%</li>
             </ul>
           </section>
 
           <section className="rule-section combo-special">
-            <h3>✨ 道具效果说明</h3>
-            <h4 style={{ fontSize: '1em', marginTop: '10px', marginBottom: '8px' }}>🧊 冰块效果</h4>
+            <h3>✨ Item Effects</h3>
+            <h4 style={{ fontSize: '1em', marginTop: '10px', marginBottom: '8px' }}>🧊 Ice Effects</h4>
             <ul>
-              <li><strong>无冰</strong>：烈度 +1</li>
-              <li><strong>少冰</strong>：无额外效果</li>
-              <li><strong>圆球冰</strong>：浓稠度 +1</li>
-              <li><strong>多冰</strong>：烈度 -1</li>
-              <li><strong>大量冰</strong>：浓稠度 -1，烈度 -2</li>
-              <li><strong>干冰</strong>：浓稠度 -2（视觉特效）</li>
+              <li><strong>No ice</strong>: strength +1</li>
+              <li><strong>Light ice</strong>: no extra effect</li>
+              <li><strong>Sphere ice</strong>: thickness +1</li>
+              <li><strong>Extra ice</strong>: strength -1</li>
+              <li><strong>Heavy ice</strong>: thickness -1, strength -2</li>
+              <li><strong>Dry ice</strong>: thickness -2 (visual effect)</li>
             </ul>
             
-            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🍋 配料效果（常见）</h4>
+            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🍋 Ingredient Effects (Common)</h4>
             <ul>
-              <li><strong>糖浆</strong>：甜度 +2</li>
-              <li><strong>蜂蜜</strong>：浓稠度 +1，甜度 +1</li>
-              <li><strong>薰衣草</strong>：浓稠度 -1，甜度 +1（治愈风味）</li>
-              <li><strong>薄荷叶</strong>：甜度 -1（清爽）</li>
-              <li><strong>苦精</strong>：甜度 -2（苦味）</li>
+              <li><strong>Syrup</strong>: sweetness +2</li>
+              <li><strong>Honey</strong>: thickness +1, sweetness +1</li>
+              <li><strong>Lavender</strong>: thickness -1, sweetness +1 (healing tone)</li>
+              <li><strong>Mint leaf</strong>: sweetness -1 (refreshing)</li>
+              <li><strong>Bitters</strong>: sweetness -2 (bitter tone)</li>
             </ul>
             
-            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🍒 装饰效果</h4>
+            <h4 style={{ fontSize: '1em', marginTop: '15px', marginBottom: '8px' }}>🍒 Decoration Effects</h4>
             <ul>
-              <li>大部分装饰为<strong>纯视觉效果</strong>，不影响三维数值</li>
-              <li><strong>金箔</strong>：烈度 +1（奢华感）</li>
-              <li><strong>辣椒</strong>：烈度 +2（刺激感）</li>
+              <li>Most decorations are <strong>purely visual</strong> and do not change dimension values</li>
+              <li><strong>Gold leaf</strong>: strength +1 (luxury feel)</li>
+              <li><strong>Chili</strong>: strength +2 (intense feel)</li>
             </ul>
           </section>
 
           <section className="rule-section">
-            <h3>🎉 黄金组合（发现系统）</h3>
+            <h3>🎉 Golden Combos (Discovery)</h3>
             <p style={{ fontSize: '0.9em', marginBottom: '10px', opacity: 0.85 }}>
-              特定的道具组合会触发黄金组合，记录到图鉴中。以下是部分示例：
+              Specific item combinations trigger golden combos and are recorded in the codex. Examples:
             </p>
             <ul>
-              <li>💚 <strong>治愈套餐</strong>：薰衣草 + 薄荷叶 + 少冰</li>
-              <li>🕰️ <strong>时光倒流</strong>：糖浆 + 铜制驴子杯 + 圆球冰</li>
-              <li>🦁 <strong>勇者之酒</strong>：金箔 + 多冰 + 浅碟香槟杯</li>
-              <li>🌫️ <strong>迷雾深渊</strong>：干冰 + 烟雾泡泡 + 骷髅杯</li>
-              <li>💡 探索更多组合，解锁完整图鉴！</li>
+              <li>💚 <strong>Healing Set</strong>: Lavender + Mint Leaf + Light Ice</li>
+              <li>🕰️ <strong>Time Rewind</strong>: Syrup + Mule Mug + Sphere Ice</li>
+              <li>🦁 <strong>Braveheart Drink</strong>: Gold Leaf + Extra Ice + Coupe</li>
+              <li>🌫️ <strong>Misty Abyss</strong>: Dry Ice + Smoke Bubble + Skull Cup</li>
+              <li>💡 Discover more combinations to complete the codex.</li>
             </ul>
           </section>
 
           <section className="rule-section">
-            <h3>🏆 解锁系统</h3>
+            <h3>🏆 Unlock System</h3>
             <ul>
-              <li><strong>商店购买</strong>：使用金币购买新杯型、冰块、原浆、配料、装饰</li>
-              <li><strong>5 次成功</strong> → 自动解锁新杯型</li>
-              <li><strong>优先购买原浆</strong>：原浆种类越多，调配越灵活</li>
-              <li><strong>配料和装饰</strong>：可以微调三维数值，达到精确目标</li>
+              <li><strong>Shop purchase</strong>: use coins for new glasses, ice, base liquids, ingredients, and decorations</li>
+              <li><strong>5 successes</strong> → automatically unlocks a new glass type</li>
+              <li><strong>Prioritize base liquids</strong>: more liquid variety means more flexible mixing</li>
+              <li><strong>Ingredients and decorations</strong>: fine-tune dimension values for precise targets</li>
             </ul>
           </section>
 
           <section className="rule-section guess-guide">
-            <h3>💡 游戏技巧</h3>
+            <h3>💡 Tips</h3>
             <ul>
-              <li><strong>耐心对话</strong>：多轮对话提升信任度，更容易进入真实交流</li>
-              <li><strong>理解语气</strong>：结合顾客的措辞和状态，判断最贴近的 3 个情绪</li>
-              <li><strong>大胆确认</strong>：猜测本身不会扣分，关键在于后续是否把酒调对</li>
-              <li><strong>理解目标</strong>：猜对后看清三维目标范围，再选择原浆</li>
-              <li><strong>平衡三维</strong>：原浆是核心，冰块/配料/装饰用于微调</li>
-              <li><strong>记录配方</strong>：每次成功的配方可以作为参考模板</li>
-              <li><strong>灵活调整</strong>：如果一次未达标，调整配方重试（注意信任度）</li>
+              <li><strong>Be patient in dialogue</strong>: multiple rounds build trust and unlock deeper responses</li>
+              <li><strong>Read tone carefully</strong>: combine wording and mood to infer the closest emotions</li>
+              <li><strong>Confirm decisively</strong>: guessing itself is not the end; mixing quality is what matters</li>
+              <li><strong>Read targets first</strong>: after a correct guess, check all ranges before choosing liquids</li>
+              <li><strong>Balance all dimensions</strong>: base liquids are core; ice/ingredients/decorations are fine-tuning</li>
+              <li><strong>Save good recipes</strong>: successful mixes become useful templates</li>
+              <li><strong>Adjust flexibly</strong>: if one attempt fails, tweak and retry (watch trust level)</li>
             </ul>
           </section>
 
           <section className="rule-section recipe-guide">
-            <h3>⚠️ 注意事项</h3>
+            <h3>⚠️ Notes</h3>
             <ul>
-              <li><strong>必须先猜对情绪</strong>才能解锁调酒台</li>
-              <li><strong>回应太短或重复</strong>会降低信任度（-3%~-8%）</li>
-              <li><strong>调酒失败</strong>会降低信任度（-10%）</li>
-              <li><strong>低信任度</strong>会让顾客更难敞开心扉，也会影响调酒反馈</li>
-              <li>建议先充分交流建立信任，再根据整体对话判断情绪</li>
+              <li>You must <strong>guess emotion correctly first</strong> to unlock the mixing station</li>
+              <li><strong>Very short or repetitive replies</strong> reduce trust (-3% to -8%)</li>
+              <li><strong>Mixing failures</strong> reduce trust (-10%)</li>
+              <li><strong>Low trust</strong> makes customers less open and affects feedback quality</li>
+              <li>Build trust through conversation first, then infer emotion from the full context</li>
             </ul>
           </section>
 
           <section className="rule-section combo-guide">
-            <h3>🍸 调酒示例</h3>
-            <p style={{ fontSize: '0.9em', marginBottom: '10px', opacity: 0.8 }}>假设目标：浓稠度 2-4，甜度 1-3，烈度 4-6</p>
+            <h3>🍸 Mixing Example</h3>
+            <p style={{ fontSize: '0.9em', marginBottom: '10px', opacity: 0.8 }}>Example target: Thickness 2-4, Sweetness 1-3, Strength 4-6</p>
             <ul>
-              <li><strong>方案1</strong>：威士忌×2（浓+4，甜0，烈+6）+ 多冰（烈-1）→ 浓4，甜0，烈5 ❌甜度不足</li>
-              <li><strong>方案2</strong>：威士忌×1 + 橙汁×1（浓+3，甜+2，烈+3）+ 糖浆（甜+2）→ 浓3，甜4，烈3 ❌烈度不足</li>
-              <li><strong>方案3</strong>：威士忌×1 + 朗姆酒×1（浓+3，甜+1，烈+5）+ 糖浆（甜+2）→ 浓3，甜3，烈5 ✓全部达标！</li>
-              <li>💡 <strong>提示</strong>：先用原浆调主体，再用配料/冰块微调</li>
+              <li><strong>Plan 1</strong>: Whiskey×2 (thick +4, sweet 0, strong +6) + Extra Ice (strong -1) → thick 4, sweet 0, strong 5 ❌ sweetness too low</li>
+              <li><strong>Plan 2</strong>: Whiskey×1 + Orange Juice×1 (thick +3, sweet +2, strong +3) + Syrup (sweet +2) → thick 3, sweet 4, strong 3 ❌ strength too low</li>
+              <li><strong>Plan 3</strong>: Whiskey×1 + Rum×1 (thick +3, sweet +1, strong +5) + Syrup (sweet +2) → thick 3, sweet 3, strong 5 ✓ all conditions met</li>
+              <li>💡 <strong>Tip</strong>: build the core with base liquids first, then fine-tune with ingredients/ice</li>
             </ul>
           </section>
 
           <section className="rule-section" style={{ borderTop: '2px solid rgba(138, 101, 255, 0.3)', paddingTop: '20px' }}>
-            <h3>🎮 快捷键</h3>
+            <h3>🎮 Shortcuts</h3>
             <ul>
-              <li><strong>ESC</strong>：关闭当前弹窗</li>
-              <li><strong>Enter</strong>：发送对话（输入框聚焦时）</li>
-              <li><strong>?</strong>：打开规则说明（主界面）</li>
+              <li><strong>ESC</strong>: close the current modal</li>
+              <li><strong>Enter</strong>: send dialogue (while input is focused)</li>
+              <li><strong>?</strong>: open rules/help (main interface)</li>
             </ul>
           </section>
         </div>
 
         <button className="rules-start-button" onClick={onClose}>
-          开始游戏
+          Start Game
         </button>
       </div>
     </div>

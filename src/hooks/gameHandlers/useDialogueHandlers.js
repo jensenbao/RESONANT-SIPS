@@ -343,7 +343,7 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
   // ==================== 情绪猜测 ====================
 
   const handleConfirmGuess = useCallback(() => {
-    if (emotionSystem.selectedEmotions.length < 3) { addToast('请先选择 3 种情绪再确认', 'warning'); return; }
+    if (emotionSystem.selectedEmotions.length < 3) { addToast('Please select 3 emotions before confirming.', 'warning'); return; }
     playSFX('click');
     cocktailFlow.setGuessAttempts(prev => prev + 1);
 
@@ -354,7 +354,7 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
     cocktailFlow.setEmotionGuessMode(false);
     cocktailFlow.setLastCorrectGuesses(emotionSystem.selectedEmotions);
     playSFX('success');
-    addToast(`🎯 已确认猜测（命中 ${hitGuesses.length}/3）`, 'success');
+    addToast(`🎯 Guess confirmed (${hitGuesses.length}/3 matched)`, 'success');
     cocktailFlow.triggerGuessCorrectAnim();
 
     if (tutorial.isTutorialMode) tutorial.advanceTutorial('emotion_guessed');
@@ -368,10 +368,10 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
       // expressive/master：不再依赖数值目标（直接用“态度”调酒）
       if (mixingMode === 'master') {
         cocktailFlow.setTargetConditions([]);
-        cocktailFlow.setTargetHint('你已经不需要提示了。感受他们的情绪，用一杯酒回应。');
+        cocktailFlow.setTargetHint('You no longer need hints. Feel their emotions and answer with a drink.');
       } else if (mixingMode === 'expressive') {
         cocktailFlow.setTargetConditions([]);
-        cocktailFlow.setTargetHint('不看目标，听这个人需要什么，然后用酒说出来。');
+        cocktailFlow.setTargetHint('Ignore the target bars. Listen to what this person needs, then let the drink speak.');
       } else {
         const availableIngredients = unlockedItems.ingredients || INITIAL_UNLOCKED_INGREDIENTS;
         const target = generateSolvableTargetFromEmotionCombo(emotionSystem.selectedEmotions, availableIngredients);

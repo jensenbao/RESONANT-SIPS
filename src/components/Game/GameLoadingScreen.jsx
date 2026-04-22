@@ -3,14 +3,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import './GameLoadingScreen.css';
 
 const LOADING_TIPS = [
-  '每位顾客都戴着面具，但裂缝中会透出真实',
-  '信任需要时间，别急着追问',
-  '有些话，需要几杯酒才能说出口',
-  '这座城市不缺方案，缺的是愿意听的人',
-  '酒的味道对了，心就近了',
-  '调酒师最强的工具，是沉默',
-  '没有扫描仪，没有算法，但这里有真的酒',
-  '雨声是最好的伪装',
+  'Every guest wears a mask, but the cracks reveal the truth.',
+  'Trust takes time—don\'t rush the hard questions.',
+  'Some words only come out after a few drinks.',
+  'This city has enough solutions, but too few listeners.',
+  'When the flavor is right, hearts get closer.',
+  'A bartender\'s strongest tool is silence.',
+  'No scanner, no algorithm—just real drinks.',
+  'Rain is the best disguise.',
 ];
 
 
@@ -31,7 +31,7 @@ const GameLoadingScreen = ({
   const [narrativeIndex, setNarrativeIndex] = useState(0);
   const [narrativeCharIndex, setNarrativeCharIndex] = useState(0);
   const [isNarrativeTyping, setIsNarrativeTyping] = useState(true);
-  const narrative = '吧台灯亮了。\n酒瓶在架子上排成一排，等着今夜的故事。';
+  const narrative = 'The bar lights come on.\nBottles line the shelf, waiting for tonight\'s stories.';
 
 
   // 随机粒子位置（useMemo 缓存避免重渲染闪烁）
@@ -153,7 +153,7 @@ const GameLoadingScreen = ({
 
         {/* 状态文字 */}
         <p className="loading-text">
-          {isLoadingCustomers ? '正在为您准备今日顾客' : '酒吧准备中'}
+          {isLoadingCustomers ? 'Preparing tonight\'s guests' : 'Bar is getting ready'}
           <span className="loading-dots">{dots}</span>
         </p>
 
@@ -165,12 +165,12 @@ const GameLoadingScreen = ({
           <div className="loading-actions">
             {typeof onBackToSetup === 'function' && (
               <button type="button" className="loading-action-btn loading-action-primary" onClick={onBackToSetup}>
-                返回新游戏配置
+                Back to New Game Setup
               </button>
             )}
             {typeof onBack === 'function' && (
               <button type="button" className="loading-action-btn loading-action-secondary" onClick={onBack}>
-                返回上一级
+                Go Back
               </button>
             )}
           </div>

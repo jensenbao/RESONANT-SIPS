@@ -11,9 +11,9 @@ import { ICE_TYPES, GARNISH_TYPES, DECORATION_TYPES } from '../data/addons.js';
  * 三维属性范围
  */
 export const ATTRIBUTE_RANGES = {
-  thickness: { min: -5, max: 10, name: '浓稠度', icon: '🫗' },
-  sweetness: { min: -5, max: 10, name: '甜度', icon: '🍬' },
-  strength: { min: 0, max: 10, name: '烈度', icon: '🔥' }
+  thickness: { min: -5, max: 10, name: 'Thickness', icon: '🫗' },
+  sweetness: { min: -5, max: 10, name: 'Sweetness', icon: '🍬' },
+  strength: { min: 0, max: 10, name: 'Strength', icon: '🔥' }
 };
 
 /**
@@ -367,7 +367,7 @@ export const generateSolvableTarget = (emotionId, availableIngredients, maxAttem
     emotionId,
     conditions: easyConditions,
     hint: baseTarget.hint,
-    description: '任意搭配皆可',
+    description: 'Any combination works.',
     hasVariance: true,
     relaxLevel: 'max'
   };
@@ -439,7 +439,7 @@ export const generateSolvableTargetFromEmotionCombo = (emotionIds, availableIngr
       emotionIds: validIds,
       targetVector: vector,
       conditions: baseConditions,
-      hint: `围绕 ${validIds.join(' + ')} 的综合口感去调制。`,
+      hint: `Mix around the combined taste profile of ${validIds.join(' + ')}.`,
       description: generateConditionDescription(baseConditions),
       hasVariance: false
     };
@@ -452,7 +452,7 @@ export const generateSolvableTargetFromEmotionCombo = (emotionIds, availableIngr
         emotionIds: validIds,
         targetVector: vector,
         conditions: widened,
-        hint: `围绕 ${validIds.join(' + ')} 的综合口感去调制。`,
+        hint: `Mix around the combined taste profile of ${validIds.join(' + ')}.`,
         description: generateConditionDescription(widened),
         hasVariance: true,
         relaxLevel: attempt
@@ -473,8 +473,8 @@ export const generateSolvableTargetFromEmotionCombo = (emotionIds, availableIngr
     emotionIds: validIds,
     targetVector: vector,
     conditions: easyConditions,
-    hint: `围绕 ${validIds.join(' + ')} 的综合口感去调制。`,
-    description: '当前材料池下已自动放宽为自由调制区间。',
+    hint: `Mix around the combined taste profile of ${validIds.join(' + ')}.`,
+    description: 'Automatically relaxed to a free-mixing range for the current ingredient pool.',
     hasVariance: true,
     relaxLevel: 'max'
   };
@@ -487,9 +487,9 @@ export const generateSolvableTargetFromEmotionCombo = (emotionIds, availableIngr
  */
 export const generateConditionDescription = (conditions) => {
   const attrNames = {
-    thickness: '浓稠度',
-    sweetness: '甜度',
-    strength: '烈度'
+    thickness: 'Thickness',
+    sweetness: 'Sweetness',
+    strength: 'Strength'
   };
   
   return conditions.map(cond => {
@@ -519,7 +519,7 @@ export const getMixingSuggestions = (current, conditions, availableIngredients) 
   const checkResult = checkTargetConditions(current, conditions);
   
   if (checkResult.allMet) {
-    suggestions.push({ type: 'success', message: '已满足所有条件！' });
+    suggestions.push({ type: 'success', message: 'All conditions met.' });
     return suggestions;
   }
   
@@ -540,8 +540,8 @@ export const getMixingSuggestions = (current, conditions, availableIngredients) 
       if (helpfulIngs.length > 0) {
         suggestions.push({
           type: 'hint',
-          message: `${attrName}需要提高${progress.distance.toFixed(1)}点`,
-          recommended: helpfulIngs.map(i => i.name).join('、')
+          message: `${attrName} needs to increase by ${progress.distance.toFixed(1)}`,
+          recommended: helpfulIngs.map(i => i.name).join(', ')
         });
       }
     } else if (progress.direction === 'decrease') {
@@ -555,13 +555,13 @@ export const getMixingSuggestions = (current, conditions, availableIngredients) 
       if (helpfulIngs.length > 0) {
         suggestions.push({
           type: 'hint',
-          message: `${attrName}需要降低${progress.distance.toFixed(1)}点`,
-          recommended: helpfulIngs.map(i => i.name).join('、')
+          message: `${attrName} needs to decrease by ${progress.distance.toFixed(1)}`,
+          recommended: helpfulIngs.map(i => i.name).join(', ')
         });
       } else {
         suggestions.push({
           type: 'warning',
-          message: `${attrName}过高，考虑减少相关原浆`
+          message: `${attrName} is too high. Consider reducing related ingredients.`
         });
       }
     }
@@ -596,13 +596,13 @@ export const canAddIngredient = (portions, ingredientId, glassId = null) => {
   }
   
   if (total >= maxTotal) {
-    const glassName = glassId && GLASS_TYPES[glassId] ? GLASS_TYPES[glassId].name : '当前杯型';
-    return { canAdd: false, reason: `${glassName}已达到上限（${maxTotal}份）` };
+    const glassName = glassId && GLASS_TYPES[glassId] ? GLASS_TYPES[glassId].name : 'Current glass';
+    return { canAdd: false, reason: `${glassName} has reached its limit (${maxTotal} portions)` };
   }
   
   const existing = portions.find(p => p.id === ingredientId);
   if (existing && existing.count >= MAX_PORTIONS_PER_INGREDIENT) {
-    return { canAdd: false, reason: `该原浆已达上限（${MAX_PORTIONS_PER_INGREDIENT}份）` };
+    return { canAdd: false, reason: `This ingredient has reached its limit (${MAX_PORTIONS_PER_INGREDIENT} portions)` };
   }
   
   return { canAdd: true, reason: null };

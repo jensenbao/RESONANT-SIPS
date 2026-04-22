@@ -1,14 +1,14 @@
-// 引导气泡组件
+// Tutorial tooltip component
 import React from 'react';
 import { TUTORIAL_TOOLTIPS } from '../../data/tutorialData.js';
 import './TutorialTooltip.css';
 
 /**
- * 教学引导气泡
+ * Tutorial tooltip
  * @param {Object} props
- * @param {string} props.tooltipId - 引导气泡ID（对应 TUTORIAL_TOOLTIPS 中的 key）
- * @param {string} props.position - 位置 'top' | 'bottom' | 'left' | 'right' | 'center'
- * @param {Function} props.onDismiss - 关闭回调
+ * @param {string} props.tooltipId - Tooltip ID (key in TUTORIAL_TOOLTIPS)
+ * @param {string} props.position - Position: 'top' | 'bottom' | 'left' | 'right' | 'center'
+ * @param {Function} props.onDismiss - Dismiss callback
  */
 const TutorialTooltip = ({ tooltipId, position = 'bottom', onDismiss }) => {
   if (!tooltipId) return null;
@@ -25,7 +25,7 @@ const TutorialTooltip = ({ tooltipId, position = 'bottom', onDismiss }) => {
       </div>
       {onDismiss && (
         <button className="tooltip-dismiss" onClick={onDismiss}>
-          知道了
+          Got it
         </button>
       )}
     </div>

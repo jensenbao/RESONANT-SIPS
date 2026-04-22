@@ -12,7 +12,7 @@ const ChatMessage = ({ aiConfig, msg, renderMessageContent }) => (
       {msg.role === 'player' ? (
         <img
           src={BARTENDER_AVATAR_SRC}
-          alt="调酒师头像"
+          alt="Bartender avatar"
           className="player-avatar-image"
           loading="eager"
         />
@@ -30,7 +30,7 @@ const ChatMessage = ({ aiConfig, msg, renderMessageContent }) => (
       {renderMessageContent(msg.content, msg.isThinking)}
       {!msg.isThinking && (
         <span className="message-time">
-          {new Date(msg.timestamp).toLocaleTimeString('zh-CN', {
+          {new Date(msg.timestamp).toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit'
           })}
@@ -146,7 +146,7 @@ const ChatPanel = ({
 
   const renderMessageContent = (content, isThinking = false) => {
     if (isThinking) {
-      return <span className="thinking-ellipsis" aria-label="思考中">……</span>;
+      return <span className="thinking-ellipsis" aria-label="Thinking">……</span>;
     }
 
     return <BalancedPixelText text={content} />;
@@ -191,7 +191,7 @@ const ChatPanel = ({
 
         <div className="chat-header__actions">
           <div className="trust-indicator">
-            <span className="trust-label">信任度</span>
+            <span className="trust-label">Trust</span>
             <div className="trust-bar">
               <div
                 className={`trust-fill ${trustAnim}`}
@@ -209,7 +209,7 @@ const ChatPanel = ({
             className="chat-profile-btn"
             onClick={() => setShowProfileModal(true)}
           >
-            人物履历
+            Profile
           </button>
 
           <button
@@ -217,7 +217,7 @@ const ChatPanel = ({
             className="chat-history-btn"
             onClick={() => setShowHistoryModal(true)}
           >
-            对话记录
+            Chat History
           </button>
         </div>
       </div>
@@ -226,8 +226,8 @@ const ChatPanel = ({
         <div className="chat-stage__messages">
           {!latestPlayerMessage && !stageAiMessage && (
             <div className="welcome-message">
-              <p>欢迎来到 Resonant Sips</p>
-              <p className="subtitle">通过对话了解顾客的真实情绪，再为 TA 调制专属鸡尾酒</p>
+              <p>Welcome to Resonant Sips</p>
+              <p className="subtitle">Learn your guest's true emotions through dialogue, then craft a signature cocktail for them.</p>
             </div>
           )}
 
@@ -285,7 +285,7 @@ const ChatPanel = ({
             onClick={handleSend}
             disabled={isLoading || !inputValue.trim()}
           >
-            发送
+            Send
           </button>
         </div>
       </div>
@@ -294,21 +294,21 @@ const ChatPanel = ({
         <div className="chat-history-modal" onClick={() => setShowHistoryModal(false)}>
           <div className="chat-history-modal__panel" onClick={(event) => event.stopPropagation()}>
             <div className="chat-history-modal__header">
-              <div className="chat-history-modal__title">对话记录</div>
+              <div className="chat-history-modal__title">Chat History</div>
               <button
                 type="button"
                 className="chat-history-modal__close"
                 onClick={() => setShowHistoryModal(false)}
               >
-                关闭
+                Close
               </button>
             </div>
 
             <div className="chat-history-modal__list">
               {dialogueHistory.length === 0 && (
                 <div className="welcome-message">
-                  <p>还没有对话记录</p>
-                  <p className="subtitle">开始聊天后，这里会保存完整消息历史。</p>
+                  <p>No chat history yet</p>
+                  <p className="subtitle">Once you start chatting, full message history will appear here.</p>
                 </div>
               )}
 
@@ -328,7 +328,7 @@ const ChatPanel = ({
                 className="chat-history-modal__confirm"
                 onClick={() => setShowHistoryModal(false)}
               >
-                返回主界面
+                Back to Main View
               </button>
             </div>
           </div>
@@ -339,25 +339,25 @@ const ChatPanel = ({
         <div className="chat-history-modal" onClick={() => setShowProfileModal(false)}>
           <div className="chat-history-modal__panel chat-profile-modal__panel" onClick={(event) => event.stopPropagation()}>
             <div className="chat-history-modal__header">
-              <div className="chat-history-modal__title">人物履历</div>
+              <div className="chat-history-modal__title">Profile</div>
               <button
                 type="button"
                 className="chat-history-modal__close"
                 onClick={() => setShowProfileModal(false)}
               >
-                关闭
+                Close
               </button>
             </div>
 
             <div className="chat-history-modal__list chat-profile-modal__list">
               <div className="chat-profile-modal__section">
-                <div className="chat-profile-modal__label">姓名</div>
-                <div className="chat-profile-modal__value">{aiConfig?.name || '未知顾客'}</div>
+                <div className="chat-profile-modal__label">Name</div>
+                <div className="chat-profile-modal__value">{aiConfig?.name || 'Unknown Guest'}</div>
               </div>
 
               {personalityTraits.length > 0 && (
                 <div className="chat-profile-modal__section">
-                  <div className="chat-profile-modal__label">人格特征</div>
+                  <div className="chat-profile-modal__label">Personality</div>
                   <div className="chat-profile-modal__traits">
                     {personalityTraits.map((trait, index) => (
                       <span key={`profile-trait-${index}`} className="trait-tag">{trait}</span>
@@ -368,7 +368,7 @@ const ChatPanel = ({
 
               {aiConfig?.dialogueStyle?.tone && (
                 <div className="chat-profile-modal__section">
-                  <div className="chat-profile-modal__label">对话语气</div>
+                  <div className="chat-profile-modal__label">Tone</div>
                   <div className="chat-profile-modal__value">{aiConfig.dialogueStyle.tone}</div>
                 </div>
               )}
@@ -380,7 +380,7 @@ const ChatPanel = ({
                 className="chat-history-modal__confirm"
                 onClick={() => setShowProfileModal(false)}
               >
-                返回主界面
+                Back to Main View
               </button>
             </div>
           </div>

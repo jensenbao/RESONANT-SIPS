@@ -2,89 +2,89 @@
   "helpSections": [
     {
       "id": "basics",
-      "title": "基础玩法",
+      "title": "Basics",
       "icon": "📖",
       "subsections": [
         {
           "id": "core_loop",
-          "title": "游戏流程",
-          "content": "每位顾客会在当天轮到自己时来访。\n流程：对话 → 猜测真实情绪 → 根据目标调酒 → 递酒。\n成功与否会影响顾客反馈和信任变化。"
+          "title": "Core Loop",
+          "content": "Each guest arrives when it is their turn for the day.\nFlow: Dialogue → Guess true emotions → Mix to target → Serve.\nSuccess or failure affects feedback and trust changes."
         },
         {
           "id": "trust",
-          "title": "信任度",
-          "content": "信任度反映顾客对你的信任程度。\n0-100%，从对话质量和调酒成功中积累。\n信任度越高，顾客越愿意敞开心扉。\n低信任度时，对话往往更保守、更难深入。"
+          "title": "Trust",
+          "content": "Trust reflects how much a guest trusts you.\nRange: 0-100%, gained through better dialogue and successful drinks.\nHigher trust means guests open up more.\nAt low trust, conversations are guarded and harder to deepen."
         },
         {
           "id": "emotions",
-          "title": "情绪系统",
-          "content": "每位顾客有表面情绪和真实情绪。\n表面情绪是伪装，真实情绪是内心。\n结合对话内容，选择你认为最贴近对方状态的 3 个情绪。\n确认后，系统会根据你的选择生成调酒目标。"
+          "title": "Emotion System",
+          "content": "Each guest has surface emotions and true emotions.\nSurface emotions are a mask; true emotions are internal.\nUse dialogue clues to pick the 3 emotions that best match their real state.\nAfter confirmation, the system generates your mixing target."
         }
       ]
     },
     {
       "id": "mixing",
-      "title": "调酒系统",
+      "title": "Mixing System",
       "icon": "🍸",
       "subsections": [
         {
           "id": "three_dimensions",
-          "title": "三维属性",
-          "content": "每杯酒有三个维度：\n• 浓稠度：-3 ~ +3（质感）\n• 甜度：-3 ~ +3（负=酸苦，正=甜）\n• 烈度：0 ~ 5（酒精强度）\n目标会告诉你每个维度的要求。"
+          "title": "Three Dimensions",
+          "content": "Each drink has three dimensions:\n• Body: -3 ~ +3 (texture)\n• Sweetness: -3 ~ +3 (negative=dry/bitter, positive=sweet)\n• Strength: 0 ~ 5 (alcohol intensity)\nTargets specify the requirements for each dimension."
         },
         {
           "id": "attitude",
-          "title": "酒的态度",
-          "content": "每杯酒都在传递一种态度：\n• 烈度高 = \"直面问题\"\n• 烈度低 = \"先休息\"\n• 甜度高 = \"给予希望\"\n• 甜度低 = \"承认苦涩\"\n• 浓稠度高 = \"深度思考\"\n• 浓稠度低 = \"放下包袱\"\n\"这杯酒在说……\"会预览你的态度。"
+          "title": "Drink Attitude",
+          "content": "Every drink conveys an attitude:\n• High strength = \"face it directly\"\n• Low strength = \"rest first\"\n• High sweetness = \"offer hope\"\n• Low sweetness = \"acknowledge bitterness\"\n• High body = \"deeper reflection\"\n• Low body = \"let go of weight\"\n\"This drink says...\" previews that attitude."
         },
         {
           "id": "feeling",
           "title": "材料 feeling",
-          "content": "每种材料都有 feeling——情感质地描述。\n威士忌：\"像一个人坐了很久之后说出的第一句话\"\n奶油：\"像一个不说话的拥抱\"\n后期章节，feeling 比数值更重要。"
+          "content": "Each ingredient has a feeling—an emotional texture.\nWhiskey: \"like the first words after a long silence\"\nCream: \"like a quiet hug\"\nIn later chapters, feeling matters more than numbers."
         }
       ]
     },
     {
       "id": "special",
-      "title": "特殊选项",
+      "title": "Special Options",
       "icon": "✨",
       "subsections": [
         {
           "id": "silence",
-          "title": "沉默 \"……\"",
-          "content": "对话中可以选择沉默（\"……\"）。\n低信任时可能让人不安。\n高信任时反而更有力量——不说话，只是陪着。"
+          "title": "Silence \"...\"",
+          "content": "You can choose silence (\"...\") in dialogue.\nAt low trust, this may feel unsettling.\nAt high trust, it can be powerful—saying nothing, just being there."
         },
         {
           "id": "plain_water",
-          "title": "白水",
-          "content": "调酒面板底部有\"倒一杯白水\"选项。\n白水意味着：你现在不需要酒，只需要有人在这里。\n适合特别脆弱或高信任度的时刻。"
+          "title": "Plain Water",
+          "content": "The mixing panel includes a \"Pour Plain Water\" option.\nPlain water means: you don't need alcohol right now, just someone present.\nBest for fragile moments or high-trust moments."
         }
       ]
     },
     {
       "id": "story",
-      "title": "故事系统",
+      "title": "Story System",
       "icon": "📜",
       "subsections": [
         {
           "id": "return_customer",
-          "title": "回头客",
-          "content": "成功服务的顾客可能再次光临。\n回头客有完整的故事弧光：\n初识 → 深入 → 转折点 → 解决 → 尾声\n你们的互动会被记住，形成共同记忆。"
+          "title": "Returning Guests",
+          "content": "Guests you serve well may return.\nReturning guests follow a full arc:\nIntroduction → Deepening → Turning Point → Resolution → Epilogue\nYour interactions are remembered and become shared memory."
         },
         {
           "id": "crossroads",
-          "title": "十字路口",
-          "content": "回头客可能面临人生抉择。\n你的酒会影响他们的选择倾向。\n结果在下次来访时揭晓——可能好可能坏。"
+          "title": "Crossroads",
+          "content": "Returning guests may face major life choices.\nYour drinks influence their direction.\nResults are revealed on their next visit—for better or worse."
         },
         {
           "id": "chapters",
-          "title": "章节系统",
-          "content": "游戏分 5 个章节，由故事进度触发。\n每个章节有不同的氛围和调酒模式。\n后期章节，数值变得不重要，情感共鸣才是关键。"
+          "title": "Chapter System",
+          "content": "The game has 5 chapters triggered by story progress.\nEach chapter has different atmosphere and mixing modes.\nIn later chapters, numbers matter less and emotional resonance matters more."
         },
         {
           "id": "fragments",
-          "title": "回忆碎片",
-          "content": "你也有自己的故事——只是忘了。\n随着游戏推进，回忆碎片会浮现。\n它们会从模糊变得清晰，最终拼成完整的过去。"
+          "title": "Memory Fragments",
+          "content": "You have your own story too—you just forgot it.\nAs the game progresses, memory fragments appear.\nThey sharpen over time and eventually form a complete past."
         }
       ]
     }

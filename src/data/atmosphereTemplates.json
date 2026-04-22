@@ -8,12 +8,12 @@
     "heatwave": "🔥"
   },
   "weatherNames": {
-    "clear": "晴朗",
-    "rainy": "雨夜",
-    "stormy": "风暴",
-    "foggy": "薄雾",
-    "snowy": "雪夜",
-    "heatwave": "热浪"
+    "clear": "Clear",
+    "rainy": "Rainy",
+    "stormy": "Storm",
+    "foggy": "Fog",
+    "snowy": "Snow",
+    "heatwave": "Heatwave"
   },
   "musicIcons": {
     "jazz_slow": "🎷",
@@ -23,10 +23,10 @@
     "lo_fi": "🎧"
   },
   "musicNames": {
-    "jazz_slow": "慢爵士",
-    "electronic": "电子",
-    "classical": "古典",
-    "silence": "静默",
+    "jazz_slow": "Slow Jazz",
+    "electronic": "Electronic",
+    "classical": "Classical",
+    "silence": "Silence",
     "lo_fi": "Lo-Fi"
   },
   "lightingIcons": {
@@ -37,17 +37,17 @@
     "flickering": "✨"
   },
   "lightingNames": {
-    "bright": "明亮",
-    "dim_warm": "暖暗",
+    "bright": "Bright",
+    "dim_warm": "Warm Dim",
     "neon": "霓虹",
-    "candlelight": "烛光",
-    "flickering": "闪烁"
+    "candlelight": "Candlelight",
+    "flickering": "Flickering"
   },
   "crowdNames": {
-    "empty": "空荡",
-    "sparse": "稀疏",
-    "moderate": "适中",
-    "crowded": "拥挤"
+    "empty": "Empty",
+    "sparse": "Sparse",
+    "moderate": "Moderate",
+    "crowded": "Crowded"
   },
   "crowdIcons": {
     "empty": "◻️",
@@ -63,8 +63,8 @@
       "lighting": "dim_warm",
       "music": "jazz_slow",
       "crowdLevel": "sparse",
-      "scent": "木质与酒精气息",
-      "narrative": "雨丝敲打窗面，吧台灯光像一层薄毯。",
+      "scent": "Wood and spirit notes",
+      "narrative": "Rain taps the window, and the bar lights feel like a thin blanket.",
       "modifiers": {
         "trustBonus": 0.02,
         "emotionBias": [
@@ -86,8 +86,8 @@
       "lighting": "neon",
       "music": "electronic",
       "crowdLevel": "moderate",
-      "scent": "柑橘与冷金属",
-      "narrative": "霓虹反射在杯壁，空气里有一点即将发生什么的味道。",
+      "scent": "Citrus and cold metal",
+      "narrative": "Neon reflects on the glass; the air hints that something is about to happen.",
       "modifiers": {
         "trustBonus": 0,
         "emotionBias": [

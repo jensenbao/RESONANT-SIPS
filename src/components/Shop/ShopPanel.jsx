@@ -21,11 +21,11 @@ const ShopPanel = ({
 
   // 标签页配置
   const tabs = [
-    { id: 'ingredients', name: '原浆', icon: '🧪' },
-    { id: 'glasses', name: '酒杯', icon: '🍸' },
-    { id: 'ice', name: '冰块', icon: '🧊' },
-    { id: 'garnishes', name: '配料', icon: '🍋' },
-    { id: 'decorations', name: '装饰', icon: '🍒' }
+    { id: 'ingredients', name: 'Ingredients', icon: '🧪' },
+    { id: 'glasses', name: 'Glassware', icon: '🍸' },
+    { id: 'ice', name: 'Ice', icon: '🧊' },
+    { id: 'garnishes', name: 'Garnish', icon: '🍋' },
+    { id: 'decorations', name: 'Decor', icon: '🍒' }
   ];
 
   // 获取当前标签页的物品列表
@@ -91,8 +91,8 @@ const ShopPanel = ({
     <div className={`shop-panel ${compact ? 'compact' : ''}`}>
       {/* 头部 */}
       <div className="shop-panel-header">
-        <h3 className="shop-panel-title">🏪 商店</h3>
-        <div className="shop-panel-money">🎁 免费解锁</div>
+        <h3 className="shop-panel-title">🏪 Shop</h3>
+        <div className="shop-panel-money">🎁 Free Unlocks</div>
       </div>
 
       {/* 标签页 */}
@@ -124,32 +124,32 @@ const ShopPanel = ({
               {/* 原浆特殊显示：三维属性 */}
               {activeTab === 'ingredients' && !compact && (
                 <div className="item-stats">
-                  <span className="stat-tag" title="浓稠度">🫗 {item.thickness >= 0 ? '+' : ''}{item.thickness}</span>
-                  <span className="stat-tag" title="甜度">🍬 {item.sweetness >= 0 ? '+' : ''}{item.sweetness}</span>
-                  <span className="stat-tag" title="烈度">🔥 +{item.strength}</span>
+                  <span className="stat-tag" title="Body">🫗 {item.thickness >= 0 ? '+' : ''}{item.thickness}</span>
+                  <span className="stat-tag" title="Sweetness">🍬 {item.sweetness >= 0 ? '+' : ''}{item.sweetness}</span>
+                  <span className="stat-tag" title="Strength">🔥 +{item.strength}</span>
                 </div>
               )}
               
               {!compact && item.compatibleEmotions && (
                 <div className="item-emotions">
-                  适配情绪：{item.compatibleEmotions.join('、')}
+                  Compatible emotions: {item.compatibleEmotions.join(', ')}
                 </div>
               )}
               {!compact && item.bonus && (
                 <div className="item-bonus">
-                  加成情绪：{item.bonus.join('、')}
+                  Bonus emotions: {item.bonus.join(', ')}
                 </div>
               )}
             </div>
             <div className="item-action">
               {item.isUnlocked ? (
-                <span className="item-owned">已拥有</span>
+                <span className="item-owned">Owned</span>
               ) : (
                 <button 
                   className="item-buy-btn"
                   onClick={() => handlePurchase(item)}
                 >
-                  解锁
+                  Unlock
                 </button>
               )}
             </div>
@@ -161,9 +161,9 @@ const ShopPanel = ({
       {!compact && (
         <div className="shop-panel-tips">
           {activeTab === 'ingredients' ? (
-            <p>💡 提示：原浆是调酒的核心，不同原浆提供不同的浓稠度、甜度和烈度！</p>
+            <p>💡 Tip: Ingredients are the core of mixing. Different ingredients affect body, sweetness, and strength.</p>
           ) : (
-            <p>💡 提示：选择与顾客情绪匹配的配料和装饰可以提升调酒表现！</p>
+            <p>💡 Tip: Matching garnish/decor to guest emotions can improve outcomes.</p>
           )}
         </div>
       )}
@@ -173,13 +173,13 @@ const ShopPanel = ({
         <div className="purchase-confirm-overlay">
           <div className="purchase-confirm-modal">
             <div className="confirm-icon">{purchaseConfirm.icon}</div>
-            <h3 className="confirm-title">确认购买</h3>
+            <h3 className="confirm-title">Confirm Unlock</h3>
             <p className="confirm-text">
-              是否解锁 <strong>{purchaseConfirm.name}</strong>？
+              Unlock <strong>{purchaseConfirm.name}</strong>?
             </p>
             <div className="confirm-buttons">
-              <button className="confirm-cancel" onClick={cancelPurchase}>取消</button>
-              <button className="confirm-buy" onClick={confirmPurchase}>确认购买</button>
+              <button className="confirm-cancel" onClick={cancelPurchase}>Cancel</button>
+              <button className="confirm-buy" onClick={confirmPurchase}>Confirm</button>
             </div>
           </div>
         </div>

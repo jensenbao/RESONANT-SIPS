@@ -1,13 +1,13 @@
-// 教学遮罩组件
+// Tutorial overlay component
 import React from 'react';
 import './TutorialOverlay.css';
 
 /**
- * 教学遮罩层
- * 非可交互区域覆盖半透明遮罩
+ * Tutorial overlay layer
+ * Covers non-interactive areas with a translucent mask
  * @param {Object} props
- * @param {string[]} props.visibleAreas - 可交互的区域列表 ['chat', 'emotion', 'bartender']
- * @param {boolean} props.active - 是否激活遮罩
+ * @param {string[]} props.visibleAreas - Interactive areas ['chat', 'emotion', 'bartender']
+ * @param {boolean} props.active - Whether the overlay is active
  */
 const TutorialOverlay = ({ visibleAreas = ['chat'], active = true }) => {
   if (!active) return null;
@@ -18,17 +18,17 @@ const TutorialOverlay = ({ visibleAreas = ['chat'], active = true }) => {
 
   return (
     <>
-      {/* 情绪面板遮罩 */}
+      {/* Emotion panel mask */}
       {!isEmotionVisible && (
         <div className="tutorial-mask tutorial-mask-emotion">
-          <div className="mask-label">🔒 继续对话后解锁</div>
+          <div className="mask-label">🔒 Unlock after more dialogue</div>
         </div>
       )}
 
-      {/* 调酒面板遮罩 */}
+      {/* Mixing panel mask */}
       {!isBartenderVisible && (
         <div className="tutorial-mask tutorial-mask-bartender">
-          <div className="mask-label">🔒 猜对情绪后解锁</div>
+          <div className="mask-label">🔒 Unlock after a correct emotion guess</div>
         </div>
       )}
     </>

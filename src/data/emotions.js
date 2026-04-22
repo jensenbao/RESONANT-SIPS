@@ -4,48 +4,48 @@ import highballGlassIcon from '../../Art-assets/Art assets/道具/杯型/highbal
 import rockGlassIcon from '../../Art-assets/Art assets/道具/杯型/rock.png';
 
 export const EMOTIONS = {
-  joy: { id: 'joy', name: '喜悦', color: '#FFD166', icon: '😊' },
-  trust: { id: 'trust', name: '信任', color: '#06D6A0', icon: '🤝' },
-  fear: { id: 'fear', name: '恐惧', color: '#7B2CBF', icon: '😨' },
-  surprise: { id: 'surprise', name: '惊讶', color: '#4CC9F0', icon: '😮' },
-  sadness: { id: 'sadness', name: '悲伤', color: '#4361EE', icon: '😢' },
-  disgust: { id: 'disgust', name: '厌恶', color: '#6A994E', icon: '🤢' },
-  anger: { id: 'anger', name: '愤怒', color: '#E63946', icon: '😠' },
-  anticipation: { id: 'anticipation', name: '期待', color: '#F77F00', icon: '✨' },
+  joy: { id: 'joy', name: 'Joy', color: '#FFD166', icon: '😊' },
+  trust: { id: 'trust', name: 'Trust', color: '#06D6A0', icon: '🤝' },
+  fear: { id: 'fear', name: 'Fear', color: '#7B2CBF', icon: '😨' },
+  surprise: { id: 'surprise', name: 'Surprise', color: '#4CC9F0', icon: '😮' },
+  sadness: { id: 'sadness', name: 'Sadness', color: '#4361EE', icon: '😢' },
+  disgust: { id: 'disgust', name: 'Disgust', color: '#6A994E', icon: '🤢' },
+  anger: { id: 'anger', name: 'Anger', color: '#E63946', icon: '😠' },
+  anticipation: { id: 'anticipation', name: 'Anticipation', color: '#F77F00', icon: '✨' },
 };
 
 export const INITIAL_UNLOCKED_EMOTIONS = [...EMOTION_IDS_8];
 
 export const EMOTION_HINTS = {
   low: {
-    joy: '顾客语气里有一点轻快。',
-    trust: '顾客开始愿意靠近你。',
-    fear: '顾客似乎在担心什么。',
-    surprise: '顾客对某件事显得意外。',
-    sadness: '顾客情绪里有一丝低落。',
-    disgust: '顾客对某些话题有明显排斥。',
-    anger: '顾客压着一股火气。',
-    anticipation: '顾客对接下来的事有期待。',
+    joy: 'Their tone sounds a little lighter.',
+    trust: 'They seem more willing to lean closer.',
+    fear: 'They seem worried about something.',
+    surprise: 'They seem caught off guard by something.',
+    sadness: 'There is a trace of low mood in their voice.',
+    disgust: 'They show clear resistance to certain topics.',
+    anger: 'They are holding back irritation.',
+    anticipation: 'They seem to be expecting what comes next.',
   },
   medium: {
-    joy: '顾客眼神里有亮光，语气也更松弛了。',
-    trust: '顾客开始透露更私人、更真实的信息。',
-    fear: '顾客说话有迟疑，像在反复确认安全感。',
-    surprise: '顾客会突然停顿，像被记忆或消息击中。',
-    sadness: '顾客提到过去时会明显放慢语速。',
-    disgust: '顾客在某些描述上明显不愿继续。',
-    anger: '顾客对某些人和事的措辞变得锋利。',
-    anticipation: '顾客会主动谈到计划、可能性与下一步。',
+    joy: 'Their eyes are brighter and their tone is more relaxed.',
+    trust: 'They begin sharing more personal, more honest details.',
+    fear: 'They hesitate as if repeatedly checking for safety.',
+    surprise: 'They pause suddenly, like struck by a memory or message.',
+    sadness: 'They noticeably slow down when talking about the past.',
+    disgust: 'They clearly avoid continuing certain descriptions.',
+    anger: 'Their wording grows sharper around certain people/topics.',
+    anticipation: 'They actively discuss plans, possibilities, and next steps.',
   },
   high: {
-    joy: '顾客的开心已经不再掩饰，连呼吸都轻了。',
-    trust: '顾客明显在把你当成可以依靠的人。',
-    fear: '顾客内心的恐惧已浮到表层，需要被接住。',
-    surprise: '顾客情绪波动明显，像刚经历突发转折。',
-    sadness: '顾客正在触碰最脆弱的悲伤，防线很薄。',
-    disgust: '顾客的厌恶很强，几乎不愿再回看那段经历。',
-    anger: '顾客的愤怒已接近爆发边缘。',
-    anticipation: '顾客对未来有强烈期待，正在等待一个答案。',
+    joy: 'Their happiness is no longer hidden; even breathing feels lighter.',
+    trust: 'They clearly see you as someone they can rely on.',
+    fear: 'Their fear has surfaced and needs to be held carefully.',
+    surprise: 'Emotion swings are obvious, like after a sudden turn.',
+    sadness: 'They are touching their most fragile grief; defenses are thin.',
+    disgust: 'Their aversion is strong—they can hardly revisit that memory.',
+    anger: 'Their anger is close to erupting.',
+    anticipation: 'They strongly expect something from the future, waiting for an answer.',
   },
 };
 
@@ -67,39 +67,39 @@ export const EMOTION_COMPATIBILITY = {
 export const GLASS_TYPES = {
   martini: {
     id: 'martini',
-    name: '马提尼杯',
+    name: 'Martini Glass',
     icon: '🍸',
     iconImage: martiniGlassIcon,
     bonus: ['trust', 'joy'],
-    description: '经典优雅，适合平衡型情绪',
+    description: 'Classic and elegant, suited for balanced emotions',
     maxPortions: 3,
-    feeling: '这种杯子要求你直视它，没有地方躲。',
+    feeling: 'This glass asks for directness; there is nowhere to hide.',
   },
   highball: {
     id: 'highball',
-    name: '高球杯',
+    name: 'Highball Glass',
     icon: '🥃',
     iconImage: highballGlassIcon,
     bonus: ['joy', 'anticipation'],
-    description: '轻松随意，适合积极情绪',
+    description: 'Relaxed and easy, suited for positive emotions',
     maxPortions: 3,
-    feeling: '这种杯子不急，慢慢喝，慢慢说。',
+    feeling: 'This glass is unhurried: sip slowly, speak slowly.',
   },
   rock: {
     id: 'rock',
-    name: '古典杯',
+    name: 'Rocks Glass',
     icon: '🥛',
     iconImage: rockGlassIcon,
     bonus: ['sadness', 'fear'],
-    description: '沉稳厚重，适合复杂情绪',
+    description: 'Steady and weighty, suited for complex emotions',
     maxPortions: 3,
-    feeling: '这种杯子像一个承诺，重量扎实而克制。',
+    feeling: 'This glass feels like a promise: solid, weighted, restrained.',
   },
 };
 export const EMOTION_TARGETS = {
   joy: {
-    hint: '轻盈、偏甜、不过分刺激。',
-    description: '用明亮口感放大积极情绪。',
+    hint: 'Light, slightly sweet, not overly harsh.',
+    description: 'Amplify positive emotions with a bright profile.',
     conditions: [
       { attr: 'thickness', op: '>=', value: 1 },
       { attr: 'sweetness', op: '>=', value: 2 },
@@ -107,8 +107,8 @@ export const EMOTION_TARGETS = {
     ],
   },
   trust: {
-    hint: '口感平衡、层次稳定。',
-    description: '给人可依靠的感觉。',
+    hint: 'Balanced profile, stable layers.',
+    description: 'Convey a dependable feeling.',
     conditions: [
       { attr: 'thickness', op: '>=', value: 1 },
       { attr: 'sweetness', op: '>=', value: 1 },
@@ -116,8 +116,8 @@ export const EMOTION_TARGETS = {
     ],
   },
   fear: {
-    hint: '别太烈，先稳住情绪。',
-    description: '降低攻击性，强调安定。',
+    hint: 'Keep it gentle; stabilize first.',
+    description: 'Reduce aggression and emphasize steadiness.',
     conditions: [
       { attr: 'thickness', op: '>=', value: 1 },
       { attr: 'sweetness', op: '>=', value: 1 },
@@ -125,8 +125,8 @@ export const EMOTION_TARGETS = {
     ],
   },
   surprise: {
-    hint: '带一点跳跃感和反差。',
-    description: '在可控范围内制造变化。',
+    hint: 'Include a bit of jump and contrast.',
+    description: 'Create variation within control.',
     conditions: [
       { attr: 'thickness', op: '=', value: 1 },
       { attr: 'sweetness', op: '>=', value: 1 },
@@ -134,8 +134,8 @@ export const EMOTION_TARGETS = {
     ],
   },
   sadness: {
-    hint: '更温和、更包裹感。',
-    description: '允许悲伤被看见，但不被淹没。',
+    hint: 'Softer, with a wrapping comfort.',
+    description: 'Let sadness be seen without being overwhelming.',
     conditions: [
       { attr: 'thickness', op: '>=', value: 2 },
       { attr: 'sweetness', op: '>=', value: 1 },
@@ -143,8 +143,8 @@ export const EMOTION_TARGETS = {
     ],
   },
   disgust: {
-    hint: '保持干净利落，减少甜腻。',
-    description: '避免黏滞感，突出克制。',
+    hint: 'Keep it clean and crisp, less sweet.',
+    description: 'Avoid heaviness; emphasize restraint.',
     conditions: [
       { attr: 'thickness', op: '<=', value: 1 },
       { attr: 'sweetness', op: '<=', value: 1 },
@@ -152,8 +152,8 @@ export const EMOTION_TARGETS = {
     ],
   },
   anger: {
-    hint: '有力度，但别失控。',
-    description: '承接愤怒并导向可表达状态。',
+    hint: 'Strong, but not out of control.',
+    description: 'Hold anger and direct it into expression.',
     conditions: [
       { attr: 'thickness', op: '<=', value: 1 },
       { attr: 'sweetness', op: '<=', value: 1 },
@@ -161,8 +161,8 @@ export const EMOTION_TARGETS = {
     ],
   },
   anticipation: {
-    hint: '有上扬感和延展感。',
-    description: '把期待推向积极行动。',
+    hint: 'Lifted and forward-moving.',
+    description: 'Push expectation toward positive action.',
     conditions: [
       { attr: 'thickness', op: '>=', value: 1 },
       { attr: 'sweetness', op: '>=', value: 2 },

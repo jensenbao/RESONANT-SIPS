@@ -14,28 +14,28 @@ import './PixiMixingBoard.css';
 const STEP_COPY = {
   glass: {
     icon: '🍸',
-    subtitle: '先定杯型，让酒先有轮廓。',
-    title: 'Step 1 · 杯型'
+    subtitle: 'Choose the glass first to define the profile.',
+    title: 'Step 1 · Glass'
   },
   ice: {
     icon: '🧊',
-    subtitle: '冰决定这杯酒开口时的温度。',
-    title: 'Step 2 · 冰块'
+    subtitle: 'Ice sets the opening temperature and tone.',
+    title: 'Step 2 · Ice'
   },
   ingredient: {
     icon: '🥃',
-    subtitle: '原液配比会直接改写这杯酒的性格。',
-    title: 'Step 3 · 原液'
+    subtitle: 'Base ingredient ratios define the character.',
+    title: 'Step 3 · Ingredients'
   },
   decoration: {
     icon: '✨',
-    subtitle: '装饰决定顾客第一眼看到什么。',
-    title: 'Step 4 · 装饰'
+    subtitle: 'Decoration shapes the first impression.',
+    title: 'Step 4 · Decoration'
   },
   preview: {
     icon: '🫗',
-    subtitle: '如果这杯酒已经站稳，就递出去。',
-    title: 'Step 5 · 递酒'
+    subtitle: 'If the drink is ready, serve it.',
+    title: 'Step 5 · Serve'
   }
 };
 
@@ -44,71 +44,71 @@ const STEP_SEQUENCE = ['glass', 'ice', 'ingredient', 'decoration', 'preview'];
 const MODE_COPY = {
   expressive: {
     badge: 'Expressive',
-    briefLabel: '回应草图',
-    emptyBody: '第三章以后，材料的 feeling 比数字更值得听。',
-    emptyTitle: '先让酒开口',
+    briefLabel: 'Response Draft',
+    emptyBody: 'From Chapter III onward, ingredient feeling matters more than numbers.',
+    emptyTitle: 'Let the drink speak first',
     eyebrow: 'Chapter III-IV · Resonance',
-    hintLabel: '情绪方向',
-    manifesto: '你调的不是答案，是回应。',
-    previewLabel: '酒的态度',
-    progressLabel: '共鸣草图',
+    hintLabel: 'Emotional Direction',
+    manifesto: 'You are not mixing an answer, but a response.',
+    previewLabel: 'Drink Attitude',
+    progressLabel: 'Resonance Draft',
     showHint: true,
     showMetrics: false,
     showNumericProgress: false,
     showSignals: true,
     showSuggestions: false,
-    signalLabel: '当前质地'
+    signalLabel: 'Current Texture'
   },
   master: {
     badge: 'Master',
-    briefLabel: '静默判断',
-    emptyBody: '这里只留下手感、沉默和你的判断。',
-    emptyTitle: '没有标准答案',
+    briefLabel: 'Silent Judgment',
+    emptyBody: 'Only touch, silence, and your judgment remain here.',
+    emptyTitle: 'No single correct answer',
     eyebrow: 'Chapter V · Intuition',
-    hintLabel: '残响方向',
-    manifesto: '别被配方牵走，去听沉默本身。',
-    previewLabel: '余味感应',
-    progressLabel: '直觉回声',
+    hintLabel: 'Aftertone Direction',
+    manifesto: 'Do not follow formulas blindly—listen to silence itself.',
+    previewLabel: 'Aftertaste Sensing',
+    progressLabel: 'Intuition Echo',
     showHint: true,
     showMetrics: false,
     showNumericProgress: false,
     showSignals: true,
     showSuggestions: false,
-    signalLabel: '只剩手感'
+    signalLabel: 'Touch Only'
   },
   strict: {
     badge: 'Strict',
-    briefLabel: '校准建议',
-    emptyBody: '第一章先学会调准，容量与三维决定这杯酒是否成立。',
-    emptyTitle: '先从结构开始',
+    briefLabel: 'Calibration Tips',
+    emptyBody: 'In Chapter I, focus on structure: capacity and three attributes define success.',
+    emptyTitle: 'Start with structure',
     eyebrow: 'Chapter I · Calibration',
-    hintLabel: '目标提示',
-    manifesto: '先把酒调准，再学会读人。',
-    previewLabel: '杯中校准',
-    progressLabel: '条件命中',
+    hintLabel: 'Target Hint',
+    manifesto: 'Calibrate the drink first, then read the person.',
+    previewLabel: 'Calibration',
+    progressLabel: 'Condition Match',
     showHint: true,
     showMetrics: true,
     showNumericProgress: true,
     showSignals: false,
     showSuggestions: true,
-    signalLabel: '校准信号'
+    signalLabel: 'Calibration Signals'
   },
   transitional: {
     badge: 'Transitional',
-    briefLabel: '态度修正',
-    emptyBody: '数字开始退后，态度开始浮现。',
-    emptyTitle: '从正确走向贴近',
+    briefLabel: 'Attitude Adjustment',
+    emptyBody: 'Numbers step back, attitude comes forward.',
+    emptyTitle: 'From correct to close',
     eyebrow: 'Chapter II · Drift',
-    hintLabel: '方向判断',
-    manifesto: '不是只要命中，还要贴近这个人。',
-    previewLabel: '偏移观测',
-    progressLabel: '接近程度',
+    hintLabel: 'Direction',
+    manifesto: 'Not just match conditions—match the person.',
+    previewLabel: 'Drift Watch',
+    progressLabel: 'Closeness',
     showHint: true,
     showMetrics: true,
     showNumericProgress: true,
     showSignals: true,
     showSuggestions: true,
-    signalLabel: '态度偏移'
+    signalLabel: 'Attitude Drift'
   }
 };
 
@@ -116,25 +116,25 @@ const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 const describeAxis = (type, value) => {
   if (type === 'thickness') {
-    if (value >= 7) return '厚重包裹';
-    if (value >= 4) return '醇厚稳住';
-    if (value >= 1) return '有骨架';
-    if (value <= -2) return '轻盈透明';
-    return '收束克制';
+    if (value >= 7) return 'Dense and enveloping';
+    if (value >= 4) return 'Rich and stable';
+    if (value >= 1) return 'Has structure';
+    if (value <= -2) return 'Light and transparent';
+    return 'Restrained';
   }
 
   if (type === 'sweetness') {
-    if (value >= 7) return '近乎安抚';
-    if (value >= 4) return '柔软回甘';
-    if (value >= 1) return '带点温度';
-    if (value <= -1) return '克制冷静';
-    return '平静留白';
+    if (value >= 7) return 'Almost soothing';
+    if (value >= 4) return 'Soft with lingering sweetness';
+    if (value >= 1) return 'Slight warmth';
+    if (value <= -1) return 'Cool and restrained';
+    return 'Neutral and calm';
   }
 
-  if (value >= 7) return '锋利逼近';
-  if (value >= 4) return '清醒有力';
-  if (value >= 1) return '轻微提神';
-  return '温和不逼迫';
+  if (value >= 7) return 'Sharp and intense';
+  if (value >= 4) return 'Clear and forceful';
+  if (value >= 1) return 'Lightly energizing';
+  return 'Gentle and non-aggressive';
 };
 
 const formatSigned = (value) => `${value > 0 ? '+' : ''}${value}`;
@@ -143,11 +143,11 @@ const getModeCopy = (mixingMode) => MODE_COPY[mixingMode] || MODE_COPY.strict;
 
 const getCardNote = (state) => {
   if (state === 'locked') {
-    return '\u5c1a\u672a\u89e3\u9501';
+    return 'Locked';
   }
 
   if (state === 'restricted') {
-    return '\u5f53\u524d\u5267\u60c5\u4e0d\u53ef\u9009';
+    return 'Unavailable in current story state';
   }
 
   return '';
@@ -155,27 +155,27 @@ const getCardNote = (state) => {
 
 const getStepAvailabilityLabel = ({ currentStep, selectedCategory, unlockedDecorations, unlockedGlasses, unlockedIceTypes, visibleIceTypes }) => {
   if (currentStep === 'glass') {
-    return `\u5df2\u89e3\u9501 ${unlockedGlasses.length}/${Object.keys(GLASS_TYPES).length} \u79cd\u676f\u578b`;
+    return `Unlocked ${unlockedGlasses.length}/${Object.keys(GLASS_TYPES).length} glass types`;
   }
 
   if (currentStep === 'ice') {
-    return `\u53ef\u9009 ${visibleIceTypes.length}/${Object.keys(ICE_TYPES).length} \u79cd\u51b0\u5757`;
+    return `Available ${visibleIceTypes.length}/${Object.keys(ICE_TYPES).length} ice types`;
   }
 
   if (currentStep === 'ingredient') {
-    return `\u5f53\u524d\u5206\u7c7b ${getIngredientsByCategory(selectedCategory).length} \u79cd\u539f\u6db2`;
+    return `Current category: ${getIngredientsByCategory(selectedCategory).length} ingredients`;
   }
 
   if (currentStep === 'decoration') {
-    return `\u5df2\u89e3\u9501 ${unlockedDecorations.length}/${Object.keys(DECORATION_TYPES).length} \u79cd\u88c5\u9970`;
+    return `Unlocked ${unlockedDecorations.length}/${Object.keys(DECORATION_TYPES).length} decorations`;
   }
 
   return '';
 };
 
 const getItemDescription = (mixingMode, item) => {
-  const numericSummary = `稠${formatSigned(item.thickness || 0)} · 甜${formatSigned(item.sweetness || 0)} · 烈${formatSigned(item.strength || 0)}`;
-  const feelingSummary = item.feeling || item.description || '这是一种还没被命名的偏向。';
+  const numericSummary = `Body ${formatSigned(item.thickness || 0)} · Sweet ${formatSigned(item.sweetness || 0)} · Strong ${formatSigned(item.strength || 0)}`;
+  const feelingSummary = item.feeling || item.description || 'An unnamed flavor direction.';
 
   if (mixingMode === 'strict') {
     return numericSummary;
@@ -189,8 +189,8 @@ const getItemDescription = (mixingMode, item) => {
 };
 
 const getGlassDescription = (mixingMode, glass) => {
-  const capacityText = `${glass.maxPortions || 2} 份容量`;
-  const styleText = glass.feeling || glass.description || '先让这杯酒站稳姿态。';
+  const capacityText = `Capacity ${glass.maxPortions || 2}`;
+  const styleText = glass.feeling || glass.description || 'Set the posture of the drink first.';
 
   if (mixingMode === 'strict') {
     return `${capacityText} · ${glass.description || styleText}`;
@@ -204,7 +204,7 @@ const getGlassDescription = (mixingMode, glass) => {
 };
 
 const getAddonDescription = (mixingMode, item) => {
-  const feelingText = item.feeling || item.description || '让这杯酒往另一侧轻轻偏移。';
+  const feelingText = item.feeling || item.description || 'Gently tilt the drink in a new direction.';
 
   if (mixingMode === 'strict') {
     return item.description || feelingText;
@@ -277,7 +277,7 @@ const buildCards = ({ currentStep, session, unlockedDecorations, unlockedGlasses
   }
 
   if (currentStep === 'decoration') {
-    return [{ id: null, icon: '➖', name: '跳过', feeling: '保持克制，不追加这一层。' }, ...Object.values(DECORATION_TYPES).filter((item) => unlockedDecorations.includes(item.id))]
+    return [{ id: null, icon: '➖', name: 'Skip', feeling: 'Stay restrained and add nothing here.' }, ...Object.values(DECORATION_TYPES).filter((item) => unlockedDecorations.includes(item.id))]
       .map((item) => ({
         active: session.recipe.decoration === item.id,
         description: getAddonDescription(mixingMode, item),
@@ -293,7 +293,7 @@ const buildCards = ({ currentStep, session, unlockedDecorations, unlockedGlasses
     .filter((portion) => Boolean(INGREDIENTS[portion.id]))
     .map((portion) => ({
       active: false,
-      description: `已加入 ${portion.count} 份`,
+      description: `Added ${portion.count}`,
       icon: INGREDIENTS[portion.id].icon,
       iconImage: INGREDIENTS[portion.id].iconImage,
       id: portion.id,
@@ -308,9 +308,9 @@ const buildSignals = (mixture, totalPortions) => {
   }
 
   return [
-    { key: 'thickness', label: '酒体', text: describeAxis('thickness', mixture.thickness || 0), value: Number(mixture.thickness || 0) },
-    { key: 'sweetness', label: '甜感', text: describeAxis('sweetness', mixture.sweetness || 0), value: Number(mixture.sweetness || 0) },
-    { key: 'strength', label: '力道', text: describeAxis('strength', mixture.strength || 0), value: Number(mixture.strength || 0) }
+    { key: 'thickness', label: 'Body', text: describeAxis('thickness', mixture.thickness || 0), value: Number(mixture.thickness || 0) },
+    { key: 'sweetness', label: 'Sweetness', text: describeAxis('sweetness', mixture.sweetness || 0), value: Number(mixture.sweetness || 0) },
+    { key: 'strength', label: 'Strength', text: describeAxis('strength', mixture.strength || 0), value: Number(mixture.strength || 0) }
   ];
 };
 
@@ -322,7 +322,7 @@ const buildReading = ({ maxPortions, mixingMode, modeCopy, session, signals, tot
   if (!session.recipe.glass && totalPortions === 0) {
     return {
       body: modeCopy.emptyBody,
-      footnote: `这一步会决定整套章节反馈该如何说话。`,
+      footnote: 'This step sets the tone for chapter feedback.',
       title: modeCopy.emptyTitle
     };
   }
@@ -330,47 +330,47 @@ const buildReading = ({ maxPortions, mixingMode, modeCopy, session, signals, tot
   if (mixingMode === 'strict') {
     if (session.targetCheck?.allMet && totalConditions > 0 && totalPortions === maxPortions) {
       return {
-        body: '条件、容量与结构都已经对齐，可以把这杯酒递出去。',
-        footnote: `当前容量 ${totalPortions}/${maxPortions} 份。`,
-        title: '数值已校准'
+        body: 'Conditions, capacity, and structure are aligned. You can serve now.',
+        footnote: `Current capacity ${totalPortions}/${maxPortions}.`,
+        title: 'Calibrated'
       };
     }
 
     return {
       body: totalConditions > 0
-        ? `当前命中 ${metCount}/${totalConditions} 条条件，还差一步就会更稳。`
-        : '先让这杯酒拥有基本结构。',
-      footnote: `容量 ${totalPortions}/${maxPortions} 份。严格模式下，每一步都可被量化。`,
-      title: totalPortions < maxPortions ? `还差 ${Math.max(maxPortions - totalPortions, 0)} 份原液` : '这杯酒已经站稳'
+        ? `Matched ${metCount}/${totalConditions} conditions. One more step to stabilize.`
+        : 'Build the base structure first.',
+      footnote: `Capacity ${totalPortions}/${maxPortions}. In strict mode, each step is measurable.`,
+      title: totalPortions < maxPortions ? `${Math.max(maxPortions - totalPortions, 0)} more portions needed` : 'Drink is stable'
     };
   }
 
   if (mixingMode === 'transitional') {
     return {
-      body: session.currentAttitude?.baseSummary || '数值开始退后，但态度还不能失调。',
+      body: session.currentAttitude?.baseSummary || 'Numbers step back, but attitude must stay coherent.',
       footnote: totalConditions > 0
-        ? `接近度 ${satisfaction}% · 命中 ${metCount}/${totalConditions}`
-        : '你已经不只是在调对，而是在调得更贴近。',
-      title: session.currentAttitude?.feelingSummary || (session.targetCheck?.allMet ? '方向已经接近' : '别只盯着数字')
+        ? `Closeness ${satisfaction}% · Match ${metCount}/${totalConditions}`
+        : 'You are not just correct; you are becoming closer.',
+      title: session.currentAttitude?.feelingSummary || (session.targetCheck?.allMet ? 'Direction is close' : 'Don’t focus on numbers only')
     };
   }
 
   if (mixingMode === 'expressive') {
     return {
-      body: session.currentAttitude?.baseSummary || '你在组织一种会被喝下去的回应。',
+      body: session.currentAttitude?.baseSummary || 'You are composing a response that can be drunk.',
       footnote: signals.length > 0
-        ? `目前更像：${signals.map((signal) => signal.text).join(' · ')}`
-        : '材料的 feeling 会比命中条件更早说话。',
-      title: session.currentAttitude?.feelingSummary || '这杯酒正在形成情绪'
+        ? `Current texture: ${signals.map((signal) => signal.text).join(' · ')}`
+        : 'Ingredient feeling speaks earlier than condition matching.',
+      title: session.currentAttitude?.feelingSummary || 'Emotion is taking shape'
     };
   }
 
   return {
-    body: session.currentAttitude?.feelingSummary || '高阶模式不会替你判断，只会让结果更诚实。',
+    body: session.currentAttitude?.feelingSummary || 'Master mode won’t decide for you; it only makes outcomes more honest.',
     footnote: signals.length > 0
-      ? `现在只剩下 ${signals.map((signal) => signal.text).join(' · ')}。`
-      : '你没有明确配方，只有直觉。',
-    title: session.currentAttitude?.baseSummary || '你正在赌一次真正的理解'
+      ? `Now only this remains: ${signals.map((signal) => signal.text).join(' · ')}.`
+      : 'No explicit formula remains, only intuition.',
+    title: session.currentAttitude?.baseSummary || 'A bet on true understanding'
   };
 };
 
@@ -379,7 +379,7 @@ const buildAdviceItems = ({ mixingMode, session }) => {
     if (session.suggestions?.length > 0) {
       return session.suggestions.slice(0, 3).map((suggestion, index) => ({
         key: `${suggestion.type}-${index}`,
-        note: suggestion.recommended ? `可考虑：${suggestion.recommended}` : '',
+        note: suggestion.recommended ? `Consider: ${suggestion.recommended}` : '',
         tone: suggestion.type,
         text: suggestion.message
       }));
@@ -388,7 +388,7 @@ const buildAdviceItems = ({ mixingMode, session }) => {
     return [{
       key: 'stable',
       note: '',
-      text: '目前没有额外修正建议，继续沿着这条线推进。',
+      text: 'No extra correction needed now. Keep this direction.',
       tone: 'success'
     }];
   }
@@ -397,7 +397,7 @@ const buildAdviceItems = ({ mixingMode, session }) => {
     return [{
       key: 'feeling',
       note: session.currentAttitude.baseSummary || '',
-      text: `这杯酒已经开始像：${session.currentAttitude.feelingSummary}`,
+      text: `This drink now feels like: ${session.currentAttitude.feelingSummary}`,
       tone: 'hint'
     }];
   }
@@ -405,7 +405,7 @@ const buildAdviceItems = ({ mixingMode, session }) => {
   return [{
     key: 'listen',
     note: '',
-    text: '别急着追求正确，先听见这杯酒想往哪里走。',
+    text: 'Don’t rush to be correct. First, hear where the drink wants to go.',
     tone: 'hint'
   }];
 };
@@ -457,12 +457,12 @@ const PixiMixingBoard = ({
   }), [session.currentStep, session.filteredIceTypes, session.selectedCategory, unlockedDecorations, unlockedGlasses, unlockedIceTypes]);
 
   const summaryText = modeCopy.showNumericProgress && session.targetCheck?.totalConditions > 0
-    ? `\u547d\u4e2d ${session.targetCheck.metCount || 0}/${session.targetCheck.totalConditions || 0} \u00b7 ${reading.body}`
+    ? `Match ${session.targetCheck.metCount || 0}/${session.targetCheck.totalConditions || 0} · ${reading.body}`
     : reading.body;
   const summaryChips = [
-    currentGlass?.name || '\u672a\u9009\u676f\u578b',
-    session.recipe.ice ? (ICE_TYPES[session.recipe.ice]?.name || '\u51b0\u5757') : '\u672a\u9009\u51b0\u5757',
-    `${totalPortions}/${maxPortions}${modeCopy.showMetrics ? ' \u4efd\u539f\u6db2' : ' \u4e2a\u9009\u62e9'}`,
+    currentGlass?.name || 'No glass',
+    session.recipe.ice ? (ICE_TYPES[session.recipe.ice]?.name || 'Ice') : 'No ice selected',
+    `${totalPortions}/${maxPortions}${modeCopy.showMetrics ? ' portions' : ' selections'}`,
     ...(session.recipe.decoration ? [DECORATION_TYPES[session.recipe.decoration]?.name].filter(Boolean) : [])
   ];
 
@@ -513,7 +513,7 @@ const PixiMixingBoard = ({
             {availabilityLabel && <div className="pixi-mixing-board__availability">{availabilityLabel}</div>}
           </div>
         </div>
-        <button className="pixi-mixing-board__ghost-btn" type="button" onClick={session.handleReset}>↺ 重置</button>
+        <button className="pixi-mixing-board__ghost-btn" type="button" onClick={session.handleReset}>↺ Reset</button>
       </div>
 
       <div className="pixi-mixing-board__step-rail" aria-label="Mixing steps">
@@ -573,7 +573,7 @@ const PixiMixingBoard = ({
                       {(card.iconImage || card.icon) && (
                         <span className="pixi-mixing-board__card-icon">
                           {card.iconImage ? (
-                            <img className="pixi-mixing-board__card-icon-image" src={card.iconImage} alt={`${card.label}图标`} />
+                            <img className="pixi-mixing-board__card-icon-image" src={card.iconImage} alt={`${card.label} icon`} />
                           ) : (
                             card.icon
                           )}
@@ -604,15 +604,15 @@ const PixiMixingBoard = ({
       <div className={`pixi-mixing-board__footer ${showPreviousAction ? '' : 'single-action'}`}>
         {showPreviousAction && (
           <div className="pixi-mixing-board__footer-left">
-            <button type="button" className="pixi-mixing-board__ghost-btn" onClick={session.handlePrevStep}>← 上一步</button>
+            <button type="button" className="pixi-mixing-board__ghost-btn" onClick={session.handlePrevStep}>← Previous</button>
           </div>
         )}
         <div className="pixi-mixing-board__footer-right">
           {session.currentStep === 'preview' ? (
-            <button type="button" className="pixi-mixing-board__primary-btn" onClick={session.handleServe}>🍸 递酒</button>
+            <button type="button" className="pixi-mixing-board__primary-btn" onClick={session.handleServe}>🍸 Serve</button>
           ) : (
             <button type="button" className="pixi-mixing-board__primary-btn" onClick={session.handleNextStep} disabled={!session.canProceed()}>
-              下一步 →
+              Next →
             </button>
           )}
         </div>

@@ -6,8 +6,8 @@ import { AI_CUSTOMER_TYPES } from '../data/aiCustomers.js';
 import './EncyclopediaPage.css';
 
 /**
- * 酒吧图鉴页
- * 功能：查看已解锁情绪、杯型、AI顾客、调酒配方历史
+ * Encyclopedia page
+ * Features: view unlocked emotions, glasses, AI guests, and recipe history
  */
 const EncyclopediaPage = ({ onBack }) => {
   const [activeTab, setActiveTab] = useState('emotions');
@@ -17,7 +17,7 @@ const EncyclopediaPage = ({ onBack }) => {
   const totalCombos = Object.keys(COMBO_BONUS).length;
   const discoveredCount = Object.keys(discoveredCombos).length;
 
-  // 渲染情绪图鉴
+  // Render emotion encyclopedia
   const renderEmotions = () => {
     return (
       <div className="encyclopedia-grid">
@@ -40,7 +40,7 @@ const EncyclopediaPage = ({ onBack }) => {
     );
   };
 
-  // 渲染杯型图鉴
+  // Render glass encyclopedia
   const renderGlasses = () => {
     return (
       <div className="encyclopedia-grid">
@@ -55,8 +55,8 @@ const EncyclopediaPage = ({ onBack }) => {
                 <>
                   <p className="card-description">{glass.description}</p>
                   <div className="card-bonus">
-                    <strong>加成情绪：</strong>
-                    {glass.bonus.map(emotionId => EMOTIONS[emotionId].name).join('、')}
+                    <strong>Bonus emotions:</strong>
+                    {glass.bonus.map(emotionId => EMOTIONS[emotionId].name).join(', ')}
                   </div>
                 </>
               )}
@@ -67,21 +67,21 @@ const EncyclopediaPage = ({ onBack }) => {
     );
   };
 
-  // 渲染配方历史
+  // Render recipe history
   const renderRecipes = () => {
     if (recipes.length === 0) {
       return (
         <div className="empty-state">
           <p className="empty-icon">📝</p>
-          <p>还没有调酒记录</p>
-          <p className="empty-hint">开始游戏并调制你的第一杯鸡尾酒吧！</p>
+          <p>No mixing records yet</p>
+          <p className="empty-hint">Start playing and craft your first cocktail.</p>
         </div>
       );
     }
 
-    // 按顾客名称分组
+    // Group by guest name
     const groupedRecipes = recipes.reduce((acc, recipe) => {
-      const customerName = recipe.aiName || '未知顾客';
+      const customerName = recipe.aiName || 'Unknown Guest';
       if (!acc[customerName]) acc[customerName] = [];
       acc[customerName].push(recipe);
       return acc;
@@ -101,7 +101,7 @@ const EncyclopediaPage = ({ onBack }) => {
                   <div key={index} className="recipe-card">
                     <div className="recipe-header">
                       <span className="recipe-date">
-                        {new Date(recipe.timestamp).toLocaleDateString('zh-CN', { 
+                        {new Date(recipe.timestamp).toLocaleDateString('en-US', { 
                           month: 'short', 
                           day: 'numeric',
                           hour: '2-digit',
@@ -110,36 +110,36 @@ const EncyclopediaPage = ({ onBack }) => {
                       </span>
                       {recipe.targetCheck?.allMet !== undefined && (
                         <span className={`recipe-badge ${recipe.targetCheck.allMet ? 'success' : 'failed'}`}>
-                          {recipe.targetCheck.allMet ? '✓ 成功' : '✗ 失败'}
+                          {recipe.targetCheck.allMet ? '✓ Success' : '✗ Failed'}
                         </span>
                       )}
                     </div>
                     <div className="recipe-content">
-                      {/* 杯型 */}
+                      {/* Glass */}
                       <div className="recipe-item">
-                        <strong>🥃 杯型：</strong>
-                        {GLASS_TYPES[recipe.glass]?.icon} {GLASS_TYPES[recipe.glass]?.name || '未知'}
+                        <strong>🥃 Glass:</strong>
+                        {GLASS_TYPES[recipe.glass]?.icon} {GLASS_TYPES[recipe.glass]?.name || 'Unknown'}
                       </div>
                       
-                      {/* 三维属性 */}
+                      {/* Three dimensions */}
                       {recipe.mixture && (
                         <div className="recipe-mixture">
-                          <strong>📊 三维属性：</strong>
+                          <strong>📊 Dimensions:</strong>
                           <div className="mixture-values">
                             <span className="mixture-item">
-                              浓稠 {recipe.mixture.thickness?.toFixed(1) || '0.0'}
+                              Body {recipe.mixture.thickness?.toFixed(1) || '0.0'}
                             </span>
                             <span className="mixture-item">
-                              甜度 {recipe.mixture.sweetness?.toFixed(1) || '0.0'}
+                              Sweetness {recipe.mixture.sweetness?.toFixed(1) || '0.0'}
                             </span>
                             <span className="mixture-item">
-                              烈度 {recipe.mixture.strength?.toFixed(1) || '0.0'}
+                              Strength {recipe.mixture.strength?.toFixed(1) || '0.0'}
                             </span>
                           </div>
                         </div>
                       )}
                       
-                      {/* 配料组合 */}
+                      {/* Add-on combo */}
                       <div className="recipe-addons">
                         {recipe.ice && recipe.ice !== 'no_ice' && (
                           <span className="addon-tag ice">
@@ -158,10 +158,10 @@ const EncyclopediaPage = ({ onBack }) => {
                         )}
                       </div>
                       
-                      {/* 满意度 */}
+                      {/* Satisfaction */}
                       {recipe.targetCheck?.satisfaction !== undefined && (
                         <div className="recipe-satisfaction">
-                          <strong>💯 满意度：</strong>
+                          <strong>💯 Satisfaction:</strong>
                           <div className="satisfaction-bar">
                             <div 
                               className="satisfaction-fill" 
@@ -184,7 +184,7 @@ const EncyclopediaPage = ({ onBack }) => {
     );
   };
 
-  // 获取道具名称的辅助函数
+  // Helper: get item name
   const getItemName = (type, id) => {
     switch (type) {
       case 'ice': return ICE_TYPES[id]?.name || id;
@@ -205,7 +205,7 @@ const EncyclopediaPage = ({ onBack }) => {
     }
   };
 
-  // 渲染黄金组合图鉴
+  // Render golden combo encyclopedia
   const renderCombos = () => {
     return (
       <div className="encyclopedia-grid combos">
@@ -233,16 +233,16 @@ const EncyclopediaPage = ({ onBack }) => {
                   </div>
                   <div className="combo-stats">
                     <span className="discover-date">
-                      发现于 {new Date(comboData.discoveredAt).toLocaleDateString('zh-CN')}
+                      Discovered on {new Date(comboData.discoveredAt).toLocaleDateString('en-US')}
                     </span>
                     <span className="use-count">
-                      使用 {comboData.count} 次
+                      Used {comboData.count} times
                     </span>
                   </div>
                 </>
               )}
               {!isDiscovered && (
-                <p className="combo-hint">尝试不同的道具组合来发现</p>
+                <p className="combo-hint">Try different item combinations to discover it</p>
               )}
             </div>
           );
@@ -251,16 +251,16 @@ const EncyclopediaPage = ({ onBack }) => {
     );
   };
 
-  // 计算杯型总数
+  // Total glass count
   const totalGlasses = Object.keys(GLASS_TYPES).length;
 
   return (
     <div className="encyclopedia-page">
       <div className="encyclopedia-header">
         <button className="back-button" onClick={onBack}>
-          ← 返回
+          ← Back
         </button>
-        <h1>📚 酒吧图鉴</h1>
+        <h1>📚 Encyclopedia</h1>
       </div>
 
       <div className="encyclopedia-tabs">
@@ -268,25 +268,25 @@ const EncyclopediaPage = ({ onBack }) => {
           className={activeTab === 'emotions' ? 'active' : ''} 
           onClick={() => setActiveTab('emotions')}
         >
-          🎭 情绪 ({unlockedItems.emotions.length}/12)
+          🎭 Emotions ({unlockedItems.emotions.length}/12)
         </button>
         <button 
           className={activeTab === 'glasses' ? 'active' : ''} 
           onClick={() => setActiveTab('glasses')}
         >
-          🥃 杯型收藏 ({unlockedItems.glasses?.length || 0}/{totalGlasses})
+          🥃 Glasses ({unlockedItems.glasses?.length || 0}/{totalGlasses})
         </button>
         <button 
           className={activeTab === 'recipes' ? 'active' : ''} 
           onClick={() => setActiveTab('recipes')}
         >
-          📝 配方历史 ({recipes.length})
+          📝 Recipe History ({recipes.length})
         </button>
         <button 
           className={activeTab === 'combos' ? 'active' : ''} 
           onClick={() => setActiveTab('combos')}
         >
-          ✨ 黄金组合 ({discoveredCount}/{totalCombos})
+          ✨ Golden Combos ({discoveredCount}/{totalCombos})
         </button>
       </div>
 

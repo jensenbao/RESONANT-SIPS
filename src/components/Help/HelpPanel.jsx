@@ -17,7 +17,7 @@ const HelpPanel = ({ onClose }) => {
     <div className="help-panel-overlay" onClick={onClose}>
       <div className="help-panel" onClick={e => e.stopPropagation()}>
         <header className="help-header">
-          <h2>帮助</h2>
+          <h2>Help</h2>
           <button className="help-close" onClick={onClose}>✕</button>
         </header>
 

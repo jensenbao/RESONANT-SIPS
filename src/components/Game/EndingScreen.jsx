@@ -45,12 +45,12 @@ const EndingScreen = ({ narrative, onFreeMode, onNewGame }) => {
 
       <div className={`ending-actions ${showActions ? 'visible' : ''}`}>
         <button className="ending-btn ending-btn-continue" onClick={onFreeMode}>
-          <span className="ending-btn-label">继续经营</span>
-          <span className="ending-btn-hint">结局之后，酒吧不会关门</span>
+          <span className="ending-btn-label">Keep Running the Bar</span>
+          <span className="ending-btn-hint">The bar stays open after the ending.</span>
         </button>
         <button className="ending-btn ending-btn-new" onClick={onNewGame}>
-          <span className="ending-btn-label">新的故事</span>
-          <span className="ending-btn-hint">不同的城市，不同的人，不同的你</span>
+          <span className="ending-btn-label">A New Story</span>
+          <span className="ending-btn-hint">A different city, different people, a different you.</span>
         </button>
       </div>
     </div>

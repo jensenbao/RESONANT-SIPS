@@ -14,27 +14,27 @@
     "narrative": "📖"
   },
   "eventTypeNames": {
-    "atmosphere": "氛围",
-    "customer": "顾客",
-    "challenge": "挑战",
-    "reward": "奖励",
-    "narrative": "叙事"
+    "atmosphere": "Atmosphere",
+    "customer": "Guest",
+    "challenge": "Challenge",
+    "reward": "Reward",
+    "narrative": "Narrative"
   },
   "fallbackEvents": {
     "atmosphere": [
-      { "type": "atmosphere", "narrative": "门外风声变大，吧台上的酒杯轻轻震动。", "effects": { "trustModifier": 0.01, "emotionShift": "surprise" }, "duration": "current_customer", "choices": [{ "text": "🫖 稳住节奏", "effect": { "trustModifier": 0.02 } }, { "text": "⚡ 提高烈度", "effect": { "trustModifier": 0.04 } }] }
+      { "type": "atmosphere", "narrative": "Wind grows louder outside, and the glasses on the bar tremble slightly.", "effects": { "trustModifier": 0.01, "emotionShift": "surprise" }, "duration": "current_customer", "choices": [{ "text": "🫖 Keep it steady", "effect": { "trustModifier": 0.02 } }, { "text": "⚡ Raise the intensity", "effect": { "trustModifier": 0.04 } }] }
     ],
     "customer": [
-      { "type": "customer", "narrative": "一位常客在门口停了几秒才进来。", "effects": { "trustModifier": 0.01, "emotionShift": "trust" }, "duration": "current_customer", "choices": [{ "text": "🙂 先寒暄", "effect": { "trustModifier": 0.02 } }, { "text": "🎯 直切主题", "effect": { "trustModifier": 0.04 } }] }
+      { "type": "customer", "narrative": "A regular pauses at the door for a few seconds before stepping in.", "effects": { "trustModifier": 0.01, "emotionShift": "trust" }, "duration": "current_customer", "choices": [{ "text": "🙂 Start with small talk", "effect": { "trustModifier": 0.02 } }, { "text": "🎯 Go straight to the point", "effect": { "trustModifier": 0.04 } }] }
     ],
     "challenge": [
-      { "type": "challenge", "narrative": "库存里最常用的原浆只剩最后一份。", "effects": { "trustModifier": 0.0, "emotionShift": "fear" }, "duration": "rest_of_day", "choices": [{ "text": "🧮 保守配方", "effect": { "trustModifier": 0.02 } }, { "text": "🧪 大胆替代", "effect": { "trustModifier": 0.05 } }] }
+      { "type": "challenge", "narrative": "Only one portion remains of your most-used base ingredient.", "effects": { "trustModifier": 0.0, "emotionShift": "fear" }, "duration": "rest_of_day", "choices": [{ "text": "🧮 Play it safe", "effect": { "trustModifier": 0.02 } }, { "text": "🧪 Try a bold substitute", "effect": { "trustModifier": 0.05 } }] }
     ],
     "reward": [
-      { "type": "reward", "narrative": "有人把一张写着感谢的话条压在杯垫下。", "effects": { "trustModifier": 0.03, "emotionShift": "joy" }, "duration": "immediate", "choices": [{ "text": "🙏 收下心意", "effect": { "trustModifier": 0.02 } }, { "text": "🥂 请对方喝一口", "effect": { "trustModifier": 0.05 } }] }
+      { "type": "reward", "narrative": "Someone leaves a thank-you note under the coaster.", "effects": { "trustModifier": 0.03, "emotionShift": "joy" }, "duration": "immediate", "choices": [{ "text": "🙏 Accept it", "effect": { "trustModifier": 0.02 } }, { "text": "🥂 Offer them a sip", "effect": { "trustModifier": 0.05 } }] }
     ],
     "narrative": [
-      { "type": "narrative", "narrative": "旧唱片卡了一拍，空气因此停顿。", "effects": { "trustModifier": 0.01, "emotionShift": "sadness" }, "duration": "immediate", "choices": [{ "text": "🎵 轻轻扶针", "effect": { "trustModifier": 0.02 } }, { "text": "🔊 直接切歌", "effect": { "trustModifier": 0.04 } }] }
+      { "type": "narrative", "narrative": "An old vinyl skips for a beat, and the room holds its breath.", "effects": { "trustModifier": 0.01, "emotionShift": "sadness" }, "duration": "immediate", "choices": [{ "text": "🎵 Gently guide the needle", "effect": { "trustModifier": 0.02 } }, { "text": "🔊 Switch tracks immediately", "effect": { "trustModifier": 0.04 } }] }
     ]
   },
   "eventChains": {}

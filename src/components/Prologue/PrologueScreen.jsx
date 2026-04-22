@@ -152,8 +152,8 @@ const PrologueScreen = ({ onComplete }) => {
       {/* 底部提示 */}
       <div className={`prologue-hint ${fadeIn && !isTyping ? 'visible' : ''}`}>
         {currentScreen < PROLOGUE_SCREENS.length - 1
-          ? '[ 点击继续 ]'
-          : '[ 点击开始 ]'}
+          ? '[ Click to continue ]'
+          : '[ Click to start ]'}
       </div>
 
       {/* 进度条 */}

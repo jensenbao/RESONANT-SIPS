@@ -114,7 +114,7 @@ const CocktailPreview = ({
 
   return (
     <div className="cocktail-preview-container">
-      <div className="preview-title">🍹 调制预览</div>
+      <div className="preview-title">🍹 Mix Preview</div>
       
       <div className={`cocktail-glass-wrapper glass-${glassType} ${isSuccess ? 'success' : ''}`}>
         {/* 玻璃杯体 */}
@@ -161,7 +161,7 @@ const CocktailPreview = ({
         
         {/* 杯型图标 */}
         <div className="glass-type-label">
-          {glass?.icon || '🍸'} {glass?.name?.replace(/（.*）/, '') || '选择杯型'}
+          {glass?.icon || '🍸'} {glass?.name?.replace(/（.*）/, '') || 'Select Glass'}
         </div>
       </div>
       
@@ -170,7 +170,7 @@ const CocktailPreview = ({
         <span className={`portions-current ${portionBump ? 'bump' : ''}`}>{totalPortions}</span>
         <span className="portions-divider">/</span>
         <span className="portions-max">{maxPortions}</span>
-        <span className="portions-label">份</span>
+        <span className="portions-label">portions</span>
       </div>
     </div>
   );

@@ -218,8 +218,8 @@ function App() {
     try {
       const connectivity = await checkAIConnectivity();
       if (!connectivity.ok) {
-        const details = connectivity.message ? `\n\n原因：${connectivity.message}` : '';
-        window.alert(`AI 连接失败，请检查 API 设置后重试。${details}`);
+        const details = connectivity.message ? `\n\nReason: ${connectivity.message}` : '';
+        window.alert(`AI connection failed. Please check API settings and try again.${details}`);
         return false;
       }
 
@@ -238,7 +238,7 @@ function App() {
       });
       return true;
     } catch (error) {
-      window.alert(`读取存档失败：${error?.message || '未知错误'}`);
+      window.alert(`Failed to load save: ${error?.message || 'Unknown error'}`);
       return false;
     } finally {
       setIsEnteringGame(false);
@@ -258,7 +258,7 @@ function App() {
 
     const activeCharacterIds = getActiveCharacterIds();
     if (!Array.isArray(activeCharacterIds) || activeCharacterIds.length === 0) {
-      window.alert('请先在新游戏配置中添加并启用至少一个角色 ID。');
+      window.alert('Please add and enable at least one character ID in New Game Setup first.');
       return;
     }
 
@@ -268,13 +268,13 @@ function App() {
       const created = await createSlot();
       const slotId = created?.slotId;
       if (!slotId) {
-        window.alert('新建存档失败。');
+        window.alert('Failed to create a new save.');
         return;
       }
 
       await enterGameWithSlot(slotId);
     } catch (error) {
-      window.alert(`新建存档失败：${error?.message || '未知错误'}`);
+      window.alert(`Failed to create a new save: ${error?.message || 'Unknown error'}`);
     } finally {
       setIsEnteringGame(false);
     }

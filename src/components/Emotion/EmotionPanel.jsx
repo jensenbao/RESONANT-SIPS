@@ -48,7 +48,7 @@ const EmotionPanel = ({
 
         {guessMode && (
           <div className="guess-mode-hint">
-            {isSelected ? '已选择' : '点击猜测'}
+            {isSelected ? 'Selected' : 'Tap to guess'}
           </div>
         )}
 
@@ -62,18 +62,18 @@ const EmotionPanel = ({
   return (
     <div className="emotion-panel">
       <div className="emotion-header">
-        <h3>情绪识别面板</h3>
+        <h3>Emotion Panel</h3>
       </div>
 
       {guessMode && (
         <div className="guess-mode-banner">
-          🎯 <strong>猜测模式</strong> - 选择你认为顾客真实的 3 种情绪（已选 {selectedEmotions.length} 个）
+          🎯 <strong>Guess Mode</strong> - Pick the 3 emotions you think the guest truly feels ({selectedEmotions.length} selected)
         </div>
       )}
 
       {guessedCorrectly && (
         <div className="guessed-correctly-banner">
-          ✓ <strong>已识别情绪</strong> - 现在可以开始调酒了
+          ✓ <strong>Emotions identified</strong> - You can start mixing now
         </div>
       )}
 
@@ -83,7 +83,7 @@ const EmotionPanel = ({
 
       {guessMode && selectedEmotions.length > 0 && (
         <div className="selected-emotions">
-          <h4>已选择情绪（{selectedEmotions.length}/3）</h4>
+          <h4>Selected Emotions ({selectedEmotions.length}/3)</h4>
           <div className="selected-list">
             {selectedEmotions.map((emotionId) => {
               const emotion = EMOTIONS[emotionId];
@@ -106,27 +106,27 @@ const EmotionPanel = ({
           {!guessedCorrectly ? (
             guessMode ? (
               <div className="guess-actions">
-                <p className="guess-prompt">选择你认为的顾客真实情绪（必须选 3 个）</p>
+                <p className="guess-prompt">Choose the guest's true emotions (must pick 3)</p>
                 <div className="guess-buttons">
                   <button className="guess-btn cancel" onClick={onCancelGuess}>
-                    取消
+                    Cancel
                   </button>
                   <button
                     className="guess-btn confirm"
                     onClick={onConfirmGuess}
                     disabled={selectedEmotions.length < 3}
                   >
-                    确认猜测 ({selectedEmotions.length})
+                    Confirm Guess ({selectedEmotions.length})
                   </button>
                 </div>
               </div>
             ) : (
               <button className="start-guess-btn" onClick={onStartGuess}>
-                🎯 猜测真实情绪
+                🎯 Guess True Emotions
               </button>
             )
           ) : (
-            <div className="guess-success">✓ 已识别情绪，开始调酒吧</div>
+            <div className="guess-success">✓ Emotions identified. Start mixing.</div>
           )}
         </div>
       )}
