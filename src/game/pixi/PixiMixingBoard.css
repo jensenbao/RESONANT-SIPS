@@ -81,14 +81,14 @@
 .pixi-mixing-board__footer {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 8px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 10px;
   flex: none;
   position: relative;
   bottom: auto;
   z-index: 4;
   padding-top: 6px;
-  background: linear-gradient(180deg, rgba(6, 10, 20, 0), rgba(6, 10, 20, 0.92) 28%, rgba(6, 10, 20, 0.98));
+  background: transparent;
 }
 
 .pixi-mixing-board__header > div {
@@ -104,7 +104,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-top: 6px;
+  margin-top: 8px;
   flex-wrap: wrap;
 }
 
@@ -130,8 +130,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-top: 2px;
+  gap: 12px;
+  margin-top: 6px;
 }
 
 .pixi-mixing-board__subtitle {
@@ -155,17 +155,18 @@
 .pixi-mixing-board__step-rail {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 6px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 14px;
+  background: transparent;
 }
 
 .pixi-mixing-board__step-pill {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
   min-width: 0;
-  padding: 6px 8px;
+  padding: 8px 10px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -198,7 +199,7 @@
 
 .pixi-mixing-board__body {
   display: flex;
-  margin-top: 12px;
+  margin-top: 16px;
   flex: 1;
   min-height: 0;
   overflow: hidden;
@@ -221,9 +222,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
-  padding: 8px 10px;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 10px 12px;
   border-radius: 14px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.03));
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -602,8 +603,8 @@
 .pixi-mixing-board__tabs {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .pixi-mixing-board__tab,
@@ -639,7 +640,7 @@
 .pixi-mixing-board__cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(136px, 1fr));
-  gap: 8px;
+  gap: 12px;
   align-content: start;
 }
 
@@ -916,7 +917,7 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 10px;
-  align-items: start;
+  align-items: center;
   margin-bottom: 8px;
   padding: 4px 2px 0;
 }
@@ -940,6 +941,12 @@
   color: rgba(237, 243, 255, 0.74);
 }
 
+.pixi-mixing-board__mode-manifesto {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
+}
+
 .pixi-mixing-board__eyebrow {
   display: block;
   font: 700 10px/1.2 "zpix", "PressStart2P", sans-serif;
@@ -957,7 +964,7 @@
 .pixi-mixing-board__step-pill {
   min-height: 42px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .pixi-mixing-board__summary-strip,
@@ -978,8 +985,8 @@
 }
 
 .pixi-mixing-board__tabs {
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .pixi-mixing-board__tab {
@@ -990,7 +997,7 @@
 }
 
 .pixi-mixing-board__cards {
-  gap: 10px;
+  gap: 14px;
 }
 
 .pixi-mixing-board__card-main {
@@ -1017,6 +1024,14 @@
 .pixi-mixing-board__ghost-btn {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(228, 220, 255, 0.1);
+}
+
+.pixi-mixing-board__ghost-btn--header-reset {
+  min-height: 58px;
+  padding: 10px 18px;
+  font-size: 14px;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
 }
 
 .pixi-mixing-board__primary-btn {

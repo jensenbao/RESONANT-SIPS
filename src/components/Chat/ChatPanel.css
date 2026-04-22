@@ -1314,10 +1314,11 @@
 }
 
 .chat-input {
-  min-height: 64px;
-  padding: 12px 104px 12px 14px;
+  min-height: 88px;
+  padding: 15px 108px 15px 16px;
   border-radius: 14px;
   background: rgba(12, 10, 24, 0.42);
+  line-height: 1.65;
 }
 
 .send-button {

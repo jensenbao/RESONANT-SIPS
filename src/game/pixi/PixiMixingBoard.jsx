@@ -513,7 +513,7 @@ const PixiMixingBoard = ({
             {availabilityLabel && <div className="pixi-mixing-board__availability">{availabilityLabel}</div>}
           </div>
         </div>
-        <button className="pixi-mixing-board__ghost-btn" type="button" onClick={session.handleReset}>↺ Reset</button>
+        <button className="pixi-mixing-board__ghost-btn pixi-mixing-board__ghost-btn--header-reset" type="button" onClick={session.handleReset}>↺ Reset</button>
       </div>
 
       <div className="pixi-mixing-board__step-rail" aria-label="Mixing steps">

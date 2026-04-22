@@ -283,10 +283,14 @@
    ======================================== */
 
 .target-display {
+  width: 100%;
+  box-sizing: border-box;
+  align-self: stretch;
+  flex: 0 0 auto;
   background:
     linear-gradient(180deg, rgba(54, 36, 100, 0.72), rgba(20, 16, 40, 0.66));
-  border-radius: 18px;
-  padding: 18px;
+  border-radius: 20px;
+  padding: 18px 18px 16px;
   border: 1px solid rgba(228, 220, 255, 0.14);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

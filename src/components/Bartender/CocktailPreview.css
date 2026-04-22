@@ -36,6 +36,7 @@
 /* ====== 玻璃杯体 - 增强质感 ====== */
 .glass-body {
   position: relative;
+  z-index: 2;
   width: 80px;
   height: 120px;
   border-radius: 8px 8px 24px 24px;
@@ -472,13 +473,121 @@
   top: 20%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 22px;
   z-index: 5;
   opacity: 0.9;
   animation: iceFloat 5s ease-in-out infinite;
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.35));
-  /* 冰块折射效果 */
   text-shadow: 0 0 8px rgba(200, 230, 255, 0.3);
+}
+
+.ice-layer--single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ice-layer--cluster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.ice-cube {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ice-layer--cluster .ice-cube--1 {
+  transform: translate(-8px, 10px) rotate(-10deg);
+}
+
+.ice-layer--cluster .ice-cube--2 {
+  transform: translate(0, -4px) rotate(6deg);
+}
+
+.ice-layer--cluster .ice-cube--3 {
+  transform: translate(8px, 9px) rotate(11deg);
+}
+
+.ice-layer--martini {
+  top: 18%;
+  font-size: 20px;
+}
+
+.ice-layer--martini.ice-layer--cluster {
+  display: grid;
+  grid-template-columns: repeat(2, min-content);
+  justify-content: center;
+  align-items: center;
+  column-gap: 4px;
+  row-gap: 2px;
+}
+
+.ice-layer--martini.ice-layer--cluster .ice-cube--1 {
+  transform: rotate(-8deg);
+}
+
+.ice-layer--martini.ice-layer--cluster .ice-cube--2 {
+  transform: rotate(7deg);
+}
+
+.ice-layer--martini.ice-layer--cluster .ice-cube--3 {
+  grid-column: 1 / span 2;
+  justify-self: center;
+  transform: translateY(-2px) rotate(-2deg);
+}
+
+.ice-layer--highball {
+  top: 20%;
+  font-size: 20px;
+}
+
+.ice-layer--highball.ice-layer--cluster {
+  display: grid;
+  grid-template-columns: min-content;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  row-gap: 2px;
+}
+
+.ice-layer--highball.ice-layer--cluster .ice-cube--1 {
+  transform: translate(-6px, -8px) rotate(-7deg);
+}
+
+.ice-layer--highball.ice-layer--cluster .ice-cube--2 {
+  transform: translate(6px, 0) rotate(4deg);
+}
+
+.ice-layer--highball.ice-layer--cluster .ice-cube--3 {
+  transform: translate(-4px, 8px) rotate(-5deg);
+}
+
+.ice-layer--rock {
+  top: 17%;
+  font-size: 40px;
+}
+
+.ice-layer--coupe {
+  top: 30%;
+  font-size: 28px;
+}
+
+.ice-layer--copper_mug {
+  top: 24%;
+  font-size: 30px;
+}
+
+.ice-layer--skull {
+  top: 24%;
+  font-size: 33px;
+}
+
+.ice-layer--default {
+  top: 20%;
+  font-size: 32px;
 }
 
 @keyframes iceFloat {
@@ -516,18 +625,104 @@
 /* ====== 装饰层 ====== */
 .decoration-layer {
   position: absolute;
-  top: -12px;
+  top: -34px;
   left: 50%;
   transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
   font-size: 20px;
-  z-index: 15;
-  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
-  animation: decorationFloat 3s ease-in-out infinite;
+  z-index: 1;
+  overflow: visible;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.36));
+}
+
+.decoration-layer__image {
+  display: block;
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.decoration-layer--mint {
+  transform-origin: bottom center;
+}
+
+.decoration-layer--lemon_slice {
+  transform-origin: bottom center;
+}
+
+.decoration-layer--martini {
+  top: 12px;
+  left: 63%;
+}
+
+.decoration-layer--martini.decoration-layer--mint {
+  top: 42px;
+  left: 60%;
+  transform: translateX(-50%) rotate(-10deg);
+}
+
+.decoration-layer--martini.decoration-layer--lemon_slice {
+  top: 46px;
+  left: 60%;
+  transform: translateX(-50%) rotate(10deg);
+}
+
+.decoration-layer--highball {
+  top: 10px;
+  left: 58%;
+}
+
+.decoration-layer--highball.decoration-layer--mint {
+  top: 2px;
+  left: 56%;
+  transform: translateX(-50%) rotate(-8deg);
+}
+
+.decoration-layer--highball.decoration-layer--lemon_slice {
+  top: 2px;
+  left: 56%;
+  transform: translateX(-50%) rotate(9deg);
+}
+
+.decoration-layer--rock {
+  top: 8px;
+  left: 59%;
+}
+
+.decoration-layer--rock.decoration-layer--mint {
+  top: 80px;
+  left: 57%;
+  transform: translateX(-50%) rotate(-9deg);
+}
+
+.decoration-layer--rock.decoration-layer--lemon_slice {
+  top: 76px;
+  left: 61%;
+  transform: translateX(-50%) rotate(8deg);
+}
+
+.decoration-layer--coupe {
+  top: -10px;
+  left: 60%;
+}
+
+.decoration-layer--copper_mug {
+  top: -8px;
+  left: 60%;
+}
+
+.decoration-layer--skull {
+  top: -8px;
+  left: 59%;
 }
 
 @keyframes decorationFloat {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-4px); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
 
 /* ====== 杯型标签 ====== */
@@ -646,7 +841,8 @@
   .liquid-layer::after,
   .ice-layer,
   .garnish-layer,
-  .decoration-layer {
+  .decoration-layer,
+  .decoration-layer__image {
     animation: none;
   }
   
@@ -661,45 +857,127 @@
    ======================================== */
 
 .cocktail-preview-container {
-  padding: 18px 16px 20px;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  align-self: stretch;
+  padding: 18px 18px 20px;
   background: linear-gradient(180deg, rgba(50, 34, 94, 0.7), rgba(18, 14, 36, 0.64));
-  border-radius: 18px;
+  border-radius: 20px;
   border: 1px solid rgba(228, 220, 255, 0.14);
   box-shadow:
     0 14px 28px rgba(14, 10, 28, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  margin-top: 0;
 }
 
 .preview-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   font-family: "PressStart2P", "zpix", sans-serif;
   font-size: 12px;
   letter-spacing: 0.08em;
   color: rgba(252, 246, 255, 0.84);
+  text-align: left;
+  margin-bottom: 18px;
 }
 
 .cocktail-glass-wrapper {
-  padding: 14px 12px 8px;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  justify-content: center;
+  padding: 8px 8px 10px;
+}
+
+.glass-body {
+  width: 178px;
+  height: 268px;
+}
+
+.glass-martini .glass-body {
+  width: 198px;
+  height: 222px;
+}
+
+.glass-highball .glass-body {
+  width: 118px;
+  height: 312px;
+}
+
+.glass-rock .glass-body {
+  width: 184px;
+  height: 166px;
+}
+
+.glass-coupe .glass-body {
+  width: 214px;
+  height: 180px;
+}
+
+.glass-copper_mug .glass-body {
+  width: 148px;
+  height: 202px;
+}
+
+.glass-skull .glass-body {
+  width: 182px;
+  height: 238px;
+}
+
+.ice-layer {
+  font-size: 42px;
+}
+
+.garnish-layer {
+  right: -18px;
+  font-size: 40px;
+}
+
+.decoration-layer {
+  top: -12px;
+  min-width: 72px;
+  min-height: 72px;
+  font-size: 36px;
+}
+
+.decoration-layer__image {
+  width: 68px;
+  height: 68px;
 }
 
 .glass-type-label {
-  margin-top: 12px;
+  align-self: center;
+  margin-top: 18px;
   padding: 6px 10px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(228, 220, 255, 0.08);
   color: rgba(246, 244, 255, 0.9);
   font-family: "zpix", "PressStart2P", sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.04em;
 }
 
 .portions-indicator {
-  margin-top: 10px;
-  padding: 8px 14px;
+  align-self: center;
+  margin-top: auto;
+  padding: 10px 18px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(228, 220, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  font-size: 15px;
+}
+
+.portions-current {
+  font-size: 22px;
 }

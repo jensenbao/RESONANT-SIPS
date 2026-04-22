@@ -111,6 +111,44 @@ const CocktailPreview = ({
 
   const liquidColor = getLiquidColor();
   const glassType = recipe.glass || 'default';
+  const iceIcon = ICE_TYPES[recipe.ice]?.icon || '🧊';
+  const decoration = recipe.decoration ? DECORATION_TYPES[recipe.decoration] : null;
+
+  const renderIceLayer = () => {
+    if (!recipe.ice || recipe.ice === 'no_ice') return null;
+
+    const iceCount = recipe.ice === 'more_ice' ? 3 : 1;
+
+    return (
+      <div
+        className={`ice-layer ice-layer--${glassType} ${iceCount > 1 ? 'ice-layer--cluster' : 'ice-layer--single'}`}
+      >
+        {Array.from({ length: iceCount }, (_, index) => (
+          <span key={`${recipe.ice}-${index}`} className={`ice-cube ice-cube--${index + 1}`}>
+            {iceIcon}
+          </span>
+        ))}
+      </div>
+    );
+  };
+
+  const renderDecorationLayer = () => {
+    if (!decoration) return null;
+
+    return (
+      <div className={`decoration-layer decoration-layer--${glassType} decoration-layer--${decoration.id}`}>
+        {decoration.iconImage ? (
+          <img
+            className="decoration-layer__image"
+            src={decoration.iconImage}
+            alt={decoration.name}
+          />
+        ) : (
+          decoration.icon
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="cocktail-preview-container">
@@ -120,11 +158,7 @@ const CocktailPreview = ({
         {/* 玻璃杯体 */}
         <div className={`glass-body ${isPouring ? 'pouring' : ''}`}>
           {/* 冰块层 */}
-          {recipe.ice && recipe.ice !== 'no_ice' && (
-            <div className="ice-layer">
-              {ICE_TYPES[recipe.ice]?.icon}
-            </div>
-          )}
+          {renderIceLayer()}
           
           {/* 液体层 */}
           <div 
@@ -151,13 +185,10 @@ const CocktailPreview = ({
             </div>
           )}
           
-          {/* 装饰物 */}
-          {recipe.decoration && (
-            <div className="decoration-layer">
-              {DECORATION_TYPES[recipe.decoration]?.icon}
-            </div>
-          )}
         </div>
+
+        {/* 装饰物 */}
+        {renderDecorationLayer()}
         
         {/* 杯型图标 */}
         <div className="glass-type-label">
