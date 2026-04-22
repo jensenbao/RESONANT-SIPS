@@ -1022,3 +1022,23 @@
 .pixi-mixing-board__primary-btn {
   box-shadow: 0 10px 22px rgba(var(--board-accent-rgb), 0.18);
 }
+
+/* ========================================
+   Final Font Consistency Fix
+   Keep key mixing UI copy in pixel font
+   ======================================== */
+
+.pixi-mixing-board__step-label,
+.pixi-mixing-board__summary-kicker,
+.pixi-mixing-board__summary-title,
+.pixi-mixing-board__summary-text,
+.pixi-mixing-board__hint-label,
+.pixi-mixing-board__hint-text,
+.pixi-mixing-board__brief-label,
+.pixi-mixing-board__brief-text,
+.pixi-mixing-board__brief-note,
+.pixi-mixing-board__status-lead,
+.pixi-mixing-board__status-line,
+.pixi-mixing-board__tab {
+  font-family: "PressStart2P", "zpix", sans-serif;
+}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import BalancedPixelText from './BalancedPixelText.jsx';
 import './Toast.css';
 
 /**
@@ -35,7 +36,9 @@ const Toast = ({ message, type = 'info', duration = 3000, onClose }) => {
   return (
     <div className={`toast ${type} ${visible ? 'show' : 'hide'}`}>
       <span className="toast-icon">{getIcon()}</span>
-      <span className="toast-message">{message}</span>
+      <span className="toast-message">
+        <BalancedPixelText text={message} />
+      </span>
     </div>
   );
 };

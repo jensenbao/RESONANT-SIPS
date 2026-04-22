@@ -67,6 +67,8 @@
 
 .toast-message {
   flex: 1;
+  font-family: "PressStart2P", "zpix", sans-serif;
+  line-height: 1.35;
 }
 
 /* 动画效果 */

@@ -24,6 +24,7 @@ import ReturnCustomerOverlay from '../components/Game/ReturnCustomerOverlay.jsx'
 import ChapterTransition from '../components/Game/ChapterTransition.jsx';
 import MemoryFragment from '../components/Game/MemoryFragment.jsx';
 import EndingScreen from '../components/Game/EndingScreen.jsx';
+import BalancedPixelText from '../components/Common/BalancedPixelText.jsx';
 import AmbientGameCanvas from '../game/pixi/AmbientGameCanvas.jsx';
 import { createGameViewModel } from '../game/viewModel/createGameViewModel.js';
 import { getCustomerTop3Emotions } from '../hooks/gameHandlers/helpers.js';
@@ -354,7 +355,9 @@ const GamePage = ({
   // 澶╂暟杞満鍔ㄧ敾锛堢嫭绔嬩簬鍔犺浇/娓告垙鍒嗘敮锛岄伩鍏嶉噸澶嶆寕杞藉鑷存挱鏀句袱娆★級
   const dayTransitionOverlay = activeOverlay === 'day_transition' ? (
     <div className="day-transition-overlay" key="day-transition">
-      <div className="day-transition-text">{customerFlow.dayTransitionText}</div>
+      <div className="day-transition-text">
+        <BalancedPixelText text={customerFlow.dayTransitionText} />
+      </div>
       <div className="day-transition-line"></div>
     </div>
   ) : null;

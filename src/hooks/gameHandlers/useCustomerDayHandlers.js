@@ -175,7 +175,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
     }
 
     const nextDay = customerFlow.currentDay + 1;
-    customerFlow.setDayTransitionText(`第 ${nextDay} 天`);
+    customerFlow.setDayTransitionText(`Day ${nextDay}`);
     customerFlow.setShowDayTransition(true);
 
     // 先关闭日结算弹窗

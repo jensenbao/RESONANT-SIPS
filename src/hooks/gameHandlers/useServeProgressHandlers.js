@@ -195,7 +195,7 @@ export const useServeProgressHandlers = ({ ctx }) => {
         queueActiveSlotGameStateSync('serve_result');
         cocktailFlow.addTrustFly(rewardBreakdown.finalTrustGain);
         addToast(
-          `🎁 命中 ${rewardBreakdown.hitCount}/3，表象命中 ${rewardBreakdown.surfaceHitCount}，小费 +${rewardBreakdown.tipAmount}，信任 +${Math.round(rewardBreakdown.finalTrustGain * 100)}%`,
+          `🎁 Hit ${rewardBreakdown.hitCount}/3, surface hit ${rewardBreakdown.surfaceHitCount}, tip +${rewardBreakdown.tipAmount}, trust +${Math.round(rewardBreakdown.finalTrustGain * 100)}%`,
           rewardBreakdown.hitCount >= 2 ? 'success' : 'info'
         );
         cocktailFlow.showResultCard({

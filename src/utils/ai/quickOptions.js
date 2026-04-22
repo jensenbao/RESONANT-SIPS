@@ -5,88 +5,88 @@ export const generateQuickOptions = (aiConfig, trustLevel, dialogueHistory) => {
   const baseOptions = {
     workplace: {
       low: [
-        "最近工作还顺利吗？",
-        "你看起来有点疲惫",
-        "今天过得怎么样？"
+        "How has work been lately?",
+        "You look a bit tired.",
+        "How was your day?"
       ],
       medium: [
-        "压力很大吧？",
-        "有什么让你困扰的事吗？",
-        "工作之外的你是什么样的？"
+        "Has the pressure been heavy?",
+        "Is something bothering you?",
+        "Who are you outside of work?"
       ],
       high: [
-        "你真正想要的生活是什么样的？",
-        "如果不用考虑别人，你会怎么选？",
-        "我能为你做些什么？"
+        "What kind of life do you really want?",
+        "If no one judged you, what would you choose?",
+        "What can I do for you tonight?"
       ]
     },
     artistic: {
       low: [
-        "你说的这些，让我想多听一听",
-        "这个说法很特别，是因为什么呢？",
-        "听起来你心里装着不少事"
+        "What you said makes me want to hear more.",
+        "That phrasing is unusual. Why that word?",
+        "Sounds like you're carrying a lot."
       ],
       medium: [
-        "我不确定完全懂你的意思，但我在听",
-        "你提到的那些……是现在正在经历的吗？",
-        "你更想聊聊过去，还是现在？"
+        "I may not fully get it yet, but I'm listening.",
+        "Those things you mentioned... are they happening now?",
+        "Do you want to talk about the past or the present?"
       ],
       high: [
-        "你真正想说的，是不是还没说出口？",
-        "如果把感受直接说出来，会是什么？",
-        "我觉得你一直在绕着什么走"
+        "What you really mean—have you said it out loud yet?",
+        "If you said your feelings directly, what would they be?",
+        "I feel like you've been circling around something."
       ]
     },
     student: {
       low: [
-        "别着急，慢慢说就好",
-        "发生什么事了？",
-        "你看起来心事重重"
+        "No rush, take your time.",
+        "What happened?",
+        "You look like something's weighing on you."
       ],
       medium: [
-        "你最担心的是什么？",
-        "有人陪你聊过这些吗？",
-        "我会一直在这里听你说"
+        "What are you most worried about?",
+        "Have you talked to anyone about this?",
+        "I'm here. You can keep talking."
       ],
       high: [
-        "你其实已经很努力了",
-        "不管怎样，你能来这里就很好",
-        "让我陪你待一会儿"
+        "You've already been trying really hard.",
+        "No matter what, coming here was a good step.",
+        "Let me stay with you for a while."
       ]
     },
     midlife: {
       low: [
-        "坐下来喝一杯吧",
-        "今天外面怎么样？",
-        "你来这里多久了？"
+        "Have a seat and take a drink.",
+        "How was it outside today?",
+        "How long have you been coming here?"
       ],
       medium: [
-        "有些事放在心里是不是很久了？",
-        "你有没有跟别人说过这些？",
-        "累了就歇歇，不着急"
+        "Have you been carrying this for a long time?",
+        "Have you ever told anyone about it?",
+        "If you're tired, it's okay to pause."
       ],
       high: [
-        "你觉得什么才是最重要的？",
-        "如果时间能倒回去，你想对那时的自己说什么？",
-        "有些路绕了也没关系"
+        "What matters most to you now?",
+        "If time rewound, what would you tell your younger self?",
+        "Some detours are still part of the road."
       ]
     },
     // 兼容旧的模板顾客ID
     newbie: {
       low: [
-        "别怕，慢慢说",
-        "发生什么事了？",
-        "你看起来需要有人听你说说"
+        "Don't worry, take it slow.",
+        "What happened?",
+        "You look like you need someone to listen."
       ],
       medium: [
-        "你最害怕的是什么？",
-        "有人陪你聊过这些吗？",
-        "我会一直在这里的"
+        "What are you most afraid of?",
+        "Has anyone stayed with you through this?",
+        "I'll be right here."
       ],
       high: [
-        "你已经很勇敢了",
-        "不管结果怎样，你能来这里就很好",
-        "让我陪你一起面对"
+        "You've already been brave.",
+        "No matter the outcome, coming here was enough.",
+        "Let me face this with you."
       ]
     }
   };
@@ -103,8 +103,8 @@ export const generateQuickOptions = (aiConfig, trustLevel, dialogueHistory) => {
       const hasMetaphor = /像|如同|仿佛|好比|似乎|大概|也许|或许|……/.test(lastAiMsg.content);
       if (hasMetaphor) {
         const contextualOption = trustLevel < 0.5 
-          ? "你刚才说的……能再解释一下吗？" 
-          : "我在想你刚才那句话的意思";
+          ? "What you just said... could you explain it a little more?" 
+          : "I've been thinking about what you just said.";
         // 替换最后一个选项为上下文相关选项
         const result = [...options];
         result[result.length - 1] = contextualOption;
