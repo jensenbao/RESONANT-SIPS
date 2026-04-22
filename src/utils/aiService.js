@@ -45,6 +45,7 @@ const stripNarration = (text) => {
 };
 
 const CJK_RE = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uac00-\ud7af]/;
+const MAX_DIALOGUE_CHARS = 420;
 
 const ensureEnglishOnlyDialogue = (text) => {
   const normalized = String(text || '').trim();
@@ -55,6 +56,24 @@ const ensureEnglishOnlyDialogue = (text) => {
   return normalized;
 };
 
+const clampDialogueLength = (text, { preferEllipsis = false } = {}) => {
+  const normalized = String(text || '').trim();
+  if (normalized.length <= MAX_DIALOGUE_CHARS) {
+    return normalized;
+  }
+
+  const sliced = normalized.slice(0, MAX_DIALOGUE_CHARS);
+  const lastSentenceEnd = Math.max(
+    sliced.lastIndexOf('.'),
+    sliced.lastIndexOf('!'),
+    sliced.lastIndexOf('?'),
+    sliced.lastIndexOf('…')
+  );
+  const safeCut = lastSentenceEnd > 180 ? sliced.slice(0, lastSentenceEnd + 1) : sliced;
+  const finalText = safeCut.trim().replace(/[.!?…]+$/g, '');
+  return `${finalText}${preferEllipsis ? '...' : '.'}`;
+};
+
 const finalizeDialogueText = (text, { preferEllipsis = false } = {}) => {
   let normalized = String(text || '').trim();
   normalized = normalized.replace(/^(我说|我回答|林澈说|林澈|苏瑾说|苏瑾|小夏说|小夏|我：|回复：|["“])\s*/g, '');
@@ -62,6 +81,7 @@ const finalizeDialogueText = (text, { preferEllipsis = false } = {}) => {
   normalized = normalized.replace(/\*+([^*]+)\*+/g, '$1');
   normalized = stripNarration(normalized).trim();
   normalized = ensureEnglishOnlyDialogue(normalized);
+  normalized = clampDialogueLength(normalized, { preferEllipsis });
 
   if (!/[.!?…]$/.test(normalized)) {
     normalized += preferEllipsis ? '...' : '.';
