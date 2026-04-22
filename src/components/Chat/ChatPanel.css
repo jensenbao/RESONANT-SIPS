@@ -1261,7 +1261,7 @@
   width: fit-content;
   max-width: min(32vw, 340px);
   min-width: 220px;
-  border-bottom-right-radius: 8px;
+  border-radius: 18px;
 }
 
 .chat-stage .player-message .message-bubble {
