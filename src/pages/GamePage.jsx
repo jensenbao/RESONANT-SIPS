@@ -492,12 +492,15 @@ const GamePage = ({
             playsInline
             onEnded={() => setShowServeStoryAnim(false)}
           />
+          <div className="serve-story-fix-tag" aria-hidden="true">
+            <span className="serve-story-fix-tag__text">shaking...</span>
+          </div>
           <button
             type="button"
             className="serve-story-skip"
             onClick={() => setShowServeStoryAnim(false)}
           >
-            跳过
+            skip
           </button>
         </div>
       )}
