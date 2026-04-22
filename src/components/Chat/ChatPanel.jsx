@@ -6,7 +6,42 @@ import './ChatPanel.css';
 
 const BARTENDER_AVATAR_SRC = '/asset/角色/调酒师头像.png';
 
-const ChatMessage = ({ aiConfig, msg, renderMessageContent }) => (
+const TYPEWRITER_INTERVAL_MS = 22;
+
+const TypewriterMessageText = ({ messageId, text }) => {
+  const fullText = String(text || '');
+  const [visibleLength, setVisibleLength] = useState(0);
+
+  useEffect(() => {
+    setVisibleLength(0);
+  }, [messageId]);
+
+  useEffect(() => {
+    if (!fullText) {
+      setVisibleLength(0);
+      return undefined;
+    }
+
+    if (visibleLength >= fullText.length) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      setVisibleLength((prev) => {
+        if (prev >= fullText.length) {
+          return prev;
+        }
+        return Math.min(prev + 1, fullText.length);
+      });
+    }, TYPEWRITER_INTERVAL_MS);
+
+    return () => window.clearInterval(timer);
+  }, [fullText, visibleLength]);
+
+  return <BalancedPixelText text={fullText.slice(0, visibleLength)} />;
+};
+
+const ChatMessage = ({ aiConfig, msg, renderMessageContent, enableTypewriter = false }) => (
   <div className={`message ${msg.role === 'player' ? 'player-message' : 'ai-message'}`}>
     <div className="message-avatar">
       {msg.role === 'player' ? (
@@ -27,7 +62,7 @@ const ChatMessage = ({ aiConfig, msg, renderMessageContent }) => (
       )}
     </div>
     <div className="message-bubble">
-      {renderMessageContent(msg.content, msg.isThinking)}
+      {renderMessageContent(msg, enableTypewriter)}
       {!msg.isThinking && (
         <span className="message-time">
           {new Date(msg.timestamp).toLocaleTimeString('en-US', {
@@ -144,12 +179,16 @@ const ChatPanel = ({
     }
   };
 
-  const renderMessageContent = (content, isThinking = false) => {
-    if (isThinking) {
+  const renderMessageContent = (msg, enableTypewriter = false) => {
+    if (msg?.isThinking) {
       return <span className="thinking-ellipsis" aria-label="Thinking">……</span>;
     }
 
-    return <BalancedPixelText text={content} />;
+    if (enableTypewriter) {
+      return <TypewriterMessageText messageId={msg?.id} text={msg?.content} />;
+    }
+
+    return <BalancedPixelText text={msg?.content} />;
   };
 
   const latestPlayerMessage = [...dialogueHistory].reverse().find((msg) => msg.role === 'player');
@@ -237,6 +276,7 @@ const ChatPanel = ({
               aiConfig={aiConfig}
               msg={stageAiMessage}
               renderMessageContent={renderMessageContent}
+              enableTypewriter={true}
             />
           )}
 
@@ -246,6 +286,7 @@ const ChatPanel = ({
               aiConfig={aiConfig}
               msg={latestPlayerMessage}
               renderMessageContent={renderMessageContent}
+              enableTypewriter={true}
             />
           )}
 
@@ -318,6 +359,7 @@ const ChatPanel = ({
                   aiConfig={aiConfig}
                   msg={msg}
                   renderMessageContent={renderMessageContent}
+                  enableTypewriter={false}
                 />
               ))}
             </div>
