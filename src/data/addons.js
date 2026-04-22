@@ -1,8 +1,36 @@
 import addonsData from './addons.json';
+import normalIceIcon from '../../Art-assets/Art assets/道具/冰块/normal.png';
+import moreIceIcon from '../../Art-assets/Art assets/道具/冰块/more_ice.png';
+import mintDecorationIcon from '../../Art-assets/Art assets/道具/装饰/mint.png';
+import lemonDecorationIcon from '../../Art-assets/Art assets/道具/装饰/lemon.png';
 
-export const ICE_TYPES = addonsData.iceTypes;
+export const ICE_TYPES = {
+  ...addonsData.iceTypes,
+  no_ice: {
+    ...addonsData.iceTypes.no_ice,
+    icon: ''
+  },
+  normal: {
+    ...addonsData.iceTypes.normal,
+    iconImage: normalIceIcon
+  },
+  more_ice: {
+    ...addonsData.iceTypes.more_ice,
+    iconImage: moreIceIcon
+  }
+};
 export const GARNISH_TYPES = addonsData.garnishTypes;
-export const DECORATION_TYPES = addonsData.decorationTypes;
+export const DECORATION_TYPES = {
+  ...addonsData.decorationTypes,
+  mint: {
+    ...addonsData.decorationTypes.mint,
+    iconImage: mintDecorationIcon
+  },
+  lemon_slice: {
+    ...addonsData.decorationTypes.lemon_slice,
+    iconImage: lemonDecorationIcon
+  }
+};
 export const ADDON_BONUS_CONFIG = addonsData.addonBonusConfig;
 export const COMBO_BONUS = addonsData.comboBonus;
 

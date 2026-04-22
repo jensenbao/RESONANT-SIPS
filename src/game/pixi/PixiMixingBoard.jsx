@@ -223,6 +223,7 @@ const buildCards = ({ currentStep, session, unlockedDecorations, unlockedGlasses
         description: getGlassDescription(mixingMode, glass),
         disabled: !isUnlocked,
         icon: glass.icon,
+        iconImage: glass.iconImage,
         id: glass.id,
         label: glass.name,
         note: getCardNote(isUnlocked ? '' : 'locked'),
@@ -242,6 +243,7 @@ const buildCards = ({ currentStep, session, unlockedDecorations, unlockedGlasses
         description: getAddonDescription(mixingMode, ice),
         disabled: !isAvailable,
         icon: ice.icon,
+        iconImage: ice.iconImage,
         id: ice.id,
         label: ice.name,
         note: getCardNote(disabledState),
@@ -264,6 +266,7 @@ const buildCards = ({ currentStep, session, unlockedDecorations, unlockedGlasses
           description: getItemDescription(mixingMode, ingredient),
           disabled: isRestricted || isMaxed,
           icon: ingredient.icon,
+          iconImage: ingredient.iconImage,
           id: ingredient.id,
           label: ingredient.name,
           onClick: () => session.handleAddIngredient(ingredient.id),
@@ -279,6 +282,7 @@ const buildCards = ({ currentStep, session, unlockedDecorations, unlockedGlasses
         active: session.recipe.decoration === item.id,
         description: getAddonDescription(mixingMode, item),
         icon: item.icon,
+        iconImage: item.iconImage,
         id: item.id ?? 'skip-decoration',
         label: item.name,
         onClick: () => session.handleSelectDecoration(item.id ?? null)
@@ -291,6 +295,7 @@ const buildCards = ({ currentStep, session, unlockedDecorations, unlockedGlasses
       active: false,
       description: `已加入 ${portion.count} 份`,
       icon: INGREDIENTS[portion.id].icon,
+      iconImage: INGREDIENTS[portion.id].iconImage,
       id: portion.id,
       label: INGREDIENTS[portion.id].name,
       onClick: null
@@ -565,7 +570,15 @@ const PixiMixingBoard = ({
                 <div key={card.id} className={`pixi-mixing-board__card ${card.active ? 'active' : ''} ${card.disabled ? 'disabled' : ''}`}>
                   <button type="button" className="pixi-mixing-board__card-main" disabled={card.disabled || !card.onClick} onClick={card.onClick || undefined}>
                     <div className="pixi-mixing-board__card-top">
-                      <span className="pixi-mixing-board__card-icon">{card.icon}</span>
+                      {(card.iconImage || card.icon) && (
+                        <span className="pixi-mixing-board__card-icon">
+                          {card.iconImage ? (
+                            <img className="pixi-mixing-board__card-icon-image" src={card.iconImage} alt={`${card.label}图标`} />
+                          ) : (
+                            card.icon
+                          )}
+                        </span>
+                      )}
                       {card.badge && <span className="pixi-mixing-board__card-badge">{card.badge}</span>}
                     </div>
                     <div className="pixi-mixing-board__card-title">{card.label}</div>

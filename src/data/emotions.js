@@ -1,4 +1,7 @@
 import { EMOTION_IDS_8 } from '../utils/emotionSchema.js';
+import martiniGlassIcon from '../../Art-assets/Art assets/道具/杯型/martini.png';
+import highballGlassIcon from '../../Art-assets/Art assets/道具/杯型/highball.png';
+import rockGlassIcon from '../../Art-assets/Art assets/道具/杯型/rock.png';
 
 export const EMOTIONS = {
   joy: { id: 'joy', name: '喜悦', color: '#FFD166', icon: '😊' },
@@ -66,6 +69,7 @@ export const GLASS_TYPES = {
     id: 'martini',
     name: '马提尼杯',
     icon: '🍸',
+    iconImage: martiniGlassIcon,
     bonus: ['trust', 'joy'],
     description: '经典优雅，适合平衡型情绪',
     maxPortions: 3,
@@ -75,6 +79,7 @@ export const GLASS_TYPES = {
     id: 'highball',
     name: '高球杯',
     icon: '🥃',
+    iconImage: highballGlassIcon,
     bonus: ['joy', 'anticipation'],
     description: '轻松随意，适合积极情绪',
     maxPortions: 3,
@@ -84,6 +89,7 @@ export const GLASS_TYPES = {
     id: 'rock',
     name: '古典杯',
     icon: '🥛',
+    iconImage: rockGlassIcon,
     bonus: ['sadness', 'fear'],
     description: '沉稳厚重，适合复杂情绪',
     maxPortions: 3,

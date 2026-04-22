@@ -679,7 +679,21 @@
 }
 
 .pixi-mixing-board__card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(24px, 2.2vw, 34px);
+  height: clamp(24px, 2.2vw, 34px);
   font-size: 20px;
+  line-height: 1;
+  flex: none;
+}
+
+.pixi-mixing-board__card-icon-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .pixi-mixing-board__card-badge {
