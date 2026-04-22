@@ -535,8 +535,10 @@
   border: none;
   box-shadow: none;
   object-fit: cover;
+  object-position: center center;
+  transform: scale(1.04);
   image-rendering: auto;
-  background: #000;
+  background: transparent;
 }
 
 .serve-story-fix-tag {
@@ -545,15 +547,11 @@
   top: calc(clamp(18px, 3.2vh, 56px) - 5px);
   z-index: 10010;
   pointer-events: none;
-  padding: 10px 14px 8px;
-  border-radius: 10px;
-  background:
-    linear-gradient(135deg, rgba(38, 26, 66, 0.86), rgba(16, 12, 34, 0.8));
-  border: 1px solid rgba(191, 157, 255, 0.48);
-  box-shadow:
-    0 0 0 1px rgba(18, 10, 34, 0.55) inset,
-    0 10px 24px rgba(8, 6, 18, 0.48),
-    0 0 16px rgba(148, 92, 255, 0.35);
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
   animation: serveStoryFixTagVisible 3.3s linear forwards;
 }
 
@@ -635,17 +633,18 @@
   right: clamp(16px, 3vw, 28px);
   top: clamp(16px, 3vh, 28px);
   border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(8, 12, 20, 0.65);
+  background: transparent;
   color: rgba(255, 255, 255, 0.92);
   padding: 8px 14px;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.28);
 }
 
 .serve-story-skip:hover {
   border-color: rgba(168, 85, 247, 0.8);
-  background: rgba(24, 18, 46, 0.78);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* ====== 金钱飞字 ====== */
