@@ -69,7 +69,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
     } else {
       console.log('⏳ 等待下一位顾客生成...');
       customerFlow.setIsLoadingCustomers(true);
-      customerFlow.setCustomerLoadingProgress('下一位顾客即将到来...');
+      customerFlow.setCustomerLoadingProgress('Next guest arriving...');
 
       const capturedIndex = customerFlow.currentCustomerIndex;
 
@@ -305,7 +305,7 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
       customerFlow.setIsLoadingCustomers(false);
     } else {
       customerFlow.setIsLoadingCustomers(true);
-      customerFlow.setCustomerLoadingProgress('正在创建新一天的第一位顾客...');
+      customerFlow.setCustomerLoadingProgress('Creating the first guest of the new day...');
       try {
         const firstCustomer = await generateCustomerWithCharacterPool({
           activeCharacterIds: getActiveCharacterIds()

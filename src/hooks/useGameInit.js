@@ -131,7 +131,7 @@ export const useGameInit = (ctx) => {
       }
 
       customerFlow.setIsLoadingCustomers(true);
-      customerFlow.setCustomerLoadingProgress(`正在创建第 ${day} 天的第一位顾客...`);
+      customerFlow.setCustomerLoadingProgress(`Creating the first guest for Day ${day}...`);
       try {
         const activeCharacterIds = getActiveCharacterIds();
         const firstCustomer = await generateCustomerWithCharacterPool({ activeCharacterIds });
@@ -143,11 +143,11 @@ export const useGameInit = (ctx) => {
         const isNoActiveCharacters = error?.message === 'no_active_characters';
         if (isNoActiveCharacters) {
           customerFlow.setDailyCustomers([]);
-          customerFlow.setCustomerLoadingProgress('未找到首位顾客，请返回新游戏配置重新添加并启用角色 ID。');
-          addToast('未找到首位顾客，请返回新游戏配置重新添加并启用角色 ID。', 'error');
+          customerFlow.setCustomerLoadingProgress('No first guest found. Please return to New Game Setup and add/enable at least one character ID.');
+          addToast('No first guest found. Please return to New Game Setup and add/enable at least one character ID.', 'error');
         } else {
           customerFlow.setDailyCustomers([]);
-          addToast('第一位顾客生成失败，请检查 AI 设置后重试。', 'error');
+          addToast('Failed to create the first guest. Please check AI settings and try again.', 'error');
         }
       }
       customerFlow.setIsLoadingCustomers(false);
