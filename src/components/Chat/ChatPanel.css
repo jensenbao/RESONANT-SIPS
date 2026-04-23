@@ -1555,3 +1555,12 @@
   margin: 0;
   align-items: flex-start;
 }
+
+/* Avatar shape consistency: rounded-square across chat UI. */
+.ai-avatar,
+.message-avatar,
+.player-avatar-image,
+.chat-message-avatar-image,
+.chat-message-avatar-image img {
+  border-radius: var(--ui-avatar-radius, 22%) !important;
+}
