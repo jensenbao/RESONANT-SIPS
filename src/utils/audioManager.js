@@ -20,6 +20,20 @@ class AudioManager {
     // 自动播放被阻止时的待播放曲目
     this._pendingBgmTrack = null;
     this._interactionListenerBound = false;
+    this._wasPlayingBeforeMute = false;
+    this._bgmSwitchTimer = null;
+    this._bgmFadeOutTimer = null;
+  }
+
+  _clearBgmTimers() {
+    if (this._bgmSwitchTimer) {
+      clearTimeout(this._bgmSwitchTimer);
+      this._bgmSwitchTimer = null;
+    }
+    if (this._bgmFadeOutTimer) {
+      clearInterval(this._bgmFadeOutTimer);
+      this._bgmFadeOutTimer = null;
+    }
   }
 
   // 初始化音频上下文（需要用户交互后调用）
@@ -92,6 +106,12 @@ class AudioManager {
     game: '/audio/Bar_BGM.wav'    // 游戏内/调酒 (统一氛围音乐)
   };
 
+  _normalizeBgmTrack(track) {
+    // 全局仅保留一条 BGM：home 与 game 统一到同一轨道
+    if (!track || track === 'game') return 'home';
+    return track;
+  }
+
   /**
    * 播放背景音乐
    * @param {string} track - 曲目名：'home' | 'game'，默认 'game'
@@ -99,10 +119,29 @@ class AudioManager {
   playBGM(track = 'game') {
     if (this.isMuted) return;
 
+    this._clearBgmTimers();
+
+    track = this._normalizeBgmTrack(track);
+
     const src = AudioManager.BGM_TRACKS[track] || AudioManager.BGM_TRACKS.game;
 
-    // 如果已经在播放相同音源，不重复
-    if (this.isBgmPlaying && this.bgmAudio && this.bgmAudio.src.endsWith(src)) return;
+    // 如果已经是同一音源，优先恢复播放而不是重建（避免从头开始）
+    if (this.bgmAudio && this.bgmAudio.src.endsWith(src)) {
+      this.currentBgmTrack = track;
+      if (!this.bgmAudio.paused) {
+        this.isBgmPlaying = true;
+        return;
+      }
+      this.bgmAudio.play().then(() => {
+        this._pendingBgmTrack = null;
+        this.isBgmPlaying = true;
+      }).catch(() => {
+        this._pendingBgmTrack = track;
+        this.isBgmPlaying = false;
+        this._waitForInteraction();
+      });
+      return;
+    }
 
     // 停止当前 BGM
     this.stopBGM();
@@ -111,16 +150,18 @@ class AudioManager {
       this.bgmAudio = new Audio(src);
       this.bgmAudio.loop = true;
       this.bgmAudio.volume = this.bgmVolume;
+      this.currentBgmTrack = track;
+      this.isBgmPlaying = false;
       this.bgmAudio.play().then(() => {
         this._pendingBgmTrack = null;
+        this.isBgmPlaying = true;
         console.log(`BGM started: ${track} (${src})`);
       }).catch(() => {
         // 自动播放被阻止，等待用户首次交互后恢复
         this._pendingBgmTrack = track;
+        this.isBgmPlaying = false;
         this._waitForInteraction();
       });
-      this.currentBgmTrack = track;
-      this.isBgmPlaying = true;
     } catch (e) {
       console.error('Failed to play BGM:', e);
     }
@@ -130,17 +171,27 @@ class AudioManager {
    * 切换到另一首 BGM（带淡入淡出）
    */
   switchBGM(track) {
+    this._clearBgmTimers();
+
+    track = this._normalizeBgmTrack(track);
+
     const src = AudioManager.BGM_TRACKS[track] || AudioManager.BGM_TRACKS.game;
-    if (this.isBgmPlaying && this.bgmAudio && this.bgmAudio.src.endsWith(src)) return;
+    if (this.bgmAudio && this.bgmAudio.src.endsWith(src)) {
+      this.playBGM(track);
+      return;
+    }
 
     // 淡出当前
     if (this.bgmAudio) {
       const oldAudio = this.bgmAudio;
-      const fadeOut = setInterval(() => {
+      this._bgmFadeOutTimer = setInterval(() => {
         if (oldAudio.volume > 0.05) {
           oldAudio.volume = Math.max(0, oldAudio.volume - 0.05);
         } else {
-          clearInterval(fadeOut);
+          if (this._bgmFadeOutTimer) {
+            clearInterval(this._bgmFadeOutTimer);
+            this._bgmFadeOutTimer = null;
+          }
           oldAudio.pause();
           oldAudio.src = '';
         }
@@ -151,7 +202,8 @@ class AudioManager {
     this.isBgmPlaying = false;
 
     // 延迟淡入新曲
-    setTimeout(() => {
+    this._bgmSwitchTimer = setTimeout(() => {
+      this._bgmSwitchTimer = null;
       this.playBGM(track);
       // 淡入
       if (this.bgmAudio) {
@@ -168,8 +220,32 @@ class AudioManager {
     }, 600);
   }
 
+  pauseBGM() {
+    if (this.bgmAudio && !this.bgmAudio.paused) {
+      this.bgmAudio.pause();
+    }
+    this.isBgmPlaying = false;
+  }
+
+  resumeBGM() {
+    if (this.isMuted) return;
+    if (this.bgmAudio && this.bgmAudio.paused) {
+      this.bgmAudio.play().then(() => {
+        this._pendingBgmTrack = null;
+        this.isBgmPlaying = true;
+      }).catch(() => {
+        this._pendingBgmTrack = this.currentBgmTrack || 'game';
+        this.isBgmPlaying = false;
+        this._waitForInteraction();
+      });
+      return;
+    }
+    this.playBGM(this.currentBgmTrack || 'game');
+  }
+
   // 停止背景音乐
   stopBGM() {
+    this._clearBgmTimers();
     if (this.bgmAudio) {
       this.bgmAudio.pause();
       this.bgmAudio.src = '';
@@ -177,16 +253,29 @@ class AudioManager {
     }
     this.isBgmPlaying = false;
     this.currentBgmTrack = null;
+    this._pendingBgmTrack = null;
+    this._wasPlayingBeforeMute = false;
   }
 
   // 切换背景音乐开关
   toggleBGM() {
+    if (this.bgmAudio && !this.bgmAudio.paused) {
+      this.pauseBGM();
+      return false;
+    }
+    this.resumeBGM();
+    return true;
+  }
+
+  // 切换背景音乐静音状态（用于 UI 的开/关按钮）
+  toggleBGMMute() {
     if (this.isBgmPlaying) {
       this.stopBGM();
+      return false;
     } else {
       this.playBGM(this.currentBgmTrack || 'game');
+      return true;
     }
-    return this.isBgmPlaying;
   }
 
   // ==================== 音效 ====================
@@ -560,10 +649,20 @@ class AudioManager {
   }
 
   setMuted(muted) {
+    if (this.isMuted === muted) return;
+
     this.isMuted = muted;
+
     if (muted) {
-      this.stopBGM();
+      this._wasPlayingBeforeMute = Boolean(this.bgmAudio && !this.bgmAudio.paused);
+      this.pauseBGM();
+      return;
     }
+
+    if (this._wasPlayingBeforeMute) {
+      this.resumeBGM();
+    }
+    this._wasPlayingBeforeMute = false;
   }
 
   // 获取当前状态

@@ -50,7 +50,7 @@ export const useGameInit = (ctx) => {
     document.addEventListener('click', handleFirstInteraction);
     document.addEventListener('keydown', handleFirstInteraction);
     audioManager.init();
-    audioManager.switchBGM('game');
+    audioManager.playBGM('home');
     return () => {
       document.removeEventListener('click', handleFirstInteraction);
       document.removeEventListener('keydown', handleFirstInteraction);

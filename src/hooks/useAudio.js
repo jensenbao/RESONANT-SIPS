@@ -52,10 +52,10 @@ export const useAudio = () => {
     audioManager.init();
   }, []);
 
-  const playBGM = useCallback(() => {
+  const playBGM = useCallback((track = 'game') => {
     audioManager.init();
-    audioManager.playBGM();
-    setIsBgmPlaying(true);
+    audioManager.playBGM(track);
+    setIsBgmPlaying(Boolean(audioManager.bgmAudio && !audioManager.bgmAudio.paused));
   }, []);
 
   const stopBGM = useCallback(() => {
@@ -90,13 +90,7 @@ export const useAudio = () => {
   const setMuted = useCallback((muted) => {
     setIsMuted(muted);
     audioManager.setMuted(muted);
-    if (muted) {
-      setIsBgmPlaying(false);
-    } else {
-      audioManager.init();
-      audioManager.playBGM('game');
-      setIsBgmPlaying(true);
-    }
+    setIsBgmPlaying(Boolean(audioManager.bgmAudio && !audioManager.bgmAudio.paused));
     saveSettings({ bgmVolume, sfxVolume, isMuted: muted });
   }, [bgmVolume, sfxVolume, saveSettings]);
 

@@ -136,18 +136,18 @@ const GamePage = ({
   const setSfxVolume = audioHook?.setSfxVolume ?? (() => {});
   const initAudio = audioHook?.initAudio ?? (() => {});
   const shouldResumeBgmAfterServeAnimRef = useRef(false);
-  const serveAnimPrevBgmTrackRef = useRef('game');
+  const serveAnimPrevBgmTrackRef = useRef('home');
 
   useEffect(() => {
     if (showServeStoryAnim) {
-      serveAnimPrevBgmTrackRef.current = audioManager.currentBgmTrack || 'game';
+      serveAnimPrevBgmTrackRef.current = audioManager.currentBgmTrack || 'home';
       shouldResumeBgmAfterServeAnimRef.current = !isMuted && Boolean(audioManager.isBgmPlaying || audioManager.bgmAudio);
       stopBGM();
       return;
     }
 
     if (shouldResumeBgmAfterServeAnimRef.current && !isMuted) {
-      playBGM(serveAnimPrevBgmTrackRef.current || 'game');
+      playBGM(serveAnimPrevBgmTrackRef.current || 'home');
       shouldResumeBgmAfterServeAnimRef.current = false;
     }
   }, [showServeStoryAnim, isMuted, stopBGM, playBGM]);
