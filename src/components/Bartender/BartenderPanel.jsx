@@ -45,14 +45,6 @@ const BartenderPanel = ({
       <div className="bartender-panel bartender-panel--stage">
         <div className="bartender-header">
           <h3>{'🍸 Mixing Station'}</h3>
-          <button
-            className="reset-btn"
-            type="button"
-            onClick={onBackToDialogue}
-            title={'Back to dialogue'}
-          >
-            {'\u21a9'}
-          </button>
         </div>
 
         <div className="bartender-emotion-step">
