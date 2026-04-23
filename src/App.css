@@ -57,6 +57,7 @@
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-pill: 50px;
+  --ui-avatar-radius: 22%;
 
   /* ---- 阴影 ---- */
   --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
