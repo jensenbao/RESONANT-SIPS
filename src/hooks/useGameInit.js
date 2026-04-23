@@ -18,6 +18,7 @@ export const useGameInit = (ctx) => {
     cocktailFlow, initAudio, playSFX,
     aiConfig, aiType, trustLevel, setTrustLevel,
     money, setMoney, addToast,
+    activeSlotId,
     atmosphere, generateAtmosphere,
     showAtmosphereOverlay, dismissAtmosphereOverlay,
     showEventNotification, currentEvent,
@@ -82,7 +83,8 @@ export const useGameInit = (ctx) => {
 
       // 🆕 尝试从会话恢复
       const session = getGameSession();
-      if (session && session.day === day && session.dailyCustomers?.length > 0) {
+      const sessionMatchesSlot = !activeSlotId || session?.slotId === activeSlotId;
+      if (session && sessionMatchesSlot && session.day === day && session.dailyCustomers?.length > 0) {
         console.log(`🔄 Restored Day ${day} from session (guest ${session.currentCustomerIndex + 1}/${session.dailyCustomers.length})`);
         customerFlow.setDailyCustomers(session.dailyCustomers);
         customerFlow.setCurrentCustomerIndex(session.currentCustomerIndex || 0);
@@ -155,7 +157,7 @@ export const useGameInit = (ctx) => {
     };
 
     initializeFirstCustomer();
-  }, [preloadedFirstCustomer, onCustomerUsed]);
+  }, [preloadedFirstCustomer, onCustomerUsed, activeSlotId]);
 
   // 顾客变化时开始新对话 + 进阶引导检查
   useEffect(() => {
@@ -285,6 +287,7 @@ export const useGameInit = (ctx) => {
         const trimmedHistory = (dialogue.dialogueHistory || []).slice(-20);
 
         saveGameSession({
+          slotId: activeSlotId || null,
           day: customerFlow.currentDay,
           dailyCustomers: slimCustomers,
           currentCustomerIndex: customerFlow.currentCustomerIndex,
@@ -305,7 +308,7 @@ export const useGameInit = (ctx) => {
     }, 1000);
     return () => clearTimeout(timer);
   }, [
-    dialogue.dialogueHistory, trustLevel, customerFlow.currentCustomerIndex,
+    activeSlotId, dialogue.dialogueHistory, trustLevel, customerFlow.currentCustomerIndex,
     customerFlow.customerSuccessCount, cocktailFlow.guessedCorrectly,
     customerFlow.dailyCustomers.length, customerFlow.customersServed
   ]);

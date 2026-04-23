@@ -178,6 +178,8 @@ const GamePage = ({
   const setUnlockedItems = setAppUnlockedItems ?? (() => {});
 
   const aiConfig = customerFlow.currentCustomer?.config || getAIConfig(aiType || 'workplace');
+  const stagePortraitSrc = aiConfig?.avatarBase64 || '';
+  const stageCharacterId = aiConfig?.customCharacterId || aiConfig?.id || '';
 
   useEffect(() => {
     if (!activeSlotId) return;
@@ -289,6 +291,7 @@ const GamePage = ({
     cocktailFlow, chapterSystem, advancedGuides,
     playSFX, addToast, showGameHint, initAudio,
     clearToasts,
+    activeSlotId,
     aiConfig, aiType, trustLevel, setTrustLevel,
     money, setMoney, unlockedItems, setUnlockedItems,
     atmosphere, generateAtmosphere,
@@ -370,7 +373,11 @@ const GamePage = ({
   if ((!customerFlow.isGameReady || customerFlow.dailyCustomers.length === 0 || customerFlow.isLoadingCustomers) && !hasHighPriorityOverlay) {
     return (
       <div className="game-page">
-        <AmbientGameCanvas viewModel={gameViewModel} />
+        <AmbientGameCanvas
+          viewModel={gameViewModel}
+          customerPortraitSrc={stagePortraitSrc}
+          customerCharacterId={stageCharacterId}
+        />
         <div className="game-page-ui">
           <GameLoadingScreen
             isLoadingCustomers={customerFlow.isLoadingCustomers}
@@ -391,7 +398,11 @@ const GamePage = ({
 
   return (
     <div className="game-page">
-      <AmbientGameCanvas viewModel={gameViewModel} />
+      <AmbientGameCanvas
+        viewModel={gameViewModel}
+        customerPortraitSrc={stagePortraitSrc}
+        customerCharacterId={stageCharacterId}
+      />
       <div className="game-page-ui">
       <AtmosphereOverlay atmosphere={atmosphere} day={customerFlow.currentDay} onStart={dismissAtmosphereOverlay} isVisible={showAtmosphereOverlay} />
       {eventsEnabled && (

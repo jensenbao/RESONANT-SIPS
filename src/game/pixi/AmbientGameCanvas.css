@@ -29,7 +29,7 @@
   bottom: 4%;
   width: min(38vw, 620px);
   aspect-ratio: 1078 / 1280;
-  background-image: url('/asset/角色/微信图片_20260418170446_294_154-cutout.png');
+  background-image: var(--npc-stage-portrait, url('/asset/角色/微信图片_20260418170446_294_154-cutout.png'));
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: contain;

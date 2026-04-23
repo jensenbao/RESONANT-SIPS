@@ -17,11 +17,14 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
   const [customCharacterIds, setCustomCharacterIds] = useState([]);
   const [activeCharacterIds, setActiveCharacterIds] = useState([]);
   const [toastList, setToastList] = useState([]);
-  const hasActiveCharacters = activeCharacterIds.length > 0;
+  const activeCharacterId = activeCharacterIds[0] || '';
+  const hasActiveCharacters = Boolean(activeCharacterId);
 
   useEffect(() => {
-    setCustomCharacterIds(getCustomCharacterIds());
-    setActiveCharacterIds(getActiveCharacterIds());
+    const custom = getCustomCharacterIds();
+    const active = getActiveCharacterIds();
+    setCustomCharacterIds(custom);
+    setActiveCharacterIds(active);
   }, []);
 
   const pushToast = (message, type = 'info') => {
@@ -84,16 +87,8 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
     pushToast(`Removed character ${id}.`, 'info');
   };
 
-  const handleToggleCharacter = (id, checked) => {
-    if (!checked && !canDisableCharacter(id, customCharacterIds)) {
-      pushToast('Add at least one non-preset character before disabling default ones.', 'warning');
-      return;
-    }
-    const current = getActiveCharacterIds();
-    const next = checked
-      ? Array.from(new Set([...current, id]))
-      : current.filter((item) => item !== id);
-    const saved = saveActiveCharacterIds(next);
+  const handleSelectCharacter = (id) => {
+    const saved = saveActiveCharacterIds([id]);
     setActiveCharacterIds(saved);
     onCharacterPoolChange?.();
   };
@@ -114,7 +109,7 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
 
         <section className="newgame-role-panel">
           <div className="newgame-role-title">Character Pool</div>
-          <p className="newgame-role-hint">Enter a character ID (e.g. 5738g). The number of enabled characters determines how many guests appear that day.</p>
+          <p className="newgame-role-hint">Enter a character ID (e.g. 5738g). Single-select mode: you can only activate one character per run.</p>
 
           <div className="newgame-role-input-row">
             <input
@@ -138,10 +133,11 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
                 <div className="newgame-role-item" key={id}>
                   <label className="newgame-role-main">
                     <input
-                      type="checkbox"
-                      checked={activeCharacterIds.includes(id)}
-                      onChange={(event) => handleToggleCharacter(id, event.target.checked)}
-                      disabled={loading || (locked && activeCharacterIds.includes(id))}
+                      type="radio"
+                      name="active-character-id"
+                      checked={activeCharacterId === id}
+                      onChange={() => handleSelectCharacter(id)}
+                      disabled={loading}
                     />
                     <span>{id}{isPreset ? ' (Default)' : ''}</span>
                   </label>

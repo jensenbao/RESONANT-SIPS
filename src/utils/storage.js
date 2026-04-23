@@ -82,6 +82,22 @@ const normalizeCharacterIds = (ids) => {
   return Array.from(dedup);
 };
 
+const pickSingleActiveId = (candidateIds, customIds, { forceLockedPresetWhenNoUserCharacters = false } = {}) => {
+  const normalizedCustom = normalizeCharacterIds(customIds);
+  const valid = normalizeCharacterIds(candidateIds).filter((id) => normalizedCustom.includes(id));
+  const hasUserCharacters = hasAnyUserAddedCharacter(normalizedCustom);
+
+  if (forceLockedPresetWhenNoUserCharacters && !hasUserCharacters) {
+    const lockedPresetIds = normalizedCustom.filter((id) => isPresetCharacterLockedUntilUserAdded(id));
+    const pickedLocked = valid.find((id) => lockedPresetIds.includes(id)) || lockedPresetIds[0];
+    if (pickedLocked) return [pickedLocked];
+  }
+
+  if (valid.length > 0) return [valid[0]];
+  if (normalizedCustom.length > 0) return [normalizedCustom[0]];
+  return [];
+};
+
 const getKnownAddedCharacterIds = () => {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.ADDED_CHARACTER_IDS) || '[]');
@@ -356,14 +372,11 @@ export const saveCustomCharacterIds = (ids) => {
     const normalized = normalizeCharacterIds(ids);
     localStorage.setItem(STORAGE_KEYS.CUSTOM_CHARACTER_IDS, JSON.stringify(normalized));
 
-    // active 列表必须是 custom 列表子集
+    // active 列表必须是 custom 列表子集，且仅允许一个激活角色
     const currentActive = getActiveCharacterIds();
-    let nextActive = currentActive.filter((id) => normalized.includes(id));
-    const hasUserCharacters = hasAnyUserAddedCharacter(normalized);
-    if (!hasUserCharacters) {
-      const lockedPresetIds = normalized.filter((id) => isPresetCharacterLockedUntilUserAdded(id));
-      nextActive = Array.from(new Set([...nextActive, ...lockedPresetIds]));
-    }
+    const nextActive = pickSingleActiveId(currentActive, normalized, {
+      forceLockedPresetWhenNoUserCharacters: true
+    });
     localStorage.setItem(STORAGE_KEYS.ACTIVE_CHARACTER_IDS, JSON.stringify(nextActive));
 
     queueActiveSlotGameStateSync('save_custom_character_ids');
@@ -386,8 +399,8 @@ export const addCustomCharacterId = (id) => {
   }
 
   const next = saveCustomCharacterIds([...current, value]);
-  const active = getActiveCharacterIds();
-  saveActiveCharacterIds([...active, value]);
+  // 新增角色后默认切换为该角色（单选模式）
+  saveActiveCharacterIds([value]);
   rememberAddedCharacterId(value);
   return { ok: true, ids: next };
 };
@@ -408,24 +421,29 @@ export const getActiveCharacterIds = () => {
   try {
     const custom = getCustomCharacterIds();
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACTIVE_CHARACTER_IDS) || 'null');
-    if (!raw) return custom;
-    const normalized = normalizeCharacterIds(raw).filter((id) => custom.includes(id));
-    return normalized;
+    if (!raw) {
+      return pickSingleActiveId(custom, custom, {
+        forceLockedPresetWhenNoUserCharacters: true
+      });
+    }
+    return pickSingleActiveId(raw, custom, {
+      forceLockedPresetWhenNoUserCharacters: true
+    });
   } catch (error) {
     console.error('Failed to load active character IDs:', error);
-    return getCustomCharacterIds();
+    const custom = getCustomCharacterIds();
+    return pickSingleActiveId(custom, custom, {
+      forceLockedPresetWhenNoUserCharacters: true
+    });
   }
 };
 
 export const saveActiveCharacterIds = (ids) => {
   try {
     const custom = getCustomCharacterIds();
-    let normalized = normalizeCharacterIds(ids).filter((id) => custom.includes(id));
-    const hasUserCharacters = hasAnyUserAddedCharacter(custom);
-    if (!hasUserCharacters) {
-      const lockedPresetIds = custom.filter((id) => isPresetCharacterLockedUntilUserAdded(id));
-      normalized = Array.from(new Set([...normalized, ...lockedPresetIds]));
-    }
+    const normalized = pickSingleActiveId(ids, custom, {
+      forceLockedPresetWhenNoUserCharacters: true
+    });
     localStorage.setItem(STORAGE_KEYS.ACTIVE_CHARACTER_IDS, JSON.stringify(normalized));
     queueActiveSlotGameStateSync('save_active_character_ids');
     return normalized;
