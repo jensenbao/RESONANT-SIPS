@@ -364,15 +364,6 @@ const ChatPanel = ({
               ))}
             </div>
 
-            <div className="chat-history-modal__footer">
-              <button
-                type="button"
-                className="chat-history-modal__confirm"
-                onClick={() => setShowHistoryModal(false)}
-              >
-                Back to Main View
-              </button>
-            </div>
           </div>
         </div>
       )}
@@ -416,15 +407,6 @@ const ChatPanel = ({
               )}
             </div>
 
-            <div className="chat-history-modal__footer">
-              <button
-                type="button"
-                className="chat-history-modal__confirm"
-                onClick={() => setShowProfileModal(false)}
-              >
-                Back to Main View
-              </button>
-            </div>
           </div>
         </div>
       )}
