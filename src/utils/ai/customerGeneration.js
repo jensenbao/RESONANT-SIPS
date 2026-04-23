@@ -607,7 +607,7 @@ export const generateCustomer = async (categoryId) => {
 };
 
 export const generateCustomerFromCharacterId = async (characterId) => {
-  const roleId = String(characterId || '').trim();
+  const roleId = String(characterId || '').trim().toLowerCase();
   if (!CHARACTER_ID_PATTERN.test(roleId)) {
     throw new Error('invalid_character_id');
   }
@@ -671,12 +671,19 @@ export const generateCustomerFromCharacterId = async (characterId) => {
     initialDialogue: normalizedVoice.openingLines,
   }, categoryConfig);
 
+  // Lock runtime identity to the selected character code so all downstream
+  // consumers (stage portrait / avatar cache / UI headers) stay in sync.
+  base.id = roleId;
+  base.characterCode = roleId;
   base.customCharacterId = roleId;
   base.isCustomCharacter = true;
   base.customCharacterSource = context?.source || null;
   base.aliases = Array.isArray(context?.aliases) ? context.aliases : [];
   base.avatarCacheKey = `custom_${roleId}`;
-  base.voiceProfile = normalizedVoice;
+  base.voiceProfile = {
+    ...normalizedVoice,
+    code: roleId,
+  };
   base.gender = String(context?.gender?.value || 'unknown').trim() || 'unknown';
   base.genderInfo = context?.gender || { value: 'unknown', confidence: 0, source: 'unknown', evidence: [] };
   base.rawBackstory = context?.background?.backstory || '';

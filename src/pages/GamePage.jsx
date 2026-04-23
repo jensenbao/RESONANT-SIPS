@@ -59,7 +59,7 @@ import { getAIConfig } from '../data/aiCustomers.js';
 import { EMOTIONS, INITIAL_UNLOCKED_EMOTIONS, GLASS_TYPES } from '../data/emotions.js';
 import { INITIAL_UNLOCKED_INGREDIENTS } from '../data/ingredients.js';
 import { TUTORIAL_VISIBLE_EMOTIONS } from '../data/tutorialData.js';
-import { clearAllCache } from '../utils/storage.js';
+import { clearAllCache, getActiveCharacterIds } from '../utils/storage.js';
 import audioManager from '../utils/audioManager.js';
 import {
   ensureNpcProfileInActiveSlot,
@@ -69,6 +69,43 @@ import {
 } from '../utils/saveRepository.js';
 import './GamePage.css';
 import './GamePage.overlays.css';
+
+const CHARACTER_ID_PATTERN = /^\d+g?$/i;
+
+const normalizeCharacterId = (value) => {
+  const text = String(value || '').trim();
+  return CHARACTER_ID_PATTERN.test(text) ? text.toLowerCase() : '';
+};
+
+const inferStageCharacterId = (config = {}) => {
+  const direct = normalizeCharacterId(config?.customCharacterId);
+  if (direct) return direct;
+
+  const codeField = normalizeCharacterId(config?.characterCode);
+  if (codeField) return codeField;
+
+  const idField = normalizeCharacterId(config?.id);
+  if (idField) return idField;
+
+  const voiceCode = normalizeCharacterId(config?.voiceProfile?.code);
+  if (voiceCode) return voiceCode;
+
+  const aliases = Array.isArray(config?.aliases) ? config.aliases : [];
+  for (const alias of aliases) {
+    const matched = normalizeCharacterId(alias);
+    if (matched) return matched;
+  }
+
+  const cacheKey = String(config?.avatarCacheKey || '').trim();
+  const fromCacheKey = cacheKey.match(/(?:^|_)(\d+g?)(?:_|$)/i)?.[1] || '';
+  return normalizeCharacterId(fromCacheKey);
+};
+
+const getSingleActiveStageCharacterId = () => {
+  const active = getActiveCharacterIds();
+  if (!Array.isArray(active) || active.length !== 1) return '';
+  return normalizeCharacterId(active[0]);
+};
 
 /**
  * 娓告垙涓婚〉闈紙鐦﹁韩鐗堬級
@@ -179,7 +216,7 @@ const GamePage = ({
 
   const aiConfig = customerFlow.currentCustomer?.config || getAIConfig(aiType || 'workplace');
   const stagePortraitSrc = aiConfig?.avatarBase64 || '';
-  const stageCharacterId = aiConfig?.customCharacterId || aiConfig?.id || '';
+  const stageCharacterId = inferStageCharacterId(aiConfig) || getSingleActiveStageCharacterId();
 
   useEffect(() => {
     if (!activeSlotId) return;

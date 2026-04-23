@@ -9,6 +9,33 @@ import audioManager from '../utils/audioManager.js';
 import { TUTORIAL_CUSTOMER } from '../data/tutorialData.js';
 import { generateCustomerWithCharacterPool } from '../utils/aiService.js';
 
+const CHARACTER_ID_PATTERN = /^\d+g?$/i;
+
+const extractCharacterIdFromConfig = (config = {}) => {
+  if (!config || typeof config !== 'object') return '';
+
+  const direct = String(config.customCharacterId || '').trim();
+  if (CHARACTER_ID_PATTERN.test(direct)) return direct.toLowerCase();
+
+  const idField = String(config.id || '').trim();
+  if (CHARACTER_ID_PATTERN.test(idField)) return idField.toLowerCase();
+
+  const avatarCacheKey = String(config.avatarCacheKey || '').trim();
+  const fromCacheKey = avatarCacheKey.match(/(?:^|_)(\d+g?)(?:_|$)/i)?.[1] || '';
+  if (CHARACTER_ID_PATTERN.test(fromCacheKey)) return fromCacheKey.toLowerCase();
+
+  const voiceCode = String(config.voiceProfile?.code || '').trim();
+  if (CHARACTER_ID_PATTERN.test(voiceCode)) return voiceCode.toLowerCase();
+
+  const aliases = Array.isArray(config.aliases) ? config.aliases : [];
+  for (const alias of aliases) {
+    const candidate = String(alias || '').trim();
+    if (CHARACTER_ID_PATTERN.test(candidate)) return candidate.toLowerCase();
+  }
+
+  return '';
+};
+
 /**
  * @param {Object} ctx - 上下文对象，包含所有需要的 hook 引用和状态
  */
@@ -85,8 +112,39 @@ export const useGameInit = (ctx) => {
       const session = getGameSession();
       const sessionMatchesSlot = !activeSlotId || session?.slotId === activeSlotId;
       if (session && sessionMatchesSlot && session.day === day && session.dailyCustomers?.length > 0) {
+        const activeCharacterIds = getActiveCharacterIds();
+        const singleActiveId = activeCharacterIds.length === 1
+          ? String(activeCharacterIds[0] || '').trim().toLowerCase()
+          : '';
+        let unresolvedIdCount = 0;
+        const restoredCustomers = session.dailyCustomers.map((item) => {
+          const originalConfig = item?.config && typeof item.config === 'object' ? item.config : {};
+          const inferredId = extractCharacterIdFromConfig(originalConfig) || singleActiveId;
+          if (!inferredId) {
+            unresolvedIdCount += 1;
+            return item;
+          }
+          return {
+            ...item,
+            config: {
+              ...originalConfig,
+              id: inferredId,
+              characterCode: inferredId,
+              customCharacterId: inferredId,
+              avatarCacheKey: originalConfig.avatarCacheKey || `custom_${inferredId}`,
+              voiceProfile: {
+                ...(originalConfig.voiceProfile || {}),
+                code: String(originalConfig.voiceProfile?.code || inferredId).trim().toLowerCase(),
+              },
+            }
+          };
+        });
+        if (unresolvedIdCount > 0 && !singleActiveId) {
+          console.warn('⚠️ Session contains customers without resolvable character IDs, skipping restore to avoid portrait mismatch.');
+          clearGameSession();
+        } else {
         console.log(`🔄 Restored Day ${day} from session (guest ${session.currentCustomerIndex + 1}/${session.dailyCustomers.length})`);
-        customerFlow.setDailyCustomers(session.dailyCustomers);
+        customerFlow.setDailyCustomers(restoredCustomers);
         customerFlow.setCurrentCustomerIndex(session.currentCustomerIndex || 0);
         customerFlow.setCustomerSuccessCount(session.customerSuccessCount || 0);
         customerFlow.customerSuccessCountRef.current = session.customerSuccessCount || 0;
@@ -116,6 +174,7 @@ export const useGameInit = (ctx) => {
         customerFlow.setIsGameReady(true);
         clearGameSession(); // 恢复成功后清除，后续由自动保存维护
         return;
+        }
       }
 
       console.log(`🔄 Initializing Day ${day}...`);
