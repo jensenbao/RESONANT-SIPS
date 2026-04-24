@@ -1,18 +1,18 @@
 # Resonant Sips
 
-🌍 [English](README.md) | **简体中文**
+[English](README.md) | **简体中文**
 
 Resonant Sips 是一个赛博朋克叙事调酒互动项目。  
 玩家通过对话观察顾客、推断隐藏情绪，并通过调酒结果影响信任关系与剧情走向。
 
-## 教师快速核对（30 秒）
+## 项目概览
 
-- [x] **Value / Novelty（25%）**：多模型路由 + 8 维情绪推断 + Pixi 交互调酒 + Storyworld 角色解析被整合为同一可玩闭环，而非零散功能。
-- [x] **GitHub 仓库可运行（50%）**：`npm run dev` 可一键启动前后端，`.env.example` 给出配置模板，`npm run build` 可产出构建结果。
-- [x] **视频/演示工作流**：完整演示口播与流程见 `public/preview/gameplay-voiceover-guide-en.md`。
-- [x] **使用课程生态**：已接入 `venetanji/polyu-storyworld`（子模块 + 远程回退）与 `/api/mcp/...` 的 MCP 风格接口。
+- **系统级创新整合**：多模型路由 + 8 维情绪推断 + Pixi 交互调酒 + Storyworld 角色解析被整合为同一可玩闭环，而非零散功能。
+- **仓库可直接运行**：`npm run dev` 可同时启动前后端，`.env.example` 给出配置模板，`npm run build` 可产出构建结果。
+- **游玩与演示流程完整**：完整演示口播与流程见 `public/preview/gameplay-voiceover-guide-en.md`。
+- **课程生态已接入**：已接入 `venetanji/polyu-storyworld`（子模块 + 远程回退）与 `/api/mcp/...` 的 MCP 风格接口。
 
-快速证据路径：
+关键参考路径：
 
 - `README.md`（英文运行与提交说明）
 - `README.zh-CN.md`（中文镜像说明）
@@ -26,14 +26,14 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 - 角色种子合规要求：`seeds/characters/README.md`
 - Storyboard 角色引用规则：角色 ID 使用 `xxxxg` 格式；每个出镜角色都应同时给出角色库与数据集 reference。
 
-演示建议：
+引用披露实践：
 
 - 保留现有素材以保证课堂演示连续性，并按“出镜角色 ID”逐条补充 reference。
 - 若无法确认个人作者姓名，采用 ID 级声明：`Role ID + 上游链接 + 访问日期 + 非商业课程用途说明`。
 
-## 课程评分要求对照
+## 实现亮点对照
 
-### 1) Value / Novelty（25%）
+### 1) 技术整合创新
 
 本项目把多种前沿能力整合进同一可玩的循环：
 
@@ -45,13 +45,13 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 
 项目的原创性主要体现在“系统级组合”上：不是单点 AI demo，而是把角色资料、情绪推断、对话行为与调酒机制打通为完整玩法流程。
 
-### 2) GitHub Repository（50%）
+### 2) 仓库工程质量
 
 - 仓库可本地运行，步骤完整。
 - 代码与文档体现了从角色到游玩/演示的工作流。
 - 明确使用了课程相关角色仓库与 MCP 风格接口。
 
-### 3) Characters Repo / MCP 使用
+### 3) Storyworld / MCP 接入实现
 
 - 使用 `venetanji/polyu-storyworld`（子模块 + 远程回退）。
 - 服务端提供并前端调用 `/api/mcp/...` 的 MCP 风格 HTTP 接口。
@@ -127,14 +127,14 @@ git submodule update --init --recursive
 
 - `DOC/network-cn-hk-setup.md`
 
-一键切换命令：
+配置切换命令：
 
 - `npm run env:cnhk`
 - `npm run env:global`
 
 ## 本地运行
 
-一键同时启动前端 + 存档服务：
+同时启动前端 + 存档服务：
 
 ```bash
 npm run dev
@@ -177,7 +177,7 @@ npm run check:paths
 
 - `DOC/asset-structure-and-path-policy.md`
 
-## 游玩与视频工作流
+## 游玩流程
 
 仓库中的典型流程：
 
@@ -187,7 +187,44 @@ npm run check:paths
 4. 在 Pixi 调酒界面完成配方操作（Body / Sweetness / Strength 轴）。
 5. 结算服务结果并写入本地存档。
 
-演示口播与分镜可参考：
+### Gameplay 流程图
+
+```mermaid
+flowchart TD
+    A[开始新游戏] --> B[选择角色来源]
+    B --> B1[本地 seeds]
+    B --> B2[Storyworld 子模块]
+    B --> B3[远程回退]
+    B1 --> C[生成顾客画像]
+    B2 --> C
+    B3 --> C
+    C --> D[进入对话回合]
+    D --> E[情绪推断与信任更新]
+    E --> F[Pixi 调酒面板操作]
+    F --> G[得分与服务评价]
+    G --> H[写入本地存档槽]
+    H --> I{继续本次会话?}
+    I -->|是| D
+    I -->|否| J[结束会话]
+```
+
+### 系统逻辑流程图
+
+```mermaid
+flowchart LR
+    U[玩家输入] --> FE[React + Pixi 前端]
+    FE --> API[Node 存档服务 API]
+    API --> SW[Storyworld 服务]
+    API --> EMO[情绪分析服务]
+    SW --> SRC1[本地 seeds]
+    SW --> SRC2[polyu-storyworld 子模块]
+    SW --> SRC3[GitHub/HF 远程回退]
+    EMO --> MODEL[LLM 路由与多模型提供商]
+    API --> SAVE[本地 JSON 存档]
+    SAVE --> FE
+```
+
+口播脚本结构可参考：
 
 - `public/preview/gameplay-voiceover-guide-en.md`
 

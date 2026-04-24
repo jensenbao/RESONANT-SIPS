@@ -1,21 +1,21 @@
 # Resonant Sips
 
-🌍 **English** | [简体中文](README.zh-CN.md)
+**English** | [简体中文](README.zh-CN.md)
 
 Resonant Sips is an interactive cyberpunk bartending narrative game.  
 Players read customers, infer hidden emotions, and mix drinks that influence trust, story progression, and outcomes.
 
-## Teacher Quick Check (30 seconds)
+## Project Snapshot
 
-- [x] **Value / Novelty (25%)**: Multi-provider LLM routing + 8-emotion inference + Pixi interactive mixing + Storyworld character ingestion are integrated into one playable loop (not isolated demos).
-- [x] **GitHub repository works (50%)**: `npm run dev` starts client+server, `.env.example` documents required configuration, and `npm run build` provides production output.
-- [x] **Workflow for video/gameplay**: end-to-end gameplay/voiceover walkthrough is documented in `public/preview/gameplay-voiceover-guide-en.md`.
-- [x] **Uses course ecosystem**: integrates `venetanji/polyu-storyworld` (submodule + remote fallback) and MCP-style endpoints under `/api/mcp/...`.
+- **Integrated novelty**: Multi-provider LLM routing + 8-emotion inference + Pixi interactive mixing + Storyworld character ingestion are integrated into one playable loop (not isolated demos).
+- **Runnable repository**: `npm run dev` starts client+server, `.env.example` documents required configuration, and `npm run build` provides production output.
+- **Documented gameplay workflow**: end-to-end gameplay/voiceover walkthrough is documented in `public/preview/gameplay-voiceover-guide-en.md`.
+- **Course ecosystem integration**: integrates `venetanji/polyu-storyworld` (submodule + remote fallback) and MCP-style endpoints under `/api/mcp/...`.
 
-Fast evidence paths:
+Key reference paths:
 
 - `README.md` (run/config/workflow)
-- `README.zh-CN.md` (Chinese mirror for evaluators)
+- `README.zh-CN.md` (Chinese mirror)
 - `DOC/DESIGN_PLAN.md` (implementation-aligned plan)
 - `server/storyworld-service.mjs`, `server/save-server.mjs`, `server/emotion-service.mjs`
 
@@ -26,14 +26,14 @@ Fast evidence paths:
 - Character seed compliance requirements: `seeds/characters/README.md`
 - Storyboard role reference policy: role IDs follow `xxxxg` format; for each shown role, cite Storyworld character source and dataset source.
 
-Presentation recommendation:
+Attribution practice:
 
 - Keep all visual assets for coursework continuity, and disclose references by shown role ID.
 - If original creator name is unknown, use ID-level reference: `Role ID + upstream URL + access date + non-commercial coursework note`.
 
-## Course Requirement Mapping
+## Implementation Highlights
 
-### 1) Value / Novelty (25%)
+### 1) Integrated Technical Novelty
 
 This project combines multiple state-of-the-art capabilities in one playable loop:
 
@@ -45,13 +45,13 @@ This project combines multiple state-of-the-art capabilities in one playable loo
 
 What is original in this repository is the integration logic: Storyworld character data, emotion inference, dialogue behavior, and bartending mechanics are stitched into one coherent gameplay system rather than isolated demos.
 
-### 2) GitHub Repository Quality (50%)
+### 2) Repository Engineering Quality
 
 - The repository is runnable locally with documented setup.
 - The full gameplay workflow is represented in code and docs (including voiceover demo guide).
 - The project integrates the course ecosystem through `venetanji/polyu-storyworld` and MCP-style APIs.
 
-### 3) Character Repo / MCP Usage
+### 3) Storyworld and MCP-style Usage
 
 - Uses `venetanji/polyu-storyworld` as a git submodule and remote fallback source.
 - Exposes and consumes HTTP MCP-style routes under `/api/mcp/...` for character lookup and emotion analysis.
@@ -127,7 +127,7 @@ Copy-paste presets are documented in:
 
 - `DOC/network-cn-hk-setup.md`
 
-Quick switch commands:
+Profile switch commands:
 
 - `npm run env:cnhk`
 - `npm run env:global`
@@ -177,7 +177,7 @@ Path policy document:
 
 - `DOC/asset-structure-and-path-policy.md`
 
-## Gameplay / Video Workflow
+## Gameplay Workflow
 
 Typical workflow represented in this repo:
 
@@ -187,7 +187,44 @@ Typical workflow represented in this repo:
 4. Mix cocktail in Pixi interface (Body / Sweetness / Strength style axes).
 5. Evaluate service outcome and persist progression to save slots.
 
-For narration/demo scripting, see:
+### Gameplay Flow
+
+```mermaid
+flowchart TD
+    A[Start New Game] --> B[Select Character Source]
+    B --> B1[Local seeds]
+    B --> B2[Storyworld submodule]
+    B --> B3[Remote fallback]
+    B1 --> C[Generate Customer Profile]
+    B2 --> C
+    B3 --> C
+    C --> D[Dialogue Round]
+    D --> E[Emotion + Trust Update]
+    E --> F[Mix Drink in Pixi Board]
+    F --> G[Scoring and Service Judgment]
+    G --> H[Save Progress to Slot]
+    H --> I{Continue Session?}
+    I -->|Yes| D
+    I -->|No| J[End Session]
+```
+
+### Logic / System Workflow
+
+```mermaid
+flowchart LR
+    U[Player Input] --> FE[React + Pixi Frontend]
+    FE --> API[Node Save Server APIs]
+    API --> SW[Storyworld Service]
+    API --> EMO[Emotion Service]
+    SW --> SRC1[Local seeds]
+    SW --> SRC2[polyu-storyworld submodule]
+    SW --> SRC3[Remote GitHub/HF fallback]
+    EMO --> MODEL[LLM Router / Multi-provider AI]
+    API --> SAVE[Local JSON Saves]
+    SAVE --> FE
+```
+
+For narration script structure, see:
 
 - `public/preview/gameplay-voiceover-guide-en.md`
 

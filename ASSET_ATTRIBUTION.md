@@ -22,7 +22,7 @@ Important note:
 - Publicly accessible on GitHub does not automatically mean "no attribution needed".
 - This project therefore keeps explicit references for role IDs used in demos.
 
-## Character Visual Register (Submission Draft)
+## Character Visual Register
 
 | Asset Path | Role ID | Provenance Statement | Reference URL | Usage Note |
 |---|---|---|---|---|
@@ -45,7 +45,7 @@ Important note:
 - `seeds/characters/presets/5738g/profile.json`
 - `server/storyworld-service.mjs` (local/submodule/remote fallback loading)
 
-## Slide-Ready Reference Lines (Copy/Paste)
+## Reference Line Templates
 
 - `0613g - cutout - Source: venetanji/polyu-storyworld (coursework integration) - Accessed: 2026-04-24 - Non-commercial classroom demo`
 - `2928g - cutout - Source: venetanji/polyu-storyworld (coursework integration) - Accessed: 2026-04-24 - Non-commercial classroom demo`
@@ -64,9 +64,9 @@ Recommended dual-source variant:
 
 `Role ID <ID> is referenced from Storyworld characters (GitHub) and Storyworld character images (Hugging Face dataset). Original individual creator name is not available in our retrieved metadata. Used for non-commercial coursework presentation with repository/dataset reference and access date.`
 
-## Final Submission To-Fill (Minimal)
+## Pending Metadata Items
 
-Only fill the following before final hand-in:
+Complete the following metadata fields before final hand-in:
 
 1. Team member name(s) responsible for `1512g` and `1601` asset origins.
 2. Team member name(s) responsible for bartender avatar/animation production.

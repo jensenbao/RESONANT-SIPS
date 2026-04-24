@@ -1,8 +1,7 @@
 import addonsData from './addons.json';
-import normalIceIcon from '../../Art-assets/Art assets/道具/冰块/normal.png';
-import moreIceIcon from '../../Art-assets/Art assets/道具/冰块/more_ice.png';
-import mintDecorationIcon from '../../Art-assets/Art assets/道具/装饰/mint.png';
-import lemonDecorationIcon from '../../Art-assets/Art assets/道具/装饰/lemon.png';
+
+const TOOL_ASSET_BASE = '/asset/道具';
+const icon = (relativePath) => `${TOOL_ASSET_BASE}/${relativePath}`;
 
 export const ICE_TYPES = {
   ...addonsData.iceTypes,
@@ -12,11 +11,11 @@ export const ICE_TYPES = {
   },
   normal: {
     ...addonsData.iceTypes.normal,
-    iconImage: normalIceIcon
+    iconImage: icon('冰块/normal.png')
   },
   more_ice: {
     ...addonsData.iceTypes.more_ice,
-    iconImage: moreIceIcon
+    iconImage: icon('冰块/more_ice.png')
   }
 };
 export const GARNISH_TYPES = addonsData.garnishTypes;
@@ -24,11 +23,11 @@ export const DECORATION_TYPES = {
   ...addonsData.decorationTypes,
   mint: {
     ...addonsData.decorationTypes.mint,
-    iconImage: mintDecorationIcon
+    iconImage: icon('装饰/mint.png')
   },
   lemon_slice: {
     ...addonsData.decorationTypes.lemon_slice,
-    iconImage: lemonDecorationIcon
+    iconImage: icon('装饰/lemon.png')
   }
 };
 export const ADDON_BONUS_CONFIG = addonsData.addonBonusConfig;

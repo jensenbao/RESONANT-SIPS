@@ -109,7 +109,7 @@ This document is written for recording a gameplay introduction video with Englis
 
 ---
 
-## 3) Core Rules (Quick Summary)
+## 3) Core Rules (Condensed Summary)
 
 - One run progresses through **days** and **guest encounters**.
 - You interact in two linked phases:

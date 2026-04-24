@@ -22,9 +22,9 @@
 
 This means the repository's primary implementation is JavaScript/Node, not Python/Pygame.
 
-## 3. Course Rubric Mapping
+## 3. Implementation Alignment
 
-### 3.1 Value / Novelty (25%)
+### 3.1 Integrated Technical Novelty
 
 Implemented novelty in this repo:
 
@@ -34,7 +34,7 @@ Implemented novelty in this repo:
 4. Optional remote TTS with strict transcript/text synchronization guard.
 5. MCP-style character and emotion APIs used by game logic.
 
-### 3.2 GitHub Repository (50%)
+### 3.2 Repository Engineering Evidence
 
 Repository evidence:
 
@@ -43,7 +43,7 @@ Repository evidence:
 3. Gameplay/video workflow reference (`public/preview/gameplay-voiceover-guide-en.md`).
 4. Save and MCP-style API server with documented endpoints.
 
-### 3.3 Storyworld / MCP Requirement
+### 3.3 Storyworld / MCP Integration
 
 1. `venetanji/polyu-storyworld` is included as submodule and remote fallback source.
 2. HTTP MCP-style routes are implemented under `/api/mcp/...` for character search/get and emotion analysis.
@@ -66,7 +66,7 @@ Repository evidence:
 6. **Demo output**
    - Voiceover/script guide supports presentation and video walkthrough
 
-## 5. Evidence Paths (For Reviewers)
+## 5. Evidence Paths
 
 - `src/game/pixi/`
 - `src/hooks/useDialogue.js`
@@ -95,9 +95,9 @@ Manual validation checklist:
 2. Continue reducing mismatch between historical planning docs and current runtime.
 3. Optional future branch: external asset-generation workflow (e.g., ComfyUI) as an auxiliary pipeline, not a dependency for core gameplay execution.
 
-## 8. Submission Notes
+## 8. Document Cross-Reference
 
-For grading, evaluators should use this document together with:
+Use this document together with:
 
 - `README.md`
 - `README.zh-CN.md`

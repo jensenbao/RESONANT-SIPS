@@ -1,100 +1,86 @@
 import ingredientsData from './ingredients.json';
-import orangeJuiceIcon from '../../Art-assets/Art assets/道具/Juice/juice_orange.png';
-import lemonJuiceIcon from '../../Art-assets/Art assets/道具/Juice/juice_lemon.png';
-import cranberryJuiceIcon from '../../Art-assets/Art assets/道具/Juice/juice_cranberry.png';
-import mangoJuiceIcon from '../../Art-assets/Art assets/道具/Juice/juice_mango.png';
-import sodaMixerIcon from '../../Art-assets/Art assets/道具/Mixer/soda.png';
-import tonicMixerIcon from '../../Art-assets/Art assets/道具/Mixer/tonic.png';
-import syrupMixerIcon from '../../Art-assets/Art assets/道具/Mixer/syrup.png';
-import creamMixerIcon from '../../Art-assets/Art assets/道具/Mixer/cream.png';
-import coffeeMixerIcon from '../../Art-assets/Art assets/道具/Mixer/coffee.png';
-import tripleSecLiqueurIcon from '../../Art-assets/Art assets/道具/Liqueur/triple_sec.png';
-import kahluaLiqueurIcon from '../../Art-assets/Art assets/道具/Liqueur/kahlua.png';
-import baileysLiqueurIcon from '../../Art-assets/Art assets/道具/Liqueur/baileys.png';
-import sambucaLiqueurIcon from '../../Art-assets/Art assets/道具/Liqueur/sambuca.png';
-import vodkaSpiritIcon from '../../Art-assets/Art assets/道具/Spirit/vodka.png';
-import rumSpiritIcon from '../../Art-assets/Art assets/道具/Spirit/rum.png';
-import whiskeySpiritIcon from '../../Art-assets/Art assets/道具/Spirit/whiskey.png';
-import tequilaSpiritIcon from '../../Art-assets/Art assets/道具/Spirit/tequila.png';
+
+const TOOL_ASSET_BASE = '/asset/道具';
+const icon = (relativePath) => `${TOOL_ASSET_BASE}/${relativePath}`;
 
 export const BASE_SPIRITS = {
   ...ingredientsData.baseSpirits,
   vodka: {
     ...ingredientsData.baseSpirits.vodka,
-    iconImage: vodkaSpiritIcon
+    iconImage: icon('Spirit/vodka.png')
   },
   rum: {
     ...ingredientsData.baseSpirits.rum,
-    iconImage: rumSpiritIcon
+    iconImage: icon('Spirit/rum.png')
   },
   whiskey: {
     ...ingredientsData.baseSpirits.whiskey,
-    iconImage: whiskeySpiritIcon
+    iconImage: icon('Spirit/whiskey.png')
   },
   tequila: {
     ...ingredientsData.baseSpirits.tequila,
-    iconImage: tequilaSpiritIcon
+    iconImage: icon('Spirit/tequila.png')
   }
 };
 export const JUICES = {
   ...ingredientsData.juices,
   juice_orange: {
     ...ingredientsData.juices.juice_orange,
-    iconImage: orangeJuiceIcon
+    iconImage: icon('Juice/juice_orange.png')
   },
   juice_lemon: {
     ...ingredientsData.juices.juice_lemon,
-    iconImage: lemonJuiceIcon
+    iconImage: icon('Juice/juice_lemon.png')
   },
   juice_cranberry: {
     ...ingredientsData.juices.juice_cranberry,
-    iconImage: cranberryJuiceIcon
+    iconImage: icon('Juice/juice_cranberry.png')
   },
   juice_mango: {
     ...ingredientsData.juices.juice_mango,
-    iconImage: mangoJuiceIcon
+    iconImage: icon('Juice/juice_mango.png')
   }
 };
 export const MIXERS = {
   ...ingredientsData.mixers,
   soda: {
     ...ingredientsData.mixers.soda,
-    iconImage: sodaMixerIcon
+    iconImage: icon('Mixer/soda.png')
   },
   tonic: {
     ...ingredientsData.mixers.tonic,
-    iconImage: tonicMixerIcon
+    iconImage: icon('Mixer/tonic.png')
   },
   syrup: {
     ...ingredientsData.mixers.syrup,
-    iconImage: syrupMixerIcon
+    iconImage: icon('Mixer/syrup.png')
   },
   cream: {
     ...ingredientsData.mixers.cream,
-    iconImage: creamMixerIcon
+    iconImage: icon('Mixer/cream.png')
   },
   coffee: {
     ...ingredientsData.mixers.coffee,
-    iconImage: coffeeMixerIcon
+    iconImage: icon('Mixer/coffee.png')
   }
 };
 export const LIQUEURS = {
   ...ingredientsData.liqueurs,
   triple_sec: {
     ...ingredientsData.liqueurs.triple_sec,
-    iconImage: tripleSecLiqueurIcon
+    iconImage: icon('Liqueur/triple_sec.png')
   },
   kahlua: {
     ...ingredientsData.liqueurs.kahlua,
-    iconImage: kahluaLiqueurIcon
+    iconImage: icon('Liqueur/kahlua.png')
   },
   baileys: {
     ...ingredientsData.liqueurs.baileys,
-    iconImage: baileysLiqueurIcon
+    iconImage: icon('Liqueur/baileys.png')
   },
   sambuca: {
     ...ingredientsData.liqueurs.sambuca,
-    iconImage: sambucaLiqueurIcon
+    iconImage: icon('Liqueur/sambuca.png')
   }
 };
 

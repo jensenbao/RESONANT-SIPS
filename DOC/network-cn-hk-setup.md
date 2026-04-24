@@ -1,6 +1,6 @@
 # Network Setup for Mainland China / Hong Kong
 
-This guide provides copy-paste `.env.local` presets to reduce VPN dependency **without changing gameplay logic**.
+This guide provides `.env.local` profile templates to reduce VPN dependency **without changing gameplay logic**.
 
 ## Why VPN Is Sometimes Needed
 
@@ -34,7 +34,7 @@ VITE_DISABLE_REMOTE_STORYWORLD_FALLBACK=0
 VITE_DISABLE_REMOTE_PORTRAIT_FALLBACK=0
 ```
 
-## Preset B: CN/HK Stable (Prefer Local + DeepSeek, No VPN First)
+## Preset B: CN/HK Stable (Prefer Local + DeepSeek)
 
 ```env
 VITE_AI_PROVIDER=deepseek
@@ -49,7 +49,7 @@ VITE_DISABLE_REMOTE_STORYWORLD_FALLBACK=1
 VITE_DISABLE_REMOTE_PORTRAIT_FALLBACK=1
 ```
 
-Then run once:
+Run once:
 
 ```bash
 git submodule update --init --recursive
@@ -57,7 +57,7 @@ git submodule update --init --recursive
 
 This ensures local Storyworld assets are available when remote fallback is disabled.
 
-Quick switch command:
+Profile switch command:
 
 ```bash
 npm run env:cnhk
@@ -76,7 +76,7 @@ VITE_IMAGE_GEN_MODEL=google/gemini-3.1-flash-image-preview
 VITE_IMAGE_GEN_ENDPOINT=https://YOUR_GATEWAY_DOMAIN/v1
 ```
 
-## One-Command Profile Switching
+## Profile Switching Commands
 
 - CN/HK profile:
 

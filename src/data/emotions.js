@@ -1,7 +1,7 @@
 import { EMOTION_IDS_8 } from '../utils/emotionSchema.js';
-import martiniGlassIcon from '../../Art-assets/Art assets/道具/杯型/martini.png';
-import highballGlassIcon from '../../Art-assets/Art assets/道具/杯型/highball.png';
-import rockGlassIcon from '../../Art-assets/Art assets/道具/杯型/rock.png';
+
+const TOOL_ASSET_BASE = '/asset/道具';
+const icon = (relativePath) => `${TOOL_ASSET_BASE}/${relativePath}`;
 
 export const EMOTIONS = {
   joy: { id: 'joy', name: 'Joy', color: '#FFD166', icon: '😊' },
@@ -69,7 +69,7 @@ export const GLASS_TYPES = {
     id: 'martini',
     name: 'Martini Glass',
     icon: '🍸',
-    iconImage: martiniGlassIcon,
+    iconImage: icon('杯型/martini.png'),
     bonus: ['trust', 'joy'],
     description: 'Classic and elegant, suited for balanced emotions',
     maxPortions: 3,
@@ -79,7 +79,7 @@ export const GLASS_TYPES = {
     id: 'highball',
     name: 'Highball Glass',
     icon: '🥃',
-    iconImage: highballGlassIcon,
+    iconImage: icon('杯型/highball.png'),
     bonus: ['joy', 'anticipation'],
     description: 'Relaxed and easy, suited for positive emotions',
     maxPortions: 3,
@@ -89,7 +89,7 @@ export const GLASS_TYPES = {
     id: 'rock',
     name: 'Rocks Glass',
     icon: '🥛',
-    iconImage: rockGlassIcon,
+    iconImage: icon('杯型/rock.png'),
     bonus: ['sadness', 'fear'],
     description: 'Steady and weighty, suited for complex emotions',
     maxPortions: 3,

@@ -4,6 +4,9 @@
   "description": "未来酒吧主题调酒互动游戏",
   "type": "module",
   "scripts": {
+    "assets:sync": "node scripts/sync-art-assets-to-public.mjs",
+    "predev": "npm run assets:sync",
+    "prebuild": "npm run assets:sync",
     "dev": "node scripts/dev.mjs",
     "dev:client": "vite",
     "dev:server": "node server/save-server.mjs",
