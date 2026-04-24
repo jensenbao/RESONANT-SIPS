@@ -7,6 +7,8 @@
     "dev": "node scripts/dev.mjs",
     "dev:client": "vite",
     "dev:server": "node server/save-server.mjs",
+    "env:cnhk": "node scripts/setup-network-profile.mjs cnhk",
+    "env:global": "node scripts/setup-network-profile.mjs global",
     "image:remove-white-bg": "node scripts/remove-white-background.mjs",
     "setup:api": "node scripts/setup-api-keys.mjs",
     "migrate:characters": "node scripts/migrate-character-assets-layout.mjs",

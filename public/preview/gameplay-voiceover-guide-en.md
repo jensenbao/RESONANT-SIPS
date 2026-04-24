@@ -156,3 +156,13 @@ This document is written for recording a gameplay introduction video with Englis
 - If possible, record one clean successful serve and one failed serve for contrast.
 - Capture at least one day transition and one narrative progression element (return guest, event, or chapter screen).
 
+---
+
+## 7) Reference and Attribution Note (for Presentation)
+
+Before exporting your final presentation video:
+
+- Verify all shown role IDs against `ASSET_ATTRIBUTION.md`.
+- Add one credits/reference slide listing character/image sources and access date.
+- If original author is unknown, use ID-level reference (`Role ID + upstream URL + access date + coursework use note`).
+
