@@ -223,3 +223,14 @@ For narration/demo scripting, see:
 - Never commit real keys to tracked files.
 - `.env*` secrets are gitignored.
 - Share credentials with teammates only via private channels.
+
+## Copyright Notice
+
+The character library used in this project is sourced from the PolyU MSc IME course:
+AI Tools for Creative Process and Transmedia (SD5976).
+
+The original copyright and authorship of the characters belong to their respective creators.
+Our use of these characters in this project constitutes derivative creation / secondary creation based on the course character library, and is intended solely for academic, learning, and presentation purposes.
+
+This project does not claim ownership of the original character designs or narratives,
+and fully respects the creative rights and intellectual property of the original authors.

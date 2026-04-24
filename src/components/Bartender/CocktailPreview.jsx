@@ -14,12 +14,17 @@ const CocktailPreview = ({
   maxPortions = 3,
   isSuccess = false  // 调酒成功状态
 }) => {
+  const VISUAL_STAGE_WIDTH = 260;
+  const VISUAL_STAGE_HEIGHT = 360;
+
   // 倒酒动画状态
   const [isPouring, setIsPouring] = useState(false);
   const [portionBump, setPortionBump] = useState(false);
+  const [stageScale, setStageScale] = useState(1);
   const prevPortionsRef = useRef(totalPortions);
   const pourTimerRef = useRef(null);
   const bumpTimerRef = useRef(null);
+  const visualFrameRef = useRef(null);
   
   // 监听份数变化，触发倒酒动画
   useEffect(() => {
@@ -44,6 +49,30 @@ const CocktailPreview = ({
       if (bumpTimerRef.current) clearTimeout(bumpTimerRef.current);
     };
   }, [totalPortions]);
+
+  useEffect(() => {
+    const frame = visualFrameRef.current;
+    if (!frame) return undefined;
+
+    const updateStageScale = () => {
+      const { width, height } = frame.getBoundingClientRect();
+      const nextScale = Math.min(
+        1,
+        width / VISUAL_STAGE_WIDTH,
+        height / VISUAL_STAGE_HEIGHT
+      );
+
+      setStageScale(Math.max(0.48, Number.isFinite(nextScale) ? nextScale : 1));
+    };
+
+    updateStageScale();
+
+    const resizeObserver = new ResizeObserver(updateStageScale);
+    resizeObserver.observe(frame);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   const glass = GLASS_TYPES[recipe.glass];
   
   // 计算液体填充百分比（每份占比）
@@ -155,41 +184,48 @@ const CocktailPreview = ({
       <div className="preview-title">🍹 Mix Preview</div>
       
       <div className={`cocktail-glass-wrapper glass-${glassType} ${isSuccess ? 'success' : ''}`}>
-        {/* 玻璃杯体 */}
-        <div className={`glass-body ${isPouring ? 'pouring' : ''}`}>
-          {/* 冰块层 */}
-          {renderIceLayer()}
-          
-          {/* 液体层 */}
-          <div 
-            className={`liquid-layer ${isPouring ? 'pouring' : ''}`}
-            style={{ 
-              height: `${fillPercent}%`,
-              background: fillPercent > 0 
-                ? `linear-gradient(180deg, ${liquidColor} 0%, ${liquidColor.replace(/[\d.]+\)$/, '0.95)')} 100%)`
-                : 'transparent'
-            }}
+        <div className="cocktail-visual-frame" ref={visualFrameRef}>
+          <div
+            className="cocktail-visual-stage"
+            style={{ '--cocktail-preview-scale': stageScale }}
           >
-            {fillPercent > 0 && (
-              <>
-                <div className="liquid-surface" />
-                <div className="liquid-shine" />
-              </>
-            )}
-          </div>
-          
-          {/* 配料装饰 */}
-          {recipe.garnish && (
-            <div className="garnish-layer">
-              {GARNISH_TYPES[recipe.garnish]?.icon}
+            {/* 玻璃杯体 */}
+            <div className={`glass-body ${isPouring ? 'pouring' : ''}`}>
+              {/* 冰块层 */}
+              {renderIceLayer()}
+              
+              {/* 液体层 */}
+              <div 
+                className={`liquid-layer ${isPouring ? 'pouring' : ''}`}
+                style={{ 
+                  height: `${fillPercent}%`,
+                  background: fillPercent > 0 
+                    ? `linear-gradient(180deg, ${liquidColor} 0%, ${liquidColor.replace(/[\d.]+\)$/, '0.95)')} 100%)`
+                    : 'transparent'
+                }}
+              >
+                {fillPercent > 0 && (
+                  <>
+                    <div className="liquid-surface" />
+                    <div className="liquid-shine" />
+                  </>
+                )}
+              </div>
+              
+              {/* 配料装饰 */}
+              {recipe.garnish && (
+                <div className="garnish-layer">
+                  {GARNISH_TYPES[recipe.garnish]?.icon}
+                </div>
+              )}
+              
             </div>
-          )}
-          
+
+            {/* 装饰物 */}
+            {renderDecorationLayer()}
+          </div>
         </div>
 
-        {/* 装饰物 */}
-        {renderDecorationLayer()}
-        
         {/* 杯型图标 */}
         <div className="glass-type-label">
           {glass?.icon || '🍸'} {glass?.name?.replace(/（.*）/, '') || 'Select Glass'}
