@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CustomerAvatar from '../Avatar/CustomerAvatar.jsx';
+import CopyrightModal from '../Common/CopyrightModal.jsx';
 import {
   WEATHER_ICONS, WEATHER_NAMES,
   MUSIC_ICONS, MUSIC_NAMES
@@ -22,6 +23,7 @@ const GameHeader = ({
 }) => {
   const [showAudioSettings, setShowAudioSettings] = useState(false);
   const [showAtmoDetail, setShowAtmoDetail] = useState(false);
+  const [showCopyrightModal, setShowCopyrightModal] = useState(false);
 
   const atmoModifiers = [];
   if (atmosphere?.modifiers?.targetShift) {
@@ -64,6 +66,18 @@ const GameHeader = ({
       </div>
 
       <div className="header-right">
+        <button
+          className="audio-btn copyright-btn"
+          onClick={() => {
+            playSFX('click');
+            setShowCopyrightModal(true);
+          }}
+          title="Copyright notice"
+          aria-label="Show copyright notice"
+        >
+          <span className="copyright-btn-label">Copyright</span>
+        </button>
+
         {atmosphere && (
           <div
             className="atmo-compact"
@@ -133,6 +147,10 @@ const GameHeader = ({
           )}
         </div>
       </div>
+
+      {showCopyrightModal && (
+        <CopyrightModal onClose={() => setShowCopyrightModal(false)} />
+      )}
     </div>
   );
 };

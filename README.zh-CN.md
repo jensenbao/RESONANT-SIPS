@@ -76,3 +76,13 @@ npm run preview
 
 - 游戏存档目录 `saves/` 的内容已被 Git 忽略，仅保留了基础的文件夹结构，您的本地存档不会被上传。
 - `.env`、`.env.local`、`.env.development.local`、`.env.production.local` 等敏感配置文件已在忽略列表中，不会被提交到仓库，保障您的 API Key 安全。
+
+## 版权说明
+
+本项目所使用的角色库来源于香港理工大学
+PolyU MSc IME — AI Tools for Creative Process and Transmedia (SD5976) 课程。
+
+项目中出现的相关角色，其原始版权与创作权归各角色原作者所有。
+我们在本项目中的使用属于基于课程角色库进行的二次创作，仅用于课程学习、研究与展示目的。
+
+本项目无意主张对原始角色设定的所有权，并尊重所有原作者的创作成果与知识产权。

@@ -76,3 +76,14 @@ npm run preview
 
 - The runtime save slots directory `saves/` is ignored by Git, keeping only the folder structure. Your local game saves will not be committed.
 - `.env`, `.env.local`, `.env.development.local`, `.env.production.local` and other sensitive config files are in `.gitignore` to keep your API keys secure and will not be committed.
+
+## Copyright Notice
+
+The character library used in this project is sourced from the
+PolyU MSc IME course: AI Tools for Creative Process and Transmedia (SD5976).
+
+The original copyright and authorship of the characters belong to their respective creators.
+Our use of these characters in this project constitutes derivative creation / secondary creation based on the course character library, and is intended solely for academic, learning, and presentation purposes.
+
+This project does not claim ownership of the original character designs or narratives,
+and fully respects the creative rights and intellectual property of the original authors.
