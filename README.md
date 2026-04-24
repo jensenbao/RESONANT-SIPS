@@ -165,6 +165,18 @@ npm run build
 npm run preview
 ```
 
+## Path Safety Check
+
+Before committing asset/file-structure changes, run:
+
+```bash
+npm run check:paths
+```
+
+Path policy document:
+
+- `DOC/asset-structure-and-path-policy.md`
+
 ## Gameplay / Video Workflow
 
 Typical workflow represented in this repo:

@@ -165,6 +165,18 @@ npm run build
 npm run preview
 ```
 
+## 路径安全检查
+
+在提交素材或目录结构调整前，执行：
+
+```bash
+npm run check:paths
+```
+
+路径规范文档：
+
+- `DOC/asset-structure-and-path-policy.md`
+
 ## 游玩与视频工作流
 
 仓库中的典型流程：
