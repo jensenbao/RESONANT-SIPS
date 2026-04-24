@@ -59,6 +59,12 @@ const normalizeApiKey = (raw) => {
   return value;
 };
 
+const envFlagEnabled = (name, defaultValue = false) => {
+  const raw = String(process.env[name] ?? '').trim().toLowerCase();
+  if (!raw) return defaultValue;
+  return raw === '1' || raw === 'true' || raw === 'yes' || raw === 'on';
+};
+
 const clamp01 = (value) => Math.max(0, Math.min(1, value));
 
 const loadLocalEnv = async (rootDir) => {
@@ -889,6 +895,10 @@ const loadLocalPortrait = async (rootDir, code) => {
 };
 
 const buildRemotePortraitIndex = async (code) => {
+  if (envFlagEnabled('VITE_DISABLE_REMOTE_PORTRAIT_FALLBACK', false)) {
+    return [];
+  }
+
   const normalizedCode = normalizeCode(code);
   if (!normalizedCode) return [];
 
@@ -930,6 +940,10 @@ const buildRemotePortraitIndex = async (code) => {
 };
 
 const fetchRemotePortraitByCode = async ({ rootDir, code, cacheRemote = false }) => {
+  if (envFlagEnabled('VITE_DISABLE_REMOTE_PORTRAIT_FALLBACK', false)) {
+    return null;
+  }
+
   const normalizedCode = normalizeCode(code);
   if (!normalizedCode) return null;
 
@@ -1332,6 +1346,10 @@ const buildLocalIndex = async (rootDir) => {
 };
 
 const buildRemoteIndex = async () => {
+  if (envFlagEnabled('VITE_DISABLE_REMOTE_STORYWORLD_FALLBACK', false)) {
+    return [];
+  }
+
   const now = Date.now();
   if (now - cache.remoteIndex.ts < 5 * 60_000) {
     return cache.remoteIndex.entries;
@@ -1374,6 +1392,10 @@ const buildRemoteIndex = async () => {
 };
 
 const fetchRemoteByCode = async ({ rootDir, code, cacheRemote = false }) => {
+  if (envFlagEnabled('VITE_DISABLE_REMOTE_STORYWORLD_FALLBACK', false)) {
+    return null;
+  }
+
   const normalizedCode = normalizeCode(code);
   if (!normalizedCode) return null;
 
@@ -1480,6 +1502,7 @@ const findLocalByName = async (rootDir, nameOrCode) => {
 };
 
 export const getCharacterByName = async ({ rootDir, query, cacheRemote = false }) => {
+  await loadLocalEnv(rootDir);
   const normalizedQuery = normalizeQuery(query);
   if (!normalizedQuery) {
     const error = new Error('invalid_character_query');
@@ -1508,6 +1531,7 @@ export const getCharacterByName = async ({ rootDir, query, cacheRemote = false }
 };
 
 export const searchCharacters = async ({ rootDir, query = '', limit = 20 }) => {
+  await loadLocalEnv(rootDir);
   const keyword = String(query || '').trim().toLowerCase();
   const cappedLimit = Math.min(Math.max(Number(limit) || 20, 1), 50);
   const results = [];
