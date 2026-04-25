@@ -1,6 +1,6 @@
-# Resonant Sips: Design Plan (Implementation-Aligned, 2026-04)
+﻿# Resonant Sips: Design Plan (Implementation-Aligned, 2026-04)
 
-**Team:** Whale shark  
+**Team:** Resonant Sips  
 **Project Category:** AI-driven interactive narrative game  
 **Document status:** This file reflects the current implementation in this repository. Earlier brainstorms that mentioned Python/Pygame/ComfyUI as the main runtime are treated as exploratory ideas, not the production baseline.
 
