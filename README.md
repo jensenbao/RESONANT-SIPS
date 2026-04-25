@@ -17,6 +17,7 @@ Key reference paths:
 - `README.md` (run/config/workflow)
 - `README.zh-CN.md` (Chinese mirror)
 - `DOC/DESIGN_PLAN.md` (implementation-aligned plan)
+- `DOC/development-trace.md` (repository-visible collaboration trace)
 - `server/storyworld-service.mjs`, `server/save-server.mjs`, `server/emotion-service.mjs`
 
 ## Academic Integrity and Copyright
@@ -51,7 +52,14 @@ What is original in this repository is the integration logic: Storyworld charact
 - The full gameplay workflow is represented in code and docs (including voiceover demo guide).
 - The project integrates the course ecosystem through `venetanji/polyu-storyworld` and MCP-style APIs.
 
-### 3) Storyworld and MCP-style Usage
+### 3) Iterative Team Development
+
+The project was developed through short iteration cycles across gameplay logic, AI integration, UI/asset polish, and documentation updates.  
+Rather than shipping isolated experiments, the team repeatedly consolidated features into a stable playable loop, then refined reliability and presentation quality.  
+Contribution history is visible in git commits from multiple members, with work spread across frontend interaction, backend services, assets, and writing.  
+For a concise, auditable trace of where collaboration appears in the codebase, see `DOC/development-trace.md`.
+
+### 4) Storyworld and MCP-style Usage
 
 - Uses `venetanji/polyu-storyworld` as a git submodule and remote fallback source.
 - Exposes and consumes HTTP MCP-style routes under `/api/mcp/...` for character lookup and emotion analysis.

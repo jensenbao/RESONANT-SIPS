@@ -17,6 +17,7 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 - `README.md`（英文运行与提交说明）
 - `README.zh-CN.md`（中文镜像说明）
 - `DOC/DESIGN_PLAN.md`（与当前实现一致的设计文档）
+- `DOC/development-trace.md`（仓库协作与开发轨迹）
 - `server/storyworld-service.mjs`、`server/save-server.mjs`、`server/emotion-service.mjs`
 
 ## 学术诚信与版权
@@ -51,7 +52,13 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 - 代码与文档体现了从角色到游玩/演示的工作流。
 - 明确使用了课程相关角色仓库与 MCP 风格接口。
 
-### 3) Storyworld / MCP 接入实现
+### 3) 团队迭代开发
+
+项目采用短迭代方式推进，开发工作并行覆盖玩法逻辑、AI 接入、界面与资源打磨、文档维护。  
+团队不是一次性堆叠功能，而是持续把分散能力收敛到稳定可玩的核心闭环，再逐步提升可靠性与展示表现。  
+多成员协作痕迹可在 git 提交历史中核验，相关代码分布可见 `DOC/development-trace.md`。
+
+### 4) Storyworld / MCP 接入实现
 
 - 使用 `venetanji/polyu-storyworld`（子模块 + 远程回退）。
 - 服务端提供并前端调用 `/api/mcp/...` 的 MCP 风格 HTTP 接口。
