@@ -2,7 +2,6 @@
 import { API_CONFIG, getActiveAPIType, generatePrompt, PROMPT_TYPES, DEBUG_CONFIG } from '../config/api.js';
 
 export {
-  generateCustomerAvatar,
   generateCustomer,
   generateCustomerFromCharacterId,
   generateCustomerWithCharacterPool,

@@ -2,8 +2,9 @@ import http from 'node:http';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { getCharacterByName, searchCharacters } from './storyworld-service.mjs';
+import { cacheCharacterPortrait, getCharacterByName, searchCharacters } from './storyworld-service.mjs';
 import { analyzeCharacterEmotionWithAI } from './emotion-service.mjs';
+import { generateCharacterImages, removeCharacterAssets } from './character-image-service.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -489,16 +490,21 @@ const handlers = {
   async getCharacterByName(req, requestUrl) {
     const queryFromUrl = requestUrl.searchParams.get('query') || requestUrl.searchParams.get('code') || requestUrl.searchParams.get('name');
     const cacheFromUrl = requestUrl.searchParams.get('cacheRemote') || requestUrl.searchParams.get('cache');
+    const inferGenderFromUrl = requestUrl.searchParams.get('inferPortraitGender');
     let query = queryFromUrl;
     let cacheRemote = cacheFromUrl === '1' || cacheFromUrl === 'true';
+    let inferPortraitGender = inferGenderFromUrl !== '0' && inferGenderFromUrl !== 'false';
 
     if (!query && (req.method || 'GET') !== 'GET') {
       const body = await parseBody(req);
       query = body?.query || body?.code || body?.name || null;
       cacheRemote = Boolean(body?.cacheRemote || body?.cache);
+      inferPortraitGender = body?.inferPortraitGender === undefined
+        ? inferPortraitGender
+        : Boolean(body?.inferPortraitGender);
     }
 
-    const character = await getCharacterByName({ rootDir: ROOT, query, cacheRemote });
+    const character = await getCharacterByName({ rootDir: ROOT, query, cacheRemote, inferPortraitGender });
     if (!character) {
       return json(404, { error: 'character_not_found' });
     }
@@ -556,6 +562,56 @@ const handlers = {
       emotion,
     });
   },
+
+  async generateCharacterImages(req, requestUrl) {
+    let code = requestUrl.searchParams.get('code') || requestUrl.searchParams.get('query') || null;
+    let force = requestUrl.searchParams.get('force') === '1' || requestUrl.searchParams.get('force') === 'true';
+
+    if ((req.method || 'GET') !== 'GET') {
+      const body = await parseBody(req);
+      code = body?.code || body?.query || code;
+      force = Boolean(body?.force ?? force);
+    }
+
+    const result = await generateCharacterImages({ rootDir: ROOT, code, force });
+    return json(200, result);
+  },
+
+  async removeCharacterAssets(req, requestUrl) {
+    let code = requestUrl.searchParams.get('code') || requestUrl.searchParams.get('query') || null;
+
+    if ((req.method || 'GET') !== 'GET') {
+      const body = await parseBody(req);
+      code = body?.code || body?.query || code;
+    }
+
+    const result = await removeCharacterAssets({ rootDir: ROOT, code });
+    return json(200, result);
+  },
+
+  async cacheCharacterPortrait(req, requestUrl) {
+    let code = requestUrl.searchParams.get('code') || requestUrl.searchParams.get('query') || null;
+    let fileName = requestUrl.searchParams.get('fileName') || null;
+    let dataUrl = requestUrl.searchParams.get('dataUrl') || null;
+    let sourceUrl = requestUrl.searchParams.get('sourceUrl') || null;
+
+    if ((req.method || 'GET') !== 'GET') {
+      const body = await parseBody(req);
+      code = body?.code || body?.query || code;
+      fileName = body?.fileName || fileName;
+      dataUrl = body?.dataUrl || dataUrl;
+      sourceUrl = body?.sourceUrl || sourceUrl;
+    }
+
+    const result = await cacheCharacterPortrait({
+      rootDir: ROOT,
+      code,
+      fileName,
+      dataUrl,
+      sourceUrl,
+    });
+    return json(200, result);
+  },
 };
 
 const route = async (req) => {
@@ -577,6 +633,15 @@ const route = async (req) => {
   }
   if (pathname === '/api/mcp/emotion/analyze_character' && (method === 'GET' || method === 'POST')) {
     return handlers.analyzeCharacterEmotion(req, requestUrl);
+  }
+  if (pathname === '/api/mcp/character/generate_images' && (method === 'GET' || method === 'POST')) {
+    return handlers.generateCharacterImages(req, requestUrl);
+  }
+  if (pathname === '/api/mcp/character/remove_assets' && (method === 'GET' || method === 'POST')) {
+    return handlers.removeCharacterAssets(req, requestUrl);
+  }
+  if (pathname === '/api/mcp/character/cache_portrait' && (method === 'GET' || method === 'POST')) {
+    return handlers.cacheCharacterPortrait(req, requestUrl);
   }
 
   const slotMatch = pathname.match(/^\/api\/save\/slots\/([a-zA-Z0-9_-]+)$/);

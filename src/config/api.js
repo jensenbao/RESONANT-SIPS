@@ -1,125 +1,16 @@
 import promptTemplates from './promptTemplates.json';
 import LOCAL_API_KEYS from './localApiKeys.js';
 import { EMOTION_IDS_8, EMOTION_NAME_MAP_CN } from '../utils/emotionSchema.js';
+import { buildRuntimeApiConfig } from '../../shared/runtimeApiConfig.js';
 
 // AI API 配置
-
-const normalizeApiKey = (raw) => {
-  const value = String(raw || '').trim();
-  if (!value) return '';
-
-  const lower = value.toLowerCase();
-  if (lower === 'your api key' || lower === 'your_api_key' || lower === 'your-api-key') {
-    return '';
-  }
-
-  return value;
-};
-
-const localDeepseekApiKey = normalizeApiKey(LOCAL_API_KEYS?.deepseek?.apiKey);
-const envDeepseekApiKey = normalizeApiKey(import.meta.env.VITE_DEEPSEEK_API_KEY);
-const deepseekApiKey = localDeepseekApiKey || envDeepseekApiKey;
-
-const localGeminiApiKey = normalizeApiKey(LOCAL_API_KEYS?.gemini?.apiKey);
-const envGeminiApiKey = normalizeApiKey(import.meta.env.VITE_GEMINI_API_KEY);
-const geminiApiKey = localGeminiApiKey || envGeminiApiKey;
-
-const preferLocalDeepseekConfig = !!localDeepseekApiKey;
-const preferLocalGeminiConfig = !!localGeminiApiKey;
-const requestedProvider = String(
-  LOCAL_API_KEYS?.provider || import.meta.env.VITE_AI_PROVIDER || ''
-)
-  .trim()
-  .toLowerCase();
-
-const isOpenAICompatibleEndpoint = (endpoint) => {
-  const value = String(endpoint || '').trim().toLowerCase();
-  if (!value) return false;
-  return value.includes('/v1') || value.includes('api.302.ai');
-};
-
-const resolveProvider = () => {
-  if (requestedProvider === 'deepseek' && deepseekApiKey) return 'deepseek';
-  if (requestedProvider === 'gemini' && geminiApiKey) return 'gemini';
-  if (deepseekApiKey) return 'deepseek';
-  if (geminiApiKey) return 'gemini';
-  return 'none';
-};
-
-const activeProvider = resolveProvider();
-const deepseekModel = preferLocalDeepseekConfig
-  ? (LOCAL_API_KEYS?.deepseek?.model || import.meta.env.VITE_DEEPSEEK_MODEL || 'deepseek-chat')
-  : (import.meta.env.VITE_DEEPSEEK_MODEL || LOCAL_API_KEYS?.deepseek?.model || 'deepseek-chat');
-
-const deepseekEndpoint = preferLocalDeepseekConfig
-  ? (LOCAL_API_KEYS?.deepseek?.endpoint || import.meta.env.VITE_DEEPSEEK_ENDPOINT || 'https://api.deepseek.com/chat/completions')
-  : (import.meta.env.VITE_DEEPSEEK_ENDPOINT || LOCAL_API_KEYS?.deepseek?.endpoint || 'https://api.deepseek.com/chat/completions');
-
-const geminiModel = preferLocalGeminiConfig
-  ? (LOCAL_API_KEYS?.gemini?.model || import.meta.env.VITE_GEMINI_MODEL || 'gemini-2.5')
-  : (import.meta.env.VITE_GEMINI_MODEL || LOCAL_API_KEYS?.gemini?.model || 'gemini-2.5');
-
-const geminiEndpoint = preferLocalGeminiConfig
-  ? (LOCAL_API_KEYS?.gemini?.endpoint || import.meta.env.VITE_GEMINI_ENDPOINT || 'https://generativelanguage.googleapis.com/v1/models')
-  : (import.meta.env.VITE_GEMINI_ENDPOINT || LOCAL_API_KEYS?.gemini?.endpoint || 'https://generativelanguage.googleapis.com/v1/models');
-const geminiOpenAICompatible = isOpenAICompatibleEndpoint(geminiEndpoint);
-
-const geminiImageModel = preferLocalGeminiConfig
-  ? (
-      LOCAL_API_KEYS?.gemini?.imageModel ||
-      import.meta.env.VITE_IMAGE_GEN_MODEL ||
-      import.meta.env.VITE_GEMINI_IMAGE_MODEL ||
-      'gemini-2.5-flash-image'
-    )
-  : (
-      import.meta.env.VITE_IMAGE_GEN_MODEL ||
-      import.meta.env.VITE_GEMINI_IMAGE_MODEL ||
-      LOCAL_API_KEYS?.gemini?.imageModel ||
-      'gemini-2.5-flash-image'
-    );
-
-const geminiImageEndpoint = preferLocalGeminiConfig
-  ? (
-      LOCAL_API_KEYS?.gemini?.imageEndpoint ||
-      import.meta.env.VITE_IMAGE_GEN_ENDPOINT ||
-      import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT ||
-      'https://generativelanguage.googleapis.com/v1beta/models'
-    )
-  : (
-      import.meta.env.VITE_IMAGE_GEN_ENDPOINT ||
-      import.meta.env.VITE_GEMINI_IMAGE_ENDPOINT ||
-      LOCAL_API_KEYS?.gemini?.imageEndpoint ||
-      'https://generativelanguage.googleapis.com/v1beta/models'
-    );
-const geminiImageOpenAICompatible = isOpenAICompatibleEndpoint(geminiImageEndpoint);
+const runtimeConfig = buildRuntimeApiConfig({
+  env: import.meta.env,
+  localApiKeys: LOCAL_API_KEYS,
+});
 
 export const API_CONFIG = {
-  deepseek: {
-    enabled: activeProvider === 'deepseek' && !!deepseekApiKey,
-    apiKey: deepseekApiKey,
-    model: deepseekModel,
-    endpoint: deepseekEndpoint
-  },
-
-  gemini: {
-    enabled: activeProvider === 'gemini' && !!geminiApiKey,
-    apiKey: geminiApiKey,
-    model: geminiModel,
-    endpoint: geminiEndpoint,
-    openaiCompatible: geminiOpenAICompatible,
-  },
-
-  imageGen: {
-    enabled: !!geminiApiKey && !!geminiImageModel,
-    model: geminiImageModel,
-    endpoint: geminiImageEndpoint,
-    openaiCompatible: geminiImageOpenAICompatible,
-  },
-
-  avatarGeneration: {
-    enabled: false,
-  },
-
+  ...runtimeConfig,
   mock: {
     enabled: false,
     responseDelay: 0
@@ -127,9 +18,7 @@ export const API_CONFIG = {
 };
 
 export const getActiveAPIType = () => {
-  if (API_CONFIG.deepseek.enabled) return 'deepseek';
-  if (API_CONFIG.gemini.enabled) return 'gemini';
-  return 'none';
+  return API_CONFIG.provider || 'none';
 };
 
 export const getActiveAPIConfig = () => {

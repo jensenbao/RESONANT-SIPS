@@ -185,35 +185,6 @@ const completeCustomerConfig = (parsedConfig, categoryConfig) => {
   };
 };
 
-const AVATAR_STYLE_PREFIX =
-  'Cyberpunk portrait, dark moody bar background with neon glow, ' +
-  'digital illustration, semi-realistic anime style, ' +
-  'cinematic lighting, shallow depth of field, ' +
-  'close-up bust shot, facing slightly to the side, ';
-
-const CATEGORY_APPEARANCE = {
-  workplace: {
-    clothing: 'wearing a formal dark suit or business attire with subtle tech details',
-    vibe: 'tired but composed, hiding exhaustion behind a professional facade',
-    extras: 'perhaps a loosened tie or holographic ID badge',
-  },
-  artistic: {
-    clothing: 'wearing layered bohemian clothes with paint stains or vintage accessories',
-    vibe: 'dreamy and melancholic, eyes reflecting unspoken stories',
-    extras: 'perhaps a sketchbook or old headphones around the neck',
-  },
-  student: {
-    clothing: 'wearing a hoodie or casual streetwear with tech patches',
-    vibe: 'young and nervous, wide eyes showing uncertainty',
-    extras: 'perhaps a backpack strap visible or earbuds dangling',
-  },
-  midlife: {
-    clothing: 'wearing a worn leather jacket or simple practical clothes',
-    vibe: 'weathered and nostalgic, eyes that have seen better days',
-    extras: 'perhaps visible gray hair or old-fashioned wristwatch',
-  },
-};
-
 const CHARACTER_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 const hashCharacterId = (text) => {
@@ -425,185 +396,24 @@ const normalizeRuntimeVoiceProfile = ({
   };
 };
 
-const buildAvatarPrompt = (customerConfig) => {
-  const category = customerConfig.categoryId || 'workplace';
-  const appearance = CATEGORY_APPEARANCE[category] || CATEGORY_APPEARANCE.workplace;
-  const personality = (customerConfig.personality || []).slice(0, 3).join(', ');
-  const backstory = customerConfig.backstory || '';
-  const visualHint = backstory.length > 0
-    ? `, with a hint of their story: ${backstory.substring(0, 60)}`
-    : '';
-
-  return (
-    AVATAR_STYLE_PREFIX +
-    `${appearance.clothing}, ` +
-    `${appearance.vibe}, ` +
-    `${appearance.extras}, ` +
-    `personality: ${personality}` +
-    `${visualHint}, ` +
-    'high quality, detailed face, expressive eyes, ' +
-    'neon cyan and magenta accent lighting from the bar behind'
-  );
-};
-
-export const generateCustomerAvatar = async (customerConfig) => {
-  const config = API_CONFIG.gemini;
-  if (!config.enabled || !config.apiKey) return null;
-
-  if (API_CONFIG.avatarGeneration?.enabled === false) return null;
-  if (API_CONFIG.imageGen?.enabled === false) return null;
-
-  const imageModel = API_CONFIG.imageGen?.model || 'gemini-2.5-flash-image';
-  const endpoint = API_CONFIG.imageGen?.endpoint || config.endpoint;
-  const isOpenAICompatible = !!API_CONFIG.imageGen?.openaiCompatible;
-  const url = isOpenAICompatible
-    ? `${String(endpoint || '').replace(/\/$/, '')}/chat/completions`
-    : `${endpoint}/${imageModel}:generateContent?key=${config.apiKey}`;
-
-  const prompt = buildAvatarPrompt(customerConfig);
-  console.log('Starting avatar generation...');
-
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
-
-    const requestBody = isOpenAICompatible
-      ? {
-          model: imageModel,
-          messages: [
-            {
-              role: 'user',
-              content: `Generate a single portrait image: ${prompt}`,
-            },
-          ],
-          modalities: ['image', 'text'],
-          stream: false,
-        }
-      : {
-          contents: [{
-            parts: [{ text: `Generate a single portrait image: ${prompt}` }],
-          }],
-          generationConfig: {
-            responseModalities: ['TEXT', 'IMAGE'],
-          },
-        };
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: isOpenAICompatible
-        ? {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${config.apiKey}`,
-            'HTTP-Referer': window.location.origin,
-            'X-Title': 'future-bartender-game',
-          }
-        : { 'Content-Type': 'application/json' },
-      signal: controller.signal,
-      body: JSON.stringify(requestBody),
-    });
-
-    clearTimeout(timeout);
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      console.error(`Avatar API error (${response.status}):`, err);
-      return null;
-    }
-
-    const data = await response.json();
-
-    if (isOpenAICompatible) {
-      const images = data?.choices?.[0]?.message?.images || [];
-      for (const image of images) {
-        const imageUrl = String(image?.image_url?.url || image?.imageUrl?.url || '').trim();
-        if (imageUrl.startsWith('data:image/')) {
-          const payload = imageUrl.split(',', 2)[1] || '';
-          console.log('Avatar generated successfully, size:', Math.round(payload.length * 0.75 / 1024), 'KB');
-          return imageUrl;
-        }
-      }
-
-      console.warn('No image data found in OpenRouter response, message keys:', Object.keys(data?.choices?.[0]?.message || {}));
-      return null;
-    }
-
-    const parts = data.candidates?.[0]?.content?.parts || [];
-
-    for (const part of parts) {
-      if (part.inlineData?.mimeType?.startsWith('image/')) {
-        const imageBase64 = part.inlineData.data;
-        console.log('Avatar generated successfully, size:', Math.round(imageBase64.length * 0.75 / 1024), 'KB');
-        return imageBase64;
-      }
-    }
-
-    console.warn('No image data found in response parts:', parts.map((part) => Object.keys(part)));
-    return null;
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      console.warn('Avatar generation timed out (>30s), skipping');
-    } else {
-      console.error('Avatar generation failed:', error.message || error);
-    }
-    return null;
-  }
-};
-
-const generateAndCacheAvatar = async (customer) => {
-  const imageBase64 = await generateCustomerAvatar(customer);
-  if (imageBase64) {
-    customer.avatarBase64 = imageBase64;
-    const cacheKey = customer.avatarCacheKey || customer.id || customer.name;
-    await saveAvatarToCache(cacheKey, imageBase64);
-    console.log('Avatar cached:', customer.name);
-    window.dispatchEvent(new CustomEvent('avatar-ready', {
-      detail: { customerId: cacheKey },
-    }));
-  }
-};
-
 export const generateCustomer = async (categoryId) => {
   const categoryConfig = getCategoryConfig(categoryId);
   const prompt = generateCustomerPrompt(categoryConfig);
 
   console.log('Starting customer generation, category:', categoryConfig.category);
 
-  try {
-    const response = await callGeminiAPIForCustomer(prompt);
-    const parsed = parseCustomerJSON(response);
-
-    const customer = parsed
-      ? completeCustomerConfig(parsed, categoryConfig)
-      : completeCustomerConfig({}, categoryConfig);
-
-    console.log('Customer generated successfully:', customer.name);
-
-    customer.avatarBase64 = null;
-    customer.avatarCacheKey = `${categoryConfig.id}_${customer.name}_${Date.now()}`;
-
-    if (API_CONFIG.avatarGeneration?.enabled === false) {
-      return customer;
-    }
-
-    try {
-      const cachedAvatar = await getAvatarFromCache(customer.avatarCacheKey);
-      if (cachedAvatar) {
-        customer.avatarBase64 = cachedAvatar;
-        console.log('Using cached avatar:', customer.name);
-      } else {
-        generateAndCacheAvatar(customer).catch((err) => {
-          console.warn('Background avatar generation failed:', err);
-        });
-      }
-    } catch (avatarErr) {
-      console.warn('Avatar handling skipped:', avatarErr);
-    }
-
-    return customer;
-  } catch (error) {
-    console.error('Customer generation failed:', error);
-    return completeCustomerConfig({}, categoryConfig);
+  const response = await callGeminiAPIForCustomer(prompt);
+  const parsed = parseCustomerJSON(response);
+  if (!parsed) {
+    throw new Error('customer_generation_invalid_json');
   }
+
+  const customer = completeCustomerConfig(parsed, categoryConfig);
+
+  console.log('Customer generated successfully:', customer.name);
+
+  customer.avatarBase64 = null;
+  return customer;
 };
 
 export const generateCustomerFromCharacterId = async (characterId) => {
@@ -612,21 +422,17 @@ export const generateCustomerFromCharacterId = async (characterId) => {
     throw new Error('invalid_character_id');
   }
 
-  let context = null;
-  let emotionAnalysis = null;
-  try {
-    context = await getStoryworldCharacterByName(roleId);
-  } catch (error) {
-    console.warn('Failed to load Storyworld character, falling back to placeholder character:', error?.message || error);
+  const context = await getStoryworldCharacterByName(roleId);
+  if (!context) {
+    throw new Error('character_not_found');
   }
 
-  try {
-    emotionAnalysis = await analyzeStoryworldCharacterEmotion({
-      query: roleId,
-      character: context || undefined,
-    });
-  } catch (error) {
-    console.warn('8-axis character emotion analysis failed, using default emotion flow:', error?.message || error);
+  const emotionAnalysis = await analyzeStoryworldCharacterEmotion({
+    query: roleId,
+    character: context,
+  });
+  if (!emotionAnalysis || typeof emotionAnalysis !== 'object') {
+    throw new Error('character_emotion_analysis_failed');
   }
 
   const mappedCategoryId = String(context?.categoryId || '').trim();
@@ -710,21 +516,11 @@ export const generateCustomerFromCharacterId = async (characterId) => {
 
   const portraitDataUrl = resolvePortraitDataUrl(context);
   base.avatarBase64 = portraitDataUrl || null;
-  try {
-    if (base.avatarBase64) {
-      await saveAvatarToCache(base.avatarCacheKey, base.avatarBase64);
-    } else if (API_CONFIG.avatarGeneration?.enabled === false) {
-      base.avatarBase64 = null;
-    } else {
-      const cachedAvatar = await getAvatarFromCache(base.avatarCacheKey);
-      if (cachedAvatar) {
-        base.avatarBase64 = cachedAvatar;
-      } else if (API_CONFIG.avatarGeneration?.enabled !== false) {
-        generateAndCacheAvatar(base).catch(() => {});
-      }
-    }
-  } catch {
-    // ignore avatar errors
+  if (base.avatarBase64) {
+    await saveAvatarToCache(base.avatarCacheKey, base.avatarBase64);
+  } else {
+    const cachedAvatar = await getAvatarFromCache(base.avatarCacheKey);
+    base.avatarBase64 = cachedAvatar || null;
   }
 
   return base;
@@ -863,22 +659,12 @@ export const generateDailyCustomers = async (day, onProgress) => {
       onProgress(i + 1, count, `Creating customer ${i + 1}...`);
     }
 
-    try {
-      const customer = await generateCustomer(categoryId);
-      customers.push({
-        id: `${day}-${i}`,
-        type: customer.categoryId || categoryId,
-        config: customer,
-      });
-    } catch (error) {
-      console.error(`Customer ${i + 1} generation failed:`, error);
-      const fallbackType = Object.keys(AI_CUSTOMER_TYPES)[i % 3];
-      customers.push({
-        id: `${day}-${i}`,
-        type: fallbackType,
-        config: getAIConfig(fallbackType),
-      });
-    }
+    const customer = await generateCustomer(categoryId);
+    customers.push({
+      id: `${day}-${i}`,
+      type: customer.categoryId || categoryId,
+      config: customer,
+    });
 
     if (i < count - 1) {
       await new Promise((resolve) => setTimeout(resolve, 500));

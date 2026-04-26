@@ -1,7 +1,7 @@
 // 动态事件管理 Hook
 import { useState, useCallback, useRef } from 'react';
 import { generateBarEvent } from '../utils/aiService.js';
-import { EVENT_TRIGGER_CONFIG, getAvailableEventTypes, getFallbackEvent, EVENT_CHAINS } from '../data/eventTemplates.js';
+import { EVENT_TRIGGER_CONFIG, getAvailableEventTypes, EVENT_CHAINS } from '../data/eventTemplates.js';
 import { savePendingChains, getPendingChains } from '../utils/storage.js';
 
 // 先聚焦核心玩法：暂时关闭事件系统（奖励事件/随机事件/事件链）
@@ -138,30 +138,16 @@ export const useBarEvents = () => {
 
     console.log(`Triggering event of type: ${selectedType}`);
 
-    let event = null;
-
-    // 尝试 AI 生成事件
-    try {
-      event = await generateBarEvent({
-        day,
-        customersServed,
-        atmosphere,
-        currentCustomer: currentCustomer?.config,
-        recentEvents: recentEventNarrativesRef.current
-      });
-      
-      if (event) {
-        event.id = `event_${event.type}_${Date.now()}`;
-        console.log('AI event generated successfully:', event.narrative);
-      }
-    } catch (error) {
-      console.warn('AI event generation failed, using fallback template:', error);
-    }
-
-    // 降级：使用模板
-    if (!event) {
-      event = getFallbackEvent(selectedType, recentEventNarrativesRef.current);
-      console.log('Using fallback event template:', event?.narrative?.substring(0, 20));
+    const event = await generateBarEvent({
+      day,
+      customersServed,
+      atmosphere,
+      currentCustomer: currentCustomer?.config,
+      recentEvents: recentEventNarrativesRef.current
+    });
+    if (event) {
+      event.id = `event_${event.type}_${Date.now()}`;
+      console.log('AI event generated successfully:', event.narrative);
     }
 
     if (event) {

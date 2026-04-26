@@ -10,34 +10,26 @@ import { callDeepSeekAPIHelper, callGeminiAPIHelper } from './sharedApi.js';
 
 export const generateDailyAtmosphere = async (day, recentAtmospheres = [], recentCrossroadsSummaries = []) => {
   console.log(`Starting atmosphere generation for day ${day}...`);
+  const prompt = generatePrompt(PROMPT_TYPES.GENERATE_ATMOSPHERE, {
+    day,
+    recentAtmospheres,
+    recentCrossroadsSummaries,
+  });
 
-  try {
-    const prompt = generatePrompt(PROMPT_TYPES.GENERATE_ATMOSPHERE, {
-      day,
-      recentAtmospheres,
-      recentCrossroadsSummaries,
-    });
-
-    if (DEBUG_CONFIG.logPrompts) {
-      console.log('=== Atmosphere Prompt ===');
-      console.log(prompt);
-      console.log('========================');
-    }
-
-    const response = await callGeminiAPIForAtmosphere(prompt);
-    const result = parseAtmosphereJSON(response);
-
-    if (result) {
-      console.log('Atmosphere generated successfully:', result.weather, result.lighting);
-      return result;
-    }
-
-    console.warn('Failed to parse atmosphere JSON');
-    return null;
-  } catch (error) {
-    console.error('Atmosphere generation failed:', error);
-    return null;
+  if (DEBUG_CONFIG.logPrompts) {
+    console.log('=== Atmosphere Prompt ===');
+    console.log(prompt);
+    console.log('========================');
   }
+
+  const response = await callGeminiAPIForAtmosphere(prompt);
+  const result = parseAtmosphereJSON(response);
+  if (!result) {
+    throw new Error('atmosphere_invalid_json');
+  }
+
+  console.log('Atmosphere generated successfully:', result.weather, result.lighting);
+  return result;
 };
 
 const callGeminiAPIForAtmosphere = async (prompt) => {
@@ -112,11 +104,11 @@ const validateAtmosphere = (parsed) => {
   const validLighting = ['bright', 'dim_warm', 'neon', 'candlelight', 'flickering'];
   const validMusic = ['jazz_slow', 'electronic', 'classical', 'silence', 'lo_fi'];
   const validCrowdLevels = ['empty', 'sparse', 'moderate', 'crowded'];
-  const weather = validWeathers.includes(parsed.weather) ? parsed.weather : 'clear';
-  const timeOfDay = validTimesOfDay.includes(parsed.timeOfDay) ? parsed.timeOfDay : 'night';
-  const lighting = validLighting.includes(parsed.lighting) ? parsed.lighting : 'dim_warm';
-  const music = validMusic.includes(parsed.music) ? parsed.music : 'jazz_slow';
-  const crowdLevel = validCrowdLevels.includes(parsed.crowdLevel) ? parsed.crowdLevel : 'sparse';
+  if (!validWeathers.includes(parsed?.weather)) return null;
+  if (!validTimesOfDay.includes(parsed?.timeOfDay)) return null;
+  if (!validLighting.includes(parsed?.lighting)) return null;
+  if (!validMusic.includes(parsed?.music)) return null;
+  if (!validCrowdLevels.includes(parsed?.crowdLevel)) return null;
 
   const modifiers = parsed.modifiers || {};
   const trustBonus = typeof modifiers.trustBonus === 'number'
@@ -137,12 +129,12 @@ const validateAtmosphere = (parsed) => {
     : 0;
 
   return {
-    weather,
-    timeOfDay,
+    weather: parsed.weather,
+    timeOfDay: parsed.timeOfDay,
     season: parsed.season || 'autumn',
-    lighting,
-    music,
-    crowdLevel,
+    lighting: parsed.lighting,
+    music: parsed.music,
+    crowdLevel: parsed.crowdLevel,
     scent: typeof parsed.scent === 'string' ? parsed.scent : '',
     narrative: typeof parsed.narrative === 'string' ? parsed.narrative : 'The bar feels especially quiet tonight.',
     modifiers: {

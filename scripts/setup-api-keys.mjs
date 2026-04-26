@@ -16,10 +16,11 @@ const CONFIG = {
 
   gemini: {
     apiKey: 'your api key',
+    openrouterApiKey: 'your api key',
     model: 'gemini-2.5-flash',
     endpoint: 'https://generativelanguage.googleapis.com/v1/models',
-    imageModel: 'gemini-2.5-flash-image',
-    imageEndpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
+    characterImageModel: 'openai/gpt-5-image-mini',
+    characterImageEndpoint: 'https://openrouter.ai/api/v1',
   },
 };
 
@@ -40,8 +41,10 @@ const lines = [
   `VITE_GEMINI_API_KEY=${String(CONFIG.gemini?.apiKey || '').trim()}`,
   `VITE_GEMINI_MODEL=${String(CONFIG.gemini?.model || 'gemini-2.5-flash').trim()}`,
   `VITE_GEMINI_ENDPOINT=${String(CONFIG.gemini?.endpoint || 'https://generativelanguage.googleapis.com/v1/models').trim()}`,
-  `VITE_IMAGE_GEN_MODEL=${String(CONFIG.gemini?.imageModel || 'gemini-2.5-flash-image').trim()}`,
-  `VITE_IMAGE_GEN_ENDPOINT=${String(CONFIG.gemini?.imageEndpoint || 'https://generativelanguage.googleapis.com/v1beta/models').trim()}`,
+  `VITE_OPENROUTER_API_KEY=${String(CONFIG.gemini?.openrouterApiKey || '').trim()}`,
+  `VITE_CHARACTER_IMAGE_MODEL=${String(CONFIG.gemini?.characterImageModel || 'openai/gpt-5-image-mini').trim()}`,
+  `VITE_CHARACTER_IMAGE_ENDPOINT=${String(CONFIG.gemini?.characterImageEndpoint || 'https://openrouter.ai/api/v1').trim()}`,
+  `VITE_REMOTE_TTS_API_KEY=${String(CONFIG.gemini?.openrouterApiKey || '').trim()}`,
   `VITE_REMOTE_TTS_ENDPOINT=https://openrouter.ai/api/v1`,
   `VITE_REMOTE_TTS_MODEL=openai/gpt-audio-mini`,
   `VITE_REMOTE_TTS_VOICE=alloy`,

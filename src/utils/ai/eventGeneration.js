@@ -9,30 +9,23 @@ import { callDeepSeekAPIHelper, callGeminiAPIHelper } from './sharedApi.js';
 
 export const generateBarEvent = async (context) => {
   console.log('⚡ Starting AI event generation...');
+  const prompt = generatePrompt(PROMPT_TYPES.GENERATE_EVENT, context);
 
-  try {
-    const prompt = generatePrompt(PROMPT_TYPES.GENERATE_EVENT, context);
-
-    if (DEBUG_CONFIG.logPrompts) {
-      console.log('=== Event Prompt ===');
-      console.log(prompt);
-      console.log('====================');
-    }
-
-    const response = await callGeminiAPIForEvent(prompt);
-    const result = parseEventJSON(response);
-
-    if (result) {
-      console.log('✅ Event generated successfully:', result.type);
-      return result;
-    }
-
-    console.warn('⚠️ Failed to parse event JSON');
-    return null;
-  } catch (error) {
-    console.error('❌ Event generation failed:', error);
-    return null;
+  if (DEBUG_CONFIG.logPrompts) {
+    console.log('=== Event Prompt ===');
+    console.log(prompt);
+    console.log('====================');
   }
+
+  const response = await callGeminiAPIForEvent(prompt);
+  const result = parseEventJSON(response);
+
+  if (!result) {
+    throw new Error('event_invalid_json');
+  }
+
+  console.log('✅ Event generated successfully:', result.type);
+  return result;
 };
 
 const callGeminiAPIForEvent = async (prompt) => {
@@ -105,11 +98,9 @@ const validateEvent = (parsed) => {
   const validTypes = ['atmosphere', 'customer', 'challenge', 'reward', 'narrative'];
   const validDurations = ['immediate', 'current_customer', 'rest_of_day'];
 
-  const type = validTypes.includes(parsed.type) ? parsed.type : 'atmosphere';
-  const duration = validDurations.includes(parsed.duration) ? parsed.duration : 'immediate';
-  const narrative = typeof parsed.narrative === 'string' && parsed.narrative.length > 0
-    ? parsed.narrative
-    : 'Something interesting happened in the bar.';
+  if (!validTypes.includes(parsed?.type)) return null;
+  if (!validDurations.includes(parsed?.duration)) return null;
+  if (typeof parsed?.narrative !== 'string' || parsed.narrative.length === 0) return null;
 
   const effects = parsed.effects || {};
   const validatedEffects = {
@@ -131,10 +122,10 @@ const validateEvent = (parsed) => {
   }
 
   return {
-    type,
-    narrative,
+    type: parsed.type,
+    narrative: parsed.narrative,
     effects: validatedEffects,
-    duration,
+    duration: parsed.duration,
     choices,
   };
 };

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { API_CONFIG } from '../config/api.js';
 
 /**
  * TTS strategy:
@@ -13,15 +14,10 @@ export const useTTS = () => {
   const currentSourceRef = useRef(null);
   const requestSeqRef = useRef(0);
   const OPENAI_TTS_VOICES = ['alloy', 'ash', 'ballad', 'coral', 'echo', 'fable', 'onyx', 'nova', 'sage', 'shimmer', 'verse'];
-  const strictTextSync = String(import.meta.env.VITE_TTS_STRICT_TEXT_SYNC ?? '1') !== '0';
-  const remoteTtsEnabled = String(import.meta.env.VITE_ENABLE_REMOTE_TTS ?? '1') !== '0';
-  const ttsDebug = String(import.meta.env.VITE_TTS_DEBUG ?? '1') !== '0';
-  const remoteTtsEndpoint = String(
-    import.meta.env.VITE_REMOTE_TTS_ENDPOINT ||
-      import.meta.env.VITE_GEMINI_TTS_ENDPOINT ||
-      import.meta.env.VITE_GEMINI_ENDPOINT ||
-      'https://openrouter.ai/api/v1'
-  ).replace(/\/$/, '');
+  const strictTextSync = API_CONFIG.remoteTts?.strictTextSync ?? true;
+  const remoteTtsEnabled = API_CONFIG.remoteTts?.enabled ?? false;
+  const ttsDebug = API_CONFIG.remoteTts?.debug ?? true;
+  const remoteTtsEndpoint = String(API_CONFIG.remoteTts?.endpoint || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
   const isOpenRouterEndpoint = /openrouter\.ai$/i.test(
     (() => {
       try {
@@ -31,22 +27,10 @@ export const useTTS = () => {
       }
     })()
   );
-  const remoteTtsApiKey = String(import.meta.env.VITE_GEMINI_API_KEY || '').trim();
-  const remoteTtsVoice = String(
-    import.meta.env.VITE_REMOTE_TTS_VOICE ||
-      import.meta.env.VITE_GEMINI_TTS_VOICE ||
-      'Kore'
-  ).trim();
-  const remoteTtsFormat = String(
-    import.meta.env.VITE_REMOTE_TTS_FORMAT ||
-      import.meta.env.VITE_GEMINI_TTS_FORMAT ||
-      'pcm16'
-  ).trim().toLowerCase();
-  const remoteTtsModelRaw = String(
-    import.meta.env.VITE_REMOTE_TTS_MODEL ||
-      import.meta.env.VITE_GEMINI_TTS_MODEL ||
-      'gemini-2.5-flash-preview-tts'
-  ).trim();
+  const remoteTtsApiKey = String(API_CONFIG.remoteTts?.apiKey || '').trim();
+  const remoteTtsVoice = String(API_CONFIG.remoteTts?.voice || 'alloy').trim();
+  const remoteTtsFormat = String(API_CONFIG.remoteTts?.format || 'pcm16').trim().toLowerCase();
+  const remoteTtsModelRaw = String(API_CONFIG.remoteTts?.model || 'openai/gpt-audio-mini').trim();
 
   const remoteTtsModels = Array.from(
     new Set(

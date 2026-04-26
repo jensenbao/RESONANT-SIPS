@@ -93,7 +93,8 @@ export const useDailyMemory = () => {
         }
       }
     } catch (err) {
-      console.warn('Daily journal generation failed, using fallback:', err);
+      console.error('Daily journal generation failed:', err);
+      throw err;
     }
 
     // 组装完整日记忆

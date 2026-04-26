@@ -6,17 +6,36 @@ import {
   getActiveCharacterIds,
   getCustomCharacterIds,
   removeCustomCharacterId,
+  saveCustomCharacterIds,
   saveActiveCharacterIds,
 } from '../utils/storage.js';
 import { isPresetCharacterId } from '../config/defaultCharacters/index.js';
-import { ensureStoryworldCharacterCached } from '../utils/storyworldRepository.js';
+import {
+  ensureStoryworldCharacterCached,
+  ensureStoryworldCharacterPortraitCached,
+  generateStoryworldCharacterImages,
+  removeStoryworldCharacterAssets,
+  searchStoryworldCharacters,
+} from '../utils/storyworldRepository.js';
 import './NewGameSetupPage.css';
+
+const LOCAL_ADDED_CHARACTER_PATH = 'seeds/characters/added/';
+
+const extractLocalAddedIdFromSourcePath = (sourcePath) => {
+  const normalizedPath = String(sourcePath || '').replace(/\\/g, '/');
+  const markerIndex = normalizedPath.indexOf(LOCAL_ADDED_CHARACTER_PATH);
+  if (markerIndex < 0) return '';
+  const relativePath = normalizedPath.slice(markerIndex + LOCAL_ADDED_CHARACTER_PATH.length);
+  const segments = relativePath.split('/').filter(Boolean);
+  return String(segments[0] || '').trim();
+};
 
 const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loading = false }) => {
   const [customCharacterInput, setCustomCharacterInput] = useState('');
   const [customCharacterIds, setCustomCharacterIds] = useState([]);
   const [activeCharacterIds, setActiveCharacterIds] = useState([]);
   const [toastList, setToastList] = useState([]);
+  const [generatingCharacterId, setGeneratingCharacterId] = useState('');
   const activeCharacterId = activeCharacterIds[0] || '';
   const hasActiveCharacters = Boolean(activeCharacterId);
 
@@ -25,6 +44,30 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
     const active = getActiveCharacterIds();
     setCustomCharacterIds(custom);
     setActiveCharacterIds(active);
+
+    let cancelled = false;
+    const syncLocalAddedCharacters = async () => {
+      try {
+        const results = await searchStoryworldCharacters('', 50);
+        const localAddedIds = results
+          .map((item) => extractLocalAddedIdFromSourcePath(item?.source?.path))
+          .filter(Boolean);
+
+        const currentIds = getCustomCharacterIds();
+        const preservedPresetIds = currentIds.filter((id) => isPresetCharacterId(id));
+        const merged = saveCustomCharacterIds([...preservedPresetIds, ...localAddedIds]);
+        if (cancelled) return;
+        setCustomCharacterIds(merged);
+        setActiveCharacterIds(getActiveCharacterIds());
+      } catch {
+        // keep current local storage values when local role scan is unavailable
+      }
+    };
+
+    syncLocalAddedCharacters();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const pushToast = (message, type = 'info') => {
@@ -45,15 +88,34 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
     }
 
     try {
-      await ensureStoryworldCharacterCached(candidateId);
+      setGeneratingCharacterId(candidateId);
+      const character = await ensureStoryworldCharacterCached(candidateId);
+      if (!String(character?.portrait?.dataUrl || '').startsWith('data:image/')) {
+        pushToast('Portrait not cached locally. Pulling source portrait automatically...', 'info');
+        await ensureStoryworldCharacterPortraitCached(character || candidateId);
+      }
+      pushToast('Character loaded. Generating transparent pixel portrait...', 'info');
+      await generateStoryworldCharacterImages(candidateId);
     } catch (error) {
       const reason = String(error?.message || '');
       if (reason.includes('character_not_found')) {
         pushToast('Character ID not found. Please verify and try again.', 'warning');
+      } else if (reason.includes('hf_portrait_index_failed') || reason.includes('hf_portrait_download_failed')) {
+        pushToast('Automatic portrait pull failed. Check Hugging Face access in your browser or network.', 'warning');
+      } else if (reason.includes('hf_portrait_not_found')) {
+        pushToast('No portrait image was found for this character in the Hugging Face dataset.', 'warning');
+      } else if (reason.includes('missing_openrouter_api_key')) {
+        pushToast('Character loaded, but image generation needs an OpenRouter API key.', 'warning');
+      } else if (reason.includes('missing_source_portrait')) {
+        pushToast('Character loaded, but no source portrait was available for image generation.', 'warning');
+      } else if (reason.includes('image_model_request_timeout')) {
+        pushToast('Image generation timed out. The character was not added.', 'warning');
       } else {
         pushToast(`Failed to load character: ${reason || 'Unknown error'}`, 'error');
       }
       return;
+    } finally {
+      setGeneratingCharacterId('');
     }
 
     const result = addCustomCharacterId(candidateId);
@@ -72,12 +134,18 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
     setActiveCharacterIds(getActiveCharacterIds());
     setCustomCharacterInput('');
     onCharacterPoolChange?.();
-    pushToast('Character added and enabled by default.', 'success');
+    pushToast('Character added with generated transparent portrait.', 'success');
   };
 
-  const handleRemoveCharacter = (id) => {
+  const handleRemoveCharacter = async (id) => {
     if (!canDisableCharacter(id, customCharacterIds)) {
       pushToast('Add at least one non-preset character before disabling default ones.', 'warning');
+      return;
+    }
+    try {
+      await removeStoryworldCharacterAssets(id);
+    } catch (error) {
+      pushToast(`Failed to remove local assets for ${id}: ${error.message}`, 'error');
       return;
     }
     removeCustomCharacterId(id);
@@ -116,10 +184,19 @@ const NewGameSetupPage = ({ onBack, onConfirmStart, onCharacterPoolChange, loadi
               className="newgame-role-input"
               value={customCharacterInput}
               onChange={(event) => setCustomCharacterInput(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  handleAddCharacter();
+                }
+              }}
               placeholder="Enter character ID"
               maxLength={64}
+              disabled={loading || Boolean(generatingCharacterId)}
             />
-            <button className="newgame-role-add-btn" onClick={handleAddCharacter} disabled={loading}>Add</button>
+            <button className="newgame-role-add-btn" onClick={handleAddCharacter} disabled={loading || Boolean(generatingCharacterId)}>
+              {generatingCharacterId ? `Generating ${generatingCharacterId}...` : 'Add'}
+            </button>
           </div>
 
           <div className="newgame-role-list">

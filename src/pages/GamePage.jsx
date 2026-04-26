@@ -71,7 +71,7 @@ import {
 import './GamePage.css';
 import './GamePage.overlays.css';
 
-const CHARACTER_ID_PATTERN = /^\d+g?$/i;
+const CHARACTER_ID_PATTERN = /^[A-Za-z0-9_-]{2,64}$/;
 
 const normalizeCharacterId = (value) => {
   const text = String(value || '').trim();

@@ -1,4 +1,4 @@
-import { analyzeCharacterEmotion } from './emotion-service.mjs';
+import { analyzeCharacterEmotionWithAI } from './emotion-service.mjs';
 
 const normalizeList = (value) => {
   if (Array.isArray(value)) {
@@ -146,10 +146,16 @@ const buildDerivedVoiceProfile = ({ displayName, categoryId, personality, dialog
   };
 };
 
-export const buildCharacterProfileDocument = ({ code, character, preset = false, notes } = {}) => {
+export const buildCharacterProfileDocument = async ({ code, character, preset = false, notes } = {}) => {
   const normalizedId = String(code || character?.code || '').trim().toLowerCase();
   const displayName = String(character?.displayName || character?.profile?.name || code || '').trim();
-  const emotion = analyzeCharacterEmotion({ character });
+  const emotion = await analyzeCharacterEmotionWithAI({
+    character,
+    options: {
+      allowPartialModelOutput: false,
+      requireCompleteWeightSet: true,
+    },
+  });
 
   const doc = {
     version: 1,

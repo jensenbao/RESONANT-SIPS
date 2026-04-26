@@ -86,14 +86,12 @@ export const useServeProgressHandlers = ({ ctx }) => {
         const waterTrustChange = trustLevel >= 0.6 ? 0.08 : trustLevel >= 0.3 ? 0.05 : 0.03;
         setTrustLevel(prev => Math.min(1, prev + waterTrustChange));
         cocktailFlow.addTrustFly(waterTrustChange);
-        try {
-          const waterFeedback = await callAIForCocktailJudgment({
-            aiConfig, trustLevel, emotionState: currentEmotions,
-            cocktailRecipe: { ...recipe, mixture: { thickness: 0, sweetness: 0, strength: 0 } },
-            dialogueHistory: dialogue.dialogueHistory, isSuccess: true, satisfaction: 0.6, cocktailAttitude
-          });
-          dialogue.addMessage('ai', waterFeedback?.feedback || '...You just placed a glass of water in front of me.', true);
-        } catch { dialogue.addMessage('ai', '...You just placed a glass of water in front of me.', true); }
+        const waterFeedback = await callAIForCocktailJudgment({
+          aiConfig, trustLevel, emotionState: currentEmotions,
+          cocktailRecipe: { ...recipe, mixture: { thickness: 0, sweetness: 0, strength: 0 } },
+          dialogueHistory: dialogue.dialogueHistory, isSuccess: true, satisfaction: 0.6, cocktailAttitude
+        });
+        dialogue.addMessage('ai', waterFeedback.feedback, true);
         playSFX('serve');
         dialogue.setIsLoading(false);
         return;
@@ -156,26 +154,13 @@ export const useServeProgressHandlers = ({ ctx }) => {
       }
 
       // AI 反馈
-      let feedback = '';
-      let aiJudgmentSuccess = false;
-      try {
-        const aiResult = await callAIForCocktailJudgment({
-          aiConfig, trustLevel, emotionState: currentEmotions,
-          cocktailRecipe: { ...recipe, mixture: recipe.mixture, glass: recipe.glass, ice: recipe.ice, garnish: recipe.garnish, decoration: recipe.decoration },
-          dialogueHistory: dialogue.dialogueHistory, isSuccess, satisfaction, cocktailAttitude,
-          judgmentExplanation: strictExplanation
-        });
-        if (aiResult?.feedback) { feedback = aiResult.feedback; aiJudgmentSuccess = true; }
-      } catch { /* fallback below */ }
-      if (!aiJudgmentSuccess) {
-        if (isSuccess) {
-          const opts = ['Mm... this is exactly what I needed. Thank you.', 'Perfect. You really understand what I was looking for.', 'This flavor... lands just right. It feels comforting.', 'Finally, someone made the drink I wanted.'];
-          feedback = opts[Math.floor(Math.random() * opts.length)];
-        } else {
-          const opts = ['This drink... is not quite right. Something is missing.', 'Mm, the profile leans off... not the feeling I wanted.', 'Close... but the taste is still off.', 'Thank you, but this is not what I needed tonight.'];
-          feedback = opts[Math.floor(Math.random() * opts.length)];
-        }
-      }
+      const aiResult = await callAIForCocktailJudgment({
+        aiConfig, trustLevel, emotionState: currentEmotions,
+        cocktailRecipe: { ...recipe, mixture: recipe.mixture, glass: recipe.glass, ice: recipe.ice, garnish: recipe.garnish, decoration: recipe.decoration },
+        dialogueHistory: dialogue.dialogueHistory, isSuccess, satisfaction, cocktailAttitude,
+        judgmentExplanation: strictExplanation
+      });
+      const feedback = aiResult.feedback;
 
       dialogue.addMessage('ai', feedback, true);
       appendActiveNpcEvent({
@@ -248,18 +233,7 @@ export const useServeProgressHandlers = ({ ctx }) => {
       }
     } catch (error) {
       console.error('Failed to serve drink:', error);
-      const fallbackSuccess = Math.random() > 0.5;
-      dialogue.addMessage('ai', fallbackSuccess ? 'Mm... this drink is pretty good. Thank you.' : 'This drink... is not quite my taste, but thank you anyway.', true);
-      appendActiveNpcEvent({
-        role: 'ai',
-        type: 'cocktail_feedback_fallback',
-        content: fallbackSuccess ? 'Mm... this drink is pretty good. Thank you.' : 'This drink... is not quite my taste, but thank you anyway.',
-        meta: { isSuccess: fallbackSuccess },
-        timestamp: Date.now()
-      }).catch(() => {});
-      playSFX('serve');
-      customerFlow.updateGameProgressRef.current(fallbackSuccess, recipe, 0.5);
-      queueActiveSlotGameStateSync('serve_result_fallback');
+      addToast('AI cocktail flow failed. No fallback response was used.', 'error');
     } finally {
       dialogue.setIsLoading(false);
     }

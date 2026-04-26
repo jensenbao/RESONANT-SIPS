@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { getReturnCustomers, saveReturnCustomers, updateReturnCustomer, getNarrativeState, saveNarrativeState } from '../utils/storage.js';
 import { API_CONFIG, PROMPT_TYPES, generatePrompt } from '../config/api.js';
 import { saveAvatarToCache, getAvatarFromCache } from '../utils/avatarCache.js';
-import { resolveCrossroads, getFallbackCrossroads } from '../utils/crossroadsResolver.js';
+import { resolveCrossroads } from '../utils/crossroadsResolver.js';
 
 /**
  * 叙事引擎 Hook
@@ -315,21 +315,7 @@ export const useNarrativeEngine = () => {
     } else if (arcResult.crossroads === undefined && 
                (arcResult.newPhase === 'escalation' || arcResult.newPhase === 'turning_point') &&
                !customer.crossroads?.active && !customer.crossroads?.resolvedOption) {
-      // AI 没有生成十字路口但阶段到了，使用降级模板
-      const fallback = getFallbackCrossroads(customer.category);
-      customer.crossroads = {
-        active: true,
-        dilemma: fallback.dilemma,
-        options: fallback.options.map(o => ({ ...o, consequence: '', wasChosen: false })),
-        influenceFactors: {
-          cocktailAttitudes: interactionSummary.cocktailAttitudes || [],
-          trustAtEnd: interactionSummary.trustLevel || 0,
-          dialogueKeywords: []
-        },
-        resolvedOption: null,
-        resolvedDay: null
-      };
-      console.log(`Using fallback crossroads template: ${customer.name} - ${fallback.dilemma}`);
+      throw new Error(`crossroads_missing_for_phase:${customer.id}`);
     }
 
     // 更新情绪轨迹

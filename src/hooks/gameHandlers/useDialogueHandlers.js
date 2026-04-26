@@ -78,14 +78,7 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
       // 避免开场白后挂机也会自动弹出事件
     } catch (error) {
       console.error('Failed to start conversation:', error);
-      const fallback = '...It is a quiet night.';
-      dialogue.updateLastMessage(fallback);
-      appendActiveNpcEvent({
-        role: 'ai',
-        type: 'dialogue_opening_fallback',
-        content: fallback,
-        timestamp: Date.now()
-      }).catch(() => {});
+      addToast('AI opening failed. No fallback opening was used.', 'error');
     } finally {
       dialogue.setIsLoading(false);
     }
@@ -131,8 +124,9 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
             emotionState: { surface: ['trust'], reality: realityEmotions },
             playerInput: message, dialogueHistory: dialogue.dialogueHistory
           });
-        } catch {
-          response = tutorial.getTutorialResponse(message, respondRound);
+        } catch (error) {
+          console.error('Tutorial AI response failed:', error);
+          throw error;
         }
       }
       dialogue.addMessage('ai', response, true);
@@ -277,10 +271,9 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
               cocktailFlow.addTrustFly(change);
             }
           }
-        } catch {
-          const isGoodResponse = dialogue.analyzePlayerResponse(message, dialogue.dialogueHistory);
-          if (isGoodResponse) setTrustLevel(prev => Math.min(1, prev + (source === 'custom' ? 0.05 : 0.03)));
-                      else { setTrustLevel(prev => Math.max(0, prev - 0.03)); } // 降级判定也减轻惩罚：0.05→0.03
+        } catch (error) {
+          console.error('Trust judgment failed:', error);
+          throw error;
         }
       }
       // 事件触发点：基于玩家对话行为（非挂机被动触发）
@@ -316,14 +309,7 @@ export const useDialogueHandlers = ({ ctx, refs }) => {
       queueActiveSlotGameStateSync('dialogue_turn');
     } catch (error) {
       console.error('Failed to send message:', error);
-      const fallback = '...I got a little distracted. Could you say that again?';
-      dialogue.updateLastMessage(fallback);
-      appendActiveNpcEvent({
-        role: 'ai',
-        type: 'dialogue_ai_fallback',
-        content: fallback,
-        timestamp: Date.now()
-      }).catch(() => {});
+      addToast('AI dialogue failed. No fallback dialogue was used.', 'error');
     } finally {
       dialogue.setIsLoading(false);
     }

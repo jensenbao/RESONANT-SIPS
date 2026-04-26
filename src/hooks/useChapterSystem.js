@@ -4,7 +4,7 @@
  */
 import { useState, useCallback, useRef } from 'react';
 import { getChapterState, saveChapterState, getMemoryFragments, saveMemoryFragments, getWorldState, getReturnCustomers } from '../utils/storage.js';
-import { CHAPTERS, FALLBACK_CHAPTER_OPENINGS, FALLBACK_FRAGMENTS, FALLBACK_ENDING_TEMPLATE, getFragmentClarity } from '../data/chapterMilestones.js';
+import { CHAPTERS, getFragmentClarity } from '../data/chapterMilestones.js';
 import { API_CONFIG } from '../config/api.js';
 
 // 先聚焦核心玩法：暂时关闭主线叙事（章节推进/回忆碎片/结局）
@@ -33,35 +33,37 @@ const trimToLastSentence = (text) => {
 };
 
 const callGeminiForText = async (prompt, maxTokens = 1024) => {
-  if (!API_CONFIG.gemini.enabled || !API_CONFIG.gemini.apiKey) return null;
-  try {
-    const url = `${API_CONFIG.gemini.endpoint}/${API_CONFIG.gemini.model}:generateContent?key=${API_CONFIG.gemini.apiKey}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.8, maxOutputTokens: maxTokens, candidateCount: 1 }
-      })
-    });
-    if (!response.ok) return null;
-    const data = await response.json();
-    const candidate = data.candidates?.[0];
-    const wasTokenTruncated = candidate?.finishReason === 'MAX_TOKENS';
-    if (wasTokenTruncated) {
-      console.warn('⚠️ AI 输出被 token 上限截断，将修剪到最后完整句子');
-    }
-    let text = candidate?.content?.parts?.find(p => p.text)?.text;
-    text = text?.trim() || null;
-    // 被 token 截断时，修剪到最后一个完整句子
-    if (text && wasTokenTruncated) {
-      text = trimToLastSentence(text);
-    }
-    return text;
-  } catch (e) {
-    console.warn('⚠️ AI 生成失败:', e);
-    return null;
+  if (!API_CONFIG.gemini.enabled || !API_CONFIG.gemini.apiKey) {
+    throw new Error('chapter_ai_not_configured');
   }
+  const url = `${API_CONFIG.gemini.endpoint}/${API_CONFIG.gemini.model}:generateContent?key=${API_CONFIG.gemini.apiKey}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.8, maxOutputTokens: maxTokens, candidateCount: 1 }
+    })
+  });
+  if (!response.ok) {
+    throw new Error(`chapter_ai_http_${response.status}`);
+  }
+  const data = await response.json();
+  const candidate = data.candidates?.[0];
+  const wasTokenTruncated = candidate?.finishReason === 'MAX_TOKENS';
+  let text = candidate?.content?.parts?.find(p => p.text)?.text;
+  text = text?.trim() || null;
+  if (!text) {
+    throw new Error('chapter_ai_empty_text');
+  }
+  if (wasTokenTruncated) {
+    const trimmed = trimToLastSentence(text);
+    if (!trimmed || trimmed.length < Math.floor(text.length * 0.5)) {
+      throw new Error('chapter_ai_truncated_output');
+    }
+    return trimmed;
+  }
+  return text;
 };
 
 export const useChapterSystem = () => {
@@ -110,7 +112,10 @@ export const useChapterSystem = () => {
 只输出开场白文本，不要其他内容。`;
 
     const aiText = await callGeminiForText(prompt, 1024);
-    return aiText || FALLBACK_CHAPTER_OPENINGS[chapter.id] || chapter.subtitle;
+    if (!aiText) {
+      throw new Error(`chapter_opening_generation_failed:${chapter.id}`);
+    }
+    return aiText;
   }, []);
 
   /**
@@ -233,35 +238,17 @@ SUMMARY: (摘要)
 ANCHOR: (锚点或"无")`;
 
     const aiText = await callGeminiForText(prompt, 2048);
-    if (aiText) {
-      const fragmentMatch = aiText.match(/FRAGMENT:\s*([\s\S]*?)(?:SUMMARY:|$)/i);
-      const summaryMatch = aiText.match(/SUMMARY:\s*([\s\S]*?)(?:ANCHOR:|$)/i);
-      const anchorMatch = aiText.match(/ANCHOR:\s*([\s\S]*?)$/i);
-      if (fragmentMatch) {
-        const anchor = anchorMatch ? anchorMatch[1].trim() : '无';
-        return {
-          content: fragmentMatch[1].trim(),
-          summary: summaryMatch ? summaryMatch[1].trim() : fragmentMatch[1].trim().slice(0, 30),
-          anchor: (anchor && anchor !== '无') ? anchor : null
-        };
-      }
-      // AI 没按 FRAGMENT/SUMMARY/ANCHOR 格式输出，尝试智能提取
-      // 去掉可能的 markdown 标记和多余前缀
-      let cleanText = aiText.replace(/^[\s\S]*?[：:]\s*/m, '').trim() || aiText.trim();
-      if (cleanText.length > 300) {
-        cleanText = trimToLastSentence(cleanText.slice(0, 300));
-      }
-      return {
-        content: cleanText,
-        summary: cleanText.slice(0, 30),
-        anchor: null
-      };
+    const fragmentMatch = aiText.match(/FRAGMENT:\s*([\s\S]*?)(?:SUMMARY:|$)/i);
+    const summaryMatch = aiText.match(/SUMMARY:\s*([\s\S]*?)(?:ANCHOR:|$)/i);
+    const anchorMatch = aiText.match(/ANCHOR:\s*([\s\S]*?)$/i);
+    if (!fragmentMatch || !summaryMatch) {
+      throw new Error('memory_fragment_invalid_format');
     }
-
+    const anchor = anchorMatch ? anchorMatch[1].trim() : '无';
     return {
-      content: FALLBACK_FRAGMENTS[clarity] || FALLBACK_FRAGMENTS.vague,
-      summary: '模糊的记忆碎片',
-      anchor: null
+      content: fragmentMatch[1].trim(),
+      summary: summaryMatch[1].trim(),
+      anchor: (anchor && anchor !== '无') ? anchor : null
     };
   }, [getNarrativeAnchors]);
 
@@ -454,14 +441,9 @@ ${returnCustomers.slice(0, 3).map(c =>
 总字数控制在 500-700 字。基调：忧郁诗意。不要大团圆，不要说教。
 只输出结局叙事文本。`;
 
-    // 最多重试3次
-    const attempts = [];
     for (let i = 0; i < 3; i++) {
       const aiText = await callGeminiForText(prompt, 2048);
-      if (!aiText) continue;
-
       const validation = validateEnding(aiText);
-      attempts.push({ narrative: aiText, validation, score: validation.issues.length });
 
       if (validation.valid) {
         return aiText;
@@ -477,24 +459,7 @@ ${returnCustomers.slice(0, 3).map(c =>
       }
     }
 
-    // 选 issues 最少的尝试
-    if (attempts.length > 0) {
-      attempts.sort((a, b) => a.score - b.score);
-      let best = attempts[0].narrative;
-      if (best.length > 1200) {
-        const lastPeriod = best.slice(0, 1000).lastIndexOf('。');
-        if (lastPeriod > 300) best = best.slice(0, lastPeriod + 1);
-      }
-      return best;
-    }
-
-    // 终极 fallback：模板填充
-    return FALLBACK_ENDING_TEMPLATE({
-      totalDays: currentDay,
-      totalCustomers: totalCustomersServed,
-      keyCustomerName: keyCustomer?.name,
-      keyCustomerOneLiner: keyCustomer?.characterArc?.phases?.slice(-1)[0]?.state
-    });
+    throw new Error(`ending_generation_invalid_after_retries:${triggerInfo.type}`);
   }, [memoryFragments, validateEnding]);
 
   /**

@@ -20,8 +20,6 @@ VITE_AI_PROVIDER=gemini
 VITE_GEMINI_API_KEY=YOUR_KEY
 VITE_GEMINI_MODEL=google/gemini-2.5-flash
 VITE_GEMINI_ENDPOINT=https://openrouter.ai/api/v1
-VITE_IMAGE_GEN_MODEL=google/gemini-3.1-flash-image-preview
-VITE_IMAGE_GEN_ENDPOINT=https://openrouter.ai/api/v1
 
 VITE_ENABLE_REMOTE_TTS=1
 VITE_TTS_STRICT_TEXT_SYNC=1
@@ -72,8 +70,6 @@ VITE_AI_PROVIDER=gemini
 VITE_GEMINI_API_KEY=YOUR_KEY
 VITE_GEMINI_MODEL=google/gemini-2.5-flash
 VITE_GEMINI_ENDPOINT=https://YOUR_GATEWAY_DOMAIN/v1
-VITE_IMAGE_GEN_MODEL=google/gemini-3.1-flash-image-preview
-VITE_IMAGE_GEN_ENDPOINT=https://YOUR_GATEWAY_DOMAIN/v1
 ```
 
 ## Profile Switching Commands

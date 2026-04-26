@@ -279,21 +279,16 @@ export const useCustomerDayHandlers = ({ ctx, refs }) => {
         .filter(Boolean);
 
       while (initialCustomers.length < customerFlow.MAX_CUSTOMERS_PER_DAY) {
-        try {
-          const customer = await generateCustomerWithCharacterPool({
-            activeCharacterIds,
-            usedCharacterIds
-          });
-          if (customer.customCharacterId) usedCharacterIds.push(customer.customCharacterId);
-          initialCustomers.push({
-            id: `${nextDay}-${initialCustomers.length}`,
-            type: customer.categoryId,
-            config: customer
-          });
-        } catch (error) {
-          console.warn('⚠️ Failed to fill from character pool, entering fallback logic:', error);
-          break;
-        }
+        const customer = await generateCustomerWithCharacterPool({
+          activeCharacterIds,
+          usedCharacterIds
+        });
+        if (customer.customCharacterId) usedCharacterIds.push(customer.customCharacterId);
+        initialCustomers.push({
+          id: `${nextDay}-${initialCustomers.length}`,
+          type: customer.categoryId,
+          config: customer
+        });
       }
     }
 

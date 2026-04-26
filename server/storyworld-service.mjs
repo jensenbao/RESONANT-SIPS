@@ -5,6 +5,7 @@ import {
   buildCharacterProfileDocument,
   mapProfileDocumentToCharacter,
 } from './character-profile-service.mjs';
+import { getServerTextApiConfig, loadServerEnv } from './runtime-config.mjs';
 
 const VALID_IDENTIFIER = /^[A-Za-z0-9_-]{2,64}$/;
 const YAML_EXT_RE = /\.(yaml|yml)$/i;
@@ -25,12 +26,11 @@ const SKIP_DIRS = new Set([
 const cache = {
   localIndex: { ts: 0, entries: [] },
   localContextByFile: new Map(),
+  pendingProfileWritesByCode: new Map(),
   remoteIndex: { ts: 0, entries: [] },
   remotePortraitIndexByCode: new Map(),
   genderByPortraitKey: new Map(),
 };
-
-let envLoaded = false;
 
 const normalizeIdentifier = (value) => {
   const text = String(value || '').trim();
@@ -49,16 +49,6 @@ const normalizeCode = (value) => {
   return normalized ? normalized.toLowerCase() : null;
 };
 
-const normalizeApiKey = (raw) => {
-  const value = String(raw || '').trim();
-  if (!value) return '';
-  const lower = value.toLowerCase();
-  if (lower === 'your api key' || lower === 'your_api_key' || lower === 'your-api-key') {
-    return '';
-  }
-  return value;
-};
-
 const envFlagEnabled = (name, defaultValue = false) => {
   const raw = String(process.env[name] ?? '').trim().toLowerCase();
   if (!raw) return defaultValue;
@@ -67,104 +57,19 @@ const envFlagEnabled = (name, defaultValue = false) => {
 
 const clamp01 = (value) => Math.max(0, Math.min(1, value));
 
-const loadLocalEnv = async (rootDir) => {
-  if (envLoaded) return;
-  envLoaded = true;
-
-  const envFile = path.join(rootDir, '.env.local');
-  let raw = '';
-  try {
-    raw = await fs.readFile(envFile, 'utf8');
-  } catch {
-    return;
-  }
-
-  const lines = String(raw || '').split(/\r?\n/);
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-
-    const idx = trimmed.indexOf('=');
-    if (idx <= 0) continue;
-
-    const key = trimmed.slice(0, idx).trim();
-    if (!key) continue;
-
-    let value = trimmed.slice(idx + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-
-    if (!String(process.env[key] || '').trim()) {
-      process.env[key] = value;
-    }
-  }
-};
-
-const isOpenAICompatibleEndpoint = (endpoint) => {
-  const value = String(endpoint || '').trim().toLowerCase();
-  if (!value) return false;
-  return value.includes('/v1') || value.includes('api.302.ai');
-};
-
-const getServerAIConfig = () => {
-  const provider = String(process.env.VITE_AI_PROVIDER || '').trim().toLowerCase();
-  const geminiApiKey = normalizeApiKey(process.env.VITE_GEMINI_API_KEY);
-  const geminiModel = String(process.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash').trim();
-  const geminiEndpoint = String(process.env.VITE_GEMINI_ENDPOINT || 'https://api.302.ai/v1').trim();
-  const deepseekApiKey = normalizeApiKey(process.env.VITE_DEEPSEEK_API_KEY);
-  const deepseekModel = String(process.env.VITE_DEEPSEEK_MODEL || 'deepseek-chat').trim();
-  const deepseekEndpoint = String(process.env.VITE_DEEPSEEK_ENDPOINT || 'https://api.deepseek.com').trim();
-
-  if (provider === 'gemini' && geminiApiKey) {
-    return {
-      type: 'gemini',
-      apiKey: geminiApiKey,
-      model: geminiModel,
-      endpoint: geminiEndpoint,
-      openaiCompatible: isOpenAICompatibleEndpoint(geminiEndpoint),
-    };
-  }
-
-  if (provider === 'deepseek' && deepseekApiKey) {
-    return {
-      type: 'deepseek',
-      apiKey: deepseekApiKey,
-      model: deepseekModel,
-      endpoint: deepseekEndpoint,
-      openaiCompatible: true,
-    };
-  }
-
-  if (geminiApiKey) {
-    return {
-      type: 'gemini',
-      apiKey: geminiApiKey,
-      model: geminiModel,
-      endpoint: geminiEndpoint,
-      openaiCompatible: isOpenAICompatibleEndpoint(geminiEndpoint),
-    };
-  }
-
-  if (deepseekApiKey) {
-    return {
-      type: 'deepseek',
-      apiKey: deepseekApiKey,
-      model: deepseekModel,
-      endpoint: deepseekEndpoint,
-      openaiCompatible: true,
-    };
-  }
-
-  return null;
-};
-
 const toRelativePath = (root, absolutePath) => path.relative(root, absolutePath).replace(/\\/g, '/');
 
 const getFilePriority = (filePath) => {
   if (JSON_EXT_RE.test(filePath)) return 3;
   if (YAML_EXT_RE.test(filePath)) return 1;
   return 0;
+};
+
+const shouldIndexCharacterFile = (filePath) => {
+  const fileName = String(path.basename(filePath || '')).toLowerCase();
+  if (!fileName) return false;
+  if (fileName === 'image-generation.json') return false;
+  return YAML_EXT_RE.test(fileName) || JSON_EXT_RE.test(fileName);
 };
 
 const ensureDir = async (dir) => {
@@ -193,6 +98,15 @@ const getMimeTypeFromPath = (filePath) => {
 const buildDataUrl = (buffer, mimeType) => {
   if (!Buffer.isBuffer(buffer) || buffer.length === 0) return null;
   return `data:${mimeType || 'application/octet-stream'};base64,${buffer.toString('base64')}`;
+};
+
+const parseDataUrl = (value) => {
+  const match = String(value || '').match(/^data:([^;,]+);base64,(.+)$/);
+  if (!match) return null;
+  return {
+    mimeType: match[1],
+    buffer: Buffer.from(match[2], 'base64'),
+  };
 };
 
 const GENDER_VALUES = new Set(['male', 'female', 'nonbinary', 'unknown']);
@@ -634,8 +548,7 @@ const inferGenderFromPortrait = async ({ rootDir, portrait, character }) => {
     return cloneGender(cached.value);
   }
 
-  await loadLocalEnv(rootDir);
-  const ai = getServerAIConfig();
+  const ai = await getServerTextApiConfig(rootDir);
   if (!ai?.apiKey || !ai?.model) return null;
 
   const parsedImage = parsePortraitDataUrl(dataUrl);
@@ -763,6 +676,26 @@ const getAddedCharacterAssetDir = (rootDir, code) => {
   return path.join(getAddedCharacterDir(rootDir), normalized);
 };
 
+export const invalidateLocalCharacterCache = ({ rootDir, code }) => {
+  const normalizedCode = normalizeCode(code);
+  if (!rootDir || !normalizedCode) return false;
+
+  const addedCharacterDir = getAddedCharacterAssetDir(rootDir, normalizedCode);
+  cache.localIndex.ts = 0;
+  cache.localIndex.entries = cache.localIndex.entries.filter((entry) => entry?.code !== normalizedCode);
+
+  if (addedCharacterDir) {
+    for (const filePath of cache.localContextByFile.keys()) {
+      if (typeof filePath !== 'string') continue;
+      if (filePath.startsWith(addedCharacterDir)) {
+        cache.localContextByFile.delete(filePath);
+      }
+    }
+  }
+
+  return true;
+};
+
 const getPresetCharacterProfilePath = (rootDir, code) => {
   const normalized = normalizeCode(code);
   if (!normalized) return null;
@@ -817,17 +750,15 @@ const writeRemoteCharacterCache = async ({ rootDir, code, rawYaml }) => {
     sourceUrl: null,
   });
 
+  const profileWriteKey = `${path.resolve(rootDir)}:${normalizedCode}`;
   const targetFile = getAddedCharacterProfilePath(rootDir, normalizedCode);
   const yamlFile = getAddedCharacterYamlPath(rootDir, normalizedCode);
-  const profileDoc = buildCharacterProfileDocument({ code: normalizedCode, character, preset: false });
   await fs.writeFile(yamlFile, rawYaml, 'utf8');
-  await fs.writeFile(targetFile, `${JSON.stringify(profileDoc, null, 2)}\n`, 'utf8');
 
-  // Remove legacy flat files after successful write to keep one canonical layout.
   const legacyProfileFile = getLegacyAddedCharacterProfilePath(rootDir, normalizedCode);
   const legacyYamlFile = getLegacyAddedCharacterYamlPath(rootDir, normalizedCode);
-  if (legacyProfileFile && await fileExists(legacyProfileFile)) {
-    await fs.rm(legacyProfileFile, { force: true });
+  if (targetFile && await fileExists(targetFile)) {
+    await fs.rm(targetFile, { force: true });
   }
   if (legacyYamlFile && await fileExists(legacyYamlFile)) {
     await fs.rm(legacyYamlFile, { force: true });
@@ -838,6 +769,32 @@ const writeRemoteCharacterCache = async ({ rootDir, code, rawYaml }) => {
   cache.localContextByFile.delete(yamlFile);
   if (legacyProfileFile) cache.localContextByFile.delete(legacyProfileFile);
   if (legacyYamlFile) cache.localContextByFile.delete(legacyYamlFile);
+
+  if (!cache.pendingProfileWritesByCode.has(profileWriteKey)) {
+    const pendingWrite = (async () => {
+      const profileDoc = await buildCharacterProfileDocument({ code: normalizedCode, character, preset: false });
+      await fs.writeFile(targetFile, `${JSON.stringify(profileDoc, null, 2)}\n`, 'utf8');
+
+      // Remove legacy flat profile after successful async write to keep one canonical layout.
+      if (legacyProfileFile && await fileExists(legacyProfileFile)) {
+        await fs.rm(legacyProfileFile, { force: true });
+      }
+
+      cache.localIndex.ts = 0;
+      cache.localContextByFile.delete(targetFile);
+      if (legacyProfileFile) cache.localContextByFile.delete(legacyProfileFile);
+    })()
+      .catch((error) => {
+        console.warn(`[storyworld-service] background profile generation failed for ${normalizedCode}: ${String(error?.message || error)}`);
+        throw error;
+      })
+      .finally(() => {
+        cache.pendingProfileWritesByCode.delete(profileWriteKey);
+      });
+
+    cache.pendingProfileWritesByCode.set(profileWriteKey, pendingWrite);
+  }
+
   return targetFile;
 };
 
@@ -862,6 +819,41 @@ const writeRemoteCharacterPortraitCache = async ({ rootDir, code, fileName, buff
 
   await fs.writeFile(targetFile, buffer);
   return targetFile;
+};
+
+export const cacheCharacterPortrait = async ({ rootDir, code, fileName = '', dataUrl = '', sourceUrl = null }) => {
+  const normalizedCode = normalizeCode(code);
+  if (!rootDir || !normalizedCode) {
+    const error = new Error('invalid_character_code');
+    error.code = 'invalid_character_code';
+    throw error;
+  }
+
+  const parsed = parseDataUrl(dataUrl);
+  if (!parsed?.buffer?.length) {
+    const error = new Error('invalid_portrait_data_url');
+    error.code = 'invalid_portrait_data_url';
+    throw error;
+  }
+
+  const savedPath = await writeRemoteCharacterPortraitCache({
+    rootDir,
+    code: normalizedCode,
+    fileName: fileName || `portrait.${parsed.mimeType.split('/')[1] || 'png'}`,
+    buffer: parsed.buffer,
+  });
+
+  invalidateLocalCharacterCache({ rootDir, code: normalizedCode });
+
+  return {
+    ok: true,
+    code: normalizedCode,
+    portrait: {
+      path: savedPath ? toRelativePath(rootDir, savedPath) : null,
+      url: String(sourceUrl || '').trim() || null,
+      mimeType: parsed.mimeType,
+    },
+  };
 };
 
 const loadLocalPortrait = async (rootDir, code) => {
@@ -982,14 +974,21 @@ const fetchRemotePortraitByCode = async ({ rootDir, code, cacheRemote = false })
   }
 };
 
-const enrichCharacterWithPortrait = async ({ rootDir, character, cacheRemote = false }) => {
+const resolveOptionalGender = async ({ rootDir, character, inferPortraitGender }) => {
+  if (!inferPortraitGender) {
+    return cloneGender(character?.gender || UNKNOWN_GENDER);
+  }
+  return resolveCharacterGender({ rootDir, character });
+};
+
+const enrichCharacterWithPortrait = async ({ rootDir, character, cacheRemote = false, inferPortraitGender = true }) => {
   if (!character || typeof character !== 'object') return character;
 
   const existingDataUrl = String(character?.portrait?.dataUrl || '').trim();
   if (existingDataUrl) {
     return {
       ...character,
-      gender: await resolveCharacterGender({ rootDir, character }),
+      gender: await resolveOptionalGender({ rootDir, character, inferPortraitGender }),
     };
   }
 
@@ -998,8 +997,9 @@ const enrichCharacterWithPortrait = async ({ rootDir, character, cacheRemote = f
     return {
       ...character,
       portrait: localPortrait,
-      gender: await resolveCharacterGender({
+      gender: await resolveOptionalGender({
         rootDir,
+        inferPortraitGender,
         character: {
           ...character,
           portrait: localPortrait,
@@ -1017,8 +1017,9 @@ const enrichCharacterWithPortrait = async ({ rootDir, character, cacheRemote = f
     return {
       ...character,
       portrait: remotePortrait,
-      gender: await resolveCharacterGender({
+      gender: await resolveOptionalGender({
         rootDir,
+        inferPortraitGender,
         character: {
           ...character,
           portrait: remotePortrait,
@@ -1029,7 +1030,7 @@ const enrichCharacterWithPortrait = async ({ rootDir, character, cacheRemote = f
 
   return {
     ...character,
-    gender: await resolveCharacterGender({ rootDir, character }),
+    gender: await resolveOptionalGender({ rootDir, character, inferPortraitGender }),
   };
 };
 
@@ -1095,13 +1096,28 @@ const normalizeCodeCandidate = (value) => {
   return null;
 };
 
+const GENERIC_CHARACTER_FILE_STEMS = new Set([
+  'profile',
+  'source',
+  'portrait',
+  'character',
+  'index',
+  'image-generation',
+]);
+
 const guessCodeFromFile = (filePath) => {
   const stem = path.basename(filePath, path.extname(filePath));
   const parent = path.basename(path.dirname(filePath));
+  const normalizedStem = String(stem || '').trim().toLowerCase();
+  const parentCode = normalizeCodeCandidate(parent);
+
+  if (parentCode && GENERIC_CHARACTER_FILE_STEMS.has(normalizedStem)) {
+    return parentCode;
+  }
+
   const stemCode = normalizeCodeCandidate(stem);
   if (stemCode) return stemCode;
 
-  const parentCode = normalizeCodeCandidate(parent);
   if (parentCode) return parentCode;
 
   const match = stem.toLowerCase().match(/([0-9]{3,}[a-z]?)/);
@@ -1285,7 +1301,7 @@ const walkCharacterFiles = async (startDir) => {
         continue;
       }
 
-      if (entry.isFile() && (YAML_EXT_RE.test(entry.name) || JSON_EXT_RE.test(entry.name))) {
+      if (entry.isFile() && shouldIndexCharacterFile(entry.name)) {
         files.push(entryPath);
       }
     }
@@ -1501,8 +1517,8 @@ const findLocalByName = async (rootDir, nameOrCode) => {
   return null;
 };
 
-export const getCharacterByName = async ({ rootDir, query, cacheRemote = false }) => {
-  await loadLocalEnv(rootDir);
+export const getCharacterByName = async ({ rootDir, query, cacheRemote = false, inferPortraitGender = true }) => {
+  await loadServerEnv(rootDir);
   const normalizedQuery = normalizeQuery(query);
   if (!normalizedQuery) {
     const error = new Error('invalid_character_query');
@@ -1512,26 +1528,26 @@ export const getCharacterByName = async ({ rootDir, query, cacheRemote = false }
 
   const byCodeFromProfile = await findLocalProfileByCode(rootDir, normalizedQuery);
   if (byCodeFromProfile) {
-    return enrichCharacterWithPortrait({ rootDir, character: byCodeFromProfile, cacheRemote });
+    return enrichCharacterWithPortrait({ rootDir, character: byCodeFromProfile, cacheRemote, inferPortraitGender });
   }
 
   const byCode = await findLocalByCode(rootDir, normalizedQuery);
   if (byCode) {
-    return enrichCharacterWithPortrait({ rootDir, character: byCode, cacheRemote });
+    return enrichCharacterWithPortrait({ rootDir, character: byCode, cacheRemote, inferPortraitGender });
   }
 
   const byName = await findLocalByName(rootDir, normalizedQuery);
   if (byName) {
-    return enrichCharacterWithPortrait({ rootDir, character: byName, cacheRemote });
+    return enrichCharacterWithPortrait({ rootDir, character: byName, cacheRemote, inferPortraitGender });
   }
 
   const remoteCharacter = await fetchRemoteByCode({ rootDir, code: normalizedQuery, cacheRemote });
   if (!remoteCharacter) return null;
-  return enrichCharacterWithPortrait({ rootDir, character: remoteCharacter, cacheRemote });
+  return enrichCharacterWithPortrait({ rootDir, character: remoteCharacter, cacheRemote, inferPortraitGender });
 };
 
 export const searchCharacters = async ({ rootDir, query = '', limit = 20 }) => {
-  await loadLocalEnv(rootDir);
+  await loadServerEnv(rootDir);
   const keyword = String(query || '').trim().toLowerCase();
   const cappedLimit = Math.min(Math.max(Number(limit) || 20, 1), 50);
   const results = [];

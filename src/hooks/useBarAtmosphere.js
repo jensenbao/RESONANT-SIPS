@@ -1,6 +1,6 @@
 // 酒吧氛围管理 Hook
 import { useState, useCallback, useRef } from 'react';
-import { getFallbackAtmosphere } from '../data/atmosphereTemplates.js';
+import { generateDailyAtmosphere } from '../utils/aiService.js';
 
 const getNeutralModifiers = () => ({
   trustBonus: 0,
@@ -44,23 +44,20 @@ export const useBarAtmosphere = () => {
    */
   const generateAtmosphere = useCallback(async (day, recentCrossroadsSummaries = []) => {
     setIsGenerating(true);
-    // 氛围仅作为背景展示，不再走AI生成。
-    void recentCrossroadsSummaries;
-    console.log(`Generating background atmosphere for day ${day} with local templates...`);
+    console.log(`Generating AI atmosphere for day ${day}...`);
 
-    const fallback = getFallbackAtmosphere(day, recentAtmospheresRef.current);
-    console.log('Using local atmosphere template:', fallback.weather);
-    const finalFallback = stripAtmosphereEffects(fallback);
-    setAtmosphere(finalFallback);
+    const generated = await generateDailyAtmosphere(day, recentAtmospheresRef.current, recentCrossroadsSummaries);
+    const finalAtmosphere = stripAtmosphereEffects(generated);
+    setAtmosphere(finalAtmosphere);
     setShowAtmosphereOverlay(true);
 
     recentAtmospheresRef.current = [
-      finalFallback,
+      finalAtmosphere,
       ...recentAtmospheresRef.current.slice(0, 2)
     ];
     
     setIsGenerating(false);
-    return finalFallback;
+    return finalAtmosphere;
   }, []);
 
   /**

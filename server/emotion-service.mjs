@@ -2,47 +2,11 @@ import { createHash } from 'node:crypto';
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { getServerTextApiConfig, loadServerEnv } from './runtime-config.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
-
-let envLoaded = false;
-
-const loadLocalEnv = async () => {
-  if (envLoaded) return;
-  envLoaded = true;
-
-  const envFile = path.join(ROOT, '.env.local');
-  let raw = '';
-  try {
-    raw = await fs.readFile(envFile, 'utf8');
-  } catch {
-    return;
-  }
-
-  const lines = String(raw || '').split(/\r?\n/);
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-
-    const idx = trimmed.indexOf('=');
-    if (idx <= 0) continue;
-
-    const key = trimmed.slice(0, idx).trim();
-    if (!key) continue;
-
-    let value = trimmed.slice(idx + 1).trim();
-    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
-    }
-
-    const current = String(process.env[key] || '').trim();
-    if (!current) {
-      process.env[key] = value;
-    }
-  }
-};
 
 export const EMOTION_IDS_8 = [
   'joy',
@@ -192,74 +156,6 @@ const buildSourceHash = (text) => {
   return createHash('sha1').update(String(text || '')).digest('hex');
 };
 
-const normalizeApiKey = (raw) => {
-  const value = String(raw || '').trim();
-  if (!value) return '';
-  const lower = value.toLowerCase();
-  if (lower === 'your api key' || lower === 'your_api_key' || lower === 'your-api-key') {
-    return '';
-  }
-  return value;
-};
-
-const isOpenAICompatibleEndpoint = (endpoint) => {
-  const value = String(endpoint || '').trim().toLowerCase();
-  if (!value) return false;
-  return value.includes('/v1') || value.includes('api.302.ai');
-};
-
-const getServerAIConfig = () => {
-  const provider = String(process.env.VITE_AI_PROVIDER || '').trim().toLowerCase();
-
-  const deepseekApiKey = normalizeApiKey(process.env.VITE_DEEPSEEK_API_KEY);
-  const deepseekModel = String(process.env.VITE_DEEPSEEK_MODEL || 'deepseek-chat').trim();
-  const deepseekEndpoint = String(process.env.VITE_DEEPSEEK_ENDPOINT || 'https://api.deepseek.com/chat/completions').trim();
-
-  const geminiApiKey = normalizeApiKey(process.env.VITE_GEMINI_API_KEY);
-  const geminiModel = String(process.env.VITE_GEMINI_MODEL || 'gemini-2.5-flash').trim();
-  const geminiEndpoint = String(process.env.VITE_GEMINI_ENDPOINT || 'https://api.302.ai/v1').trim();
-
-  if (provider === 'deepseek' && deepseekApiKey) {
-    return {
-      type: 'deepseek',
-      apiKey: deepseekApiKey,
-      model: deepseekModel,
-      endpoint: deepseekEndpoint,
-    };
-  }
-
-  if (provider === 'gemini' && geminiApiKey) {
-    return {
-      type: 'gemini',
-      apiKey: geminiApiKey,
-      model: geminiModel,
-      endpoint: geminiEndpoint,
-      openaiCompatible: isOpenAICompatibleEndpoint(geminiEndpoint),
-    };
-  }
-
-  if (deepseekApiKey) {
-    return {
-      type: 'deepseek',
-      apiKey: deepseekApiKey,
-      model: deepseekModel,
-      endpoint: deepseekEndpoint,
-    };
-  }
-
-  if (geminiApiKey) {
-    return {
-      type: 'gemini',
-      apiKey: geminiApiKey,
-      model: geminiModel,
-      endpoint: geminiEndpoint,
-      openaiCompatible: isOpenAICompatibleEndpoint(geminiEndpoint),
-    };
-  }
-
-  return null;
-};
-
 const buildEmotionPrompt = (characterText) => {
   return `你是情绪分析器。基于角色资料，输出普拉奇克8情绪权重JSON。\n\n角色资料：\n${characterText}\n\n只返回JSON，不要解释：\n{\n  "weights": {\n    "joy": number,\n    "trust": number,\n    "fear": number,\n    "surprise": number,\n    "sadness": number,\n    "disgust": number,\n    "anger": number,\n    "anticipation": number\n  },\n  "confidence": number,\n  "rationale": [string]\n}`;
 };
@@ -383,8 +279,8 @@ const getAIModelOutput = async ({
   requireCompleteWeightSet = false,
   maxAttempts = 2,
 }) => {
-  await loadLocalEnv();
-  const ai = getServerAIConfig();
+  await loadServerEnv(ROOT);
+  const ai = await getServerTextApiConfig(ROOT);
   if (!ai || !characterText) return null;
 
   const prompts = [buildEmotionPrompt(characterText), buildEmotionPromptCompact(characterText)];
@@ -509,24 +405,18 @@ export const analyzeCharacterEmotion = ({ character, modelOutput = null } = {}) 
 export const analyzeCharacterEmotionWithAI = async ({ character, options = {} } = {}) => {
   const characterText = buildCharacterText(character || {});
   if (!characterText) {
-    return analyzeCharacterEmotion({ character });
+    throw new Error('emotion_ai_missing_character_text');
   }
 
-  try {
-    const modelOutput = await getAIModelOutput({
-      characterText,
-      allowPartialModelOutput: options.allowPartialModelOutput !== false,
-      requireCompleteWeightSet: options.requireCompleteWeightSet === true,
-      maxAttempts: options.maxAttempts,
-    });
-    if (modelOutput) {
-      return analyzeCharacterEmotion({ character, modelOutput });
-    }
-  } catch (error) {
-    if (String(process.env.DEBUG_EMOTION_AI || '') === '1') {
-      console.warn('[emotion-ai] fallback to heuristic:', error?.message || error);
-    }
+  const modelOutput = await getAIModelOutput({
+    characterText,
+    allowPartialModelOutput: options.allowPartialModelOutput === true,
+    requireCompleteWeightSet: options.requireCompleteWeightSet !== false,
+    maxAttempts: options.maxAttempts,
+  });
+  if (!modelOutput) {
+    throw new Error('emotion_ai_empty_model_output');
   }
 
-  return analyzeCharacterEmotion({ character });
+  return analyzeCharacterEmotion({ character, modelOutput });
 };
