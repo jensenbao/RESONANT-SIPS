@@ -48,7 +48,7 @@ This phase changed the nature of the project. AI output became system input, and
 
 ### 2.5 Reliability hardening phase
 
-In the final phase, we prioritized resilience over feature expansion. We improved model fallback behavior, network error visibility, recovery exits for blocked states, anti-repetition controls, and atomic save stability. The purpose was practical: under real classroom constraints, the system had to keep running.
+In the final phase, we prioritized resilience over feature expansion. We improved model fallback behavior, network error visibility, recovery exits for blocked states, anti-repetition controls, and atomic save stability. The purpose was practical: under real demonstration constraints, the system had to keep running.
 
 ---
 
@@ -90,7 +90,7 @@ Network variability and model availability created additional instability in cha
 
 The team followed a “stabilize core first, refine in parallel” collaboration strategy. We first secured core state and service behavior, then advanced UI polish, asset consistency, and documentation quality in parallel. This reduced integration conflicts and improved iteration efficiency.
 
-Multi-author contribution is visible in repository history, but role-to-artifact mapping is more important than raw commit counts. Some members focused on service reliability and state behavior, some improved interaction and dialogue quality, some handled visual asset consistency and media integration, and some maintained process documentation, attribution clarity, and submission readiness.
+Multi-author contribution is visible in repository history, but role-to-artifact mapping is more important than raw commit counts. Some members focused on service reliability and state behavior, some improved interaction and dialogue quality, some handled visual asset consistency and media integration, and some maintained process documentation, attribution clarity, and release readiness.
 
 ---
 
@@ -102,11 +102,17 @@ AI also changed responsibility boundaries. It increased narrative variation and 
 
 ---
 
-## 9. Media strategy for clear review (with insertion placeholders)
+## 9. Media strategy for clear communication (with insertion placeholders)
 
-For review readability, we recommend organizing evidence in a context-mechanism-result-reliability sequence. Interface and setup establish context. Character retrieval and emotion judgment explain mechanism. Mixing and settlement show outcomes. Recovery/error-state visuals demonstrate reliability design. A full gameplay video plus a short technical pipeline video together provide both experiential and technical evidence.
+For readability, we recommend organizing evidence in a context-mechanism-result-reliability sequence. Interface and setup establish context. Character retrieval and emotion judgment explain mechanism. Mixing and settlement show outcomes. Recovery/error-state visuals demonstrate reliability design. A full gameplay video plus a short technical pipeline video together provide both experiential and technical evidence.
 
-Use the following placeholders so assets can be inserted directly:
+The gameplay demo video has now been published and can be referenced directly in project communication:
+
+[Video D1 - Full gameplay walkthrough] https://www.youtube.com/watch?v=o8gpBwI3ihs
+
+This video serves as the primary end-to-end evidence clip, showing one continuous playable session from setup to outcome feedback.
+
+Use the following placeholders so remaining assets can be inserted directly:
 
 [Screenshot S1] Main interface / world setup  
 [Screenshot S2] New game setup / character pool  
@@ -115,10 +121,9 @@ Use the following placeholders so assets can be inserted directly:
 [Screenshot S5] Mixing execution interface  
 [Screenshot S6] Serve result and feedback  
 [Screenshot S7] Error message and recovery action  
-[Video D1] Full gameplay walkthrough (3-5 min)  
 [Video D2] Technical pipeline clip (1-2 min)
 
-Process diagrams should be exported as high-resolution images and embedded directly, because visual evidence is typically processed before detailed text in review settings.
+Process diagrams should be exported as high-resolution images and embedded directly, because visual evidence is typically processed before detailed text in most reading contexts.
 
 ---
 

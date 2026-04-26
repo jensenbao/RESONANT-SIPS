@@ -158,11 +158,11 @@ This document is written for recording a gameplay introduction video with Englis
 
 ---
 
-## 7) Reference and Attribution Note (for Presentation)
+## 7) Reference and Attribution Note (for Project Showcase)
 
 Before exporting your final presentation video:
 
 - Verify all shown role IDs against `ASSET_ATTRIBUTION.md`.
 - Add one credits/reference slide listing character/image sources and access date.
-- If original author is unknown, use ID-level reference (`Role ID + upstream URL + access date + coursework use note`).
+- If original author is unknown, use ID-level reference (`Role ID + upstream URL + access date + project-context use note`).
 

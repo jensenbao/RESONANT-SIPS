@@ -10,6 +10,7 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 - **系统级创新整合**：多模型路由 + 8 维情绪推断 + Pixi 交互调酒 + Storyworld 角色解析被整合为同一可玩闭环，而非零散功能。
 - **仓库可直接运行**：`npm run dev` 可同时启动前后端，`.env.example` 给出配置模板，`npm run build` 可产出构建结果。
 - **游玩与演示流程完整**：完整演示口播与流程见 `public/preview/gameplay-voiceover-guide-en.md`。
+- **公开 demo 视频可访问**：已发布 YouTube 实机演示，便于快速了解完整玩法链路：<https://www.youtube.com/watch?v=o8gpBwI3ihs>。
 - **课程生态已接入**：已接入 `venetanji/polyu-storyworld`（子模块 + 远程回退）与 `/api/mcp/...` 的 MCP 风格接口。
 
 关键参考路径：
@@ -29,8 +30,8 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 
 引用披露实践：
 
-- 保留现有素材以保证课堂演示连续性，并按“出镜角色 ID”逐条补充 reference。
-- 若无法确认个人作者姓名，采用 ID 级声明：`Role ID + 上游链接 + 访问日期 + 非商业课程用途说明`。
+- 保留现有素材以保证项目展示连续性，并按“出镜角色 ID”逐条补充 reference。
+- 若无法确认个人作者姓名，采用 ID 级声明：`Role ID + 上游链接 + 访问日期 + 非商业项目语境说明`。
 
 ## 实现亮点对照
 
@@ -234,6 +235,19 @@ flowchart LR
 口播脚本结构可参考：
 
 - `public/preview/gameplay-voiceover-guide-en.md`
+
+## 游戏 Demo 视频
+
+最新可游玩演示视频：
+
+- YouTube：<https://www.youtube.com/watch?v=o8gpBwI3ihs>
+
+该视频用于帮助读者快速理解完整主链路，覆盖以下关键环节：
+
+1. 新游戏配置与角色池启用。
+2. 对话观察与隐藏情绪/信任变化。
+3. Pixi 调酒面板的配方执行。
+4. 递酒结算反馈与存档推进。
 
 ## Storyworld 与 MCP 风格接口
 

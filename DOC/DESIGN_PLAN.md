@@ -41,7 +41,8 @@ Repository evidence:
 1. Runnable scripts (`npm run dev`, `dev:client`, `dev:server`, `build`, `preview`).
 2. Environment template (`.env.example`) and secure local secret workflow.
 3. Gameplay/video workflow reference (`public/preview/gameplay-voiceover-guide-en.md`).
-4. Save and MCP-style API server with documented endpoints.
+4. Public gameplay demo video for quick end-to-end project walkthrough (`https://www.youtube.com/watch?v=o8gpBwI3ihs`).
+5. Save and MCP-style API server with documented endpoints.
 
 ### 3.3 Storyworld / MCP Integration
 
@@ -66,7 +67,20 @@ Repository evidence:
 6. **Demo output**
    - Voiceover/script guide supports presentation and video walkthrough
 
-## 5. Evidence Paths
+## 5. Game Demo Evidence
+
+Primary public gameplay demo:
+
+- YouTube: <https://www.youtube.com/watch?v=o8gpBwI3ihs>
+
+Coverage shown in this video:
+
+1. New game setup and character pool selection.
+2. Dialogue observation with hidden emotion/trust movement.
+3. Pixi mixing execution and service outcome feedback.
+4. Progress/save behavior in one continuous playable session.
+
+## 6. Evidence Paths
 
 - `src/game/pixi/`
 - `src/hooks/useDialogue.js`
@@ -77,9 +91,10 @@ Repository evidence:
 - `server/storyworld-service.mjs`
 - `server/emotion-service.mjs`
 - `public/preview/gameplay-voiceover-guide-en.md`
+- `https://www.youtube.com/watch?v=o8gpBwI3ihs`
 - `.env.example`
 
-## 6. Validation Plan (Current)
+## 7. Validation Plan (Current)
 
 Manual validation checklist:
 
@@ -89,13 +104,13 @@ Manual validation checklist:
 4. Complete dialogue -> emotion interaction -> mixing -> serve flow.
 5. Confirm saves are written and reloadable.
 
-## 7. Known Gaps and Next Iteration
+## 8. Known Gaps and Next Iteration
 
 1. Add automated tests and CI workflow for regression coverage.
 2. Continue reducing mismatch between historical planning docs and current runtime.
 3. Optional future branch: external asset-generation workflow (e.g., ComfyUI) as an auxiliary pipeline, not a dependency for core gameplay execution.
 
-## 8. Document Cross-Reference
+## 9. Document Cross-Reference
 
 Use this document together with:
 

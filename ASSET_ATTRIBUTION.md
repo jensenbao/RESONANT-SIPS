@@ -1,10 +1,10 @@
 # Asset Attribution and Provenance
 
-This file is the submission-facing provenance register for character visuals and related media.
+This file is a public provenance register for character visuals and related media.
 
 ## Usage Scope
 
-- Coursework / classroom presentation use.
+- Non-commercial use in project context (including portfolio/project showcase).
 - Keep all assets in repo for demo continuity.
 - Disclose third-party or generated sources in slides/video credits.
 - If original creator name is unknown, cite by `Role ID + upstream repository/dataset URL + access date`.
@@ -26,10 +26,10 @@ Important note:
 
 | Asset Path | Role ID | Provenance Statement | Reference URL | Usage Note |
 |---|---|---|---|---|
-| `public/asset/角色/cutout/0613g_cutout.png` | `0613g` | Imported as Storyworld-linked role asset | `https://github.com/venetanji/polyu-storyworld` | Coursework demo; follow upstream terms |
-| `public/asset/角色/cutout/2928g_cutout.png` | `2928g` | Imported as Storyworld-linked role asset | `https://github.com/venetanji/polyu-storyworld` | Coursework demo; follow upstream terms |
-| `public/asset/角色/cutout/5208g_cutout.png` | `5208g` | Imported as Storyworld-linked role asset | `https://github.com/venetanji/polyu-storyworld` | Coursework demo; follow upstream terms |
-| `public/asset/角色/cutout/5738g_cutout.png` | `5738g` | Preset role visual aligned with local seed profile | `seeds/characters/presets/5738g/source.yaml` | Coursework demo; show with attribution line |
+| `public/asset/角色/cutout/0613g_cutout.png` | `0613g` | Imported as Storyworld-linked role asset | `https://github.com/venetanji/polyu-storyworld` | Project-context demo; follow upstream terms |
+| `public/asset/角色/cutout/2928g_cutout.png` | `2928g` | Imported as Storyworld-linked role asset | `https://github.com/venetanji/polyu-storyworld` | Project-context demo; follow upstream terms |
+| `public/asset/角色/cutout/5208g_cutout.png` | `5208g` | Imported as Storyworld-linked role asset | `https://github.com/venetanji/polyu-storyworld` | Project-context demo; follow upstream terms |
+| `public/asset/角色/cutout/5738g_cutout.png` | `5738g` | Preset role visual aligned with local seed profile | `seeds/characters/presets/5738g/source.yaml` | Project-context demo; show with attribution line |
 | `public/asset/角色/cutout/1512g_cutout.png` | `1512g` | Team-provided visual in active asset pack | team internal evidence | Add owner/source note in final slide |
 | `public/asset/角色/cutout/1601_cutout.png` | `1601` / `1601g` | Team-provided visual in active asset pack | team internal evidence | Add owner/source note in final slide |
 | `public/asset/角色/微信图片_20260418170446_294_154.jpg` | `5738g` reference | Team local reference portrait used in production prep | team internal evidence | Keep reference note explicit in presentation |
@@ -47,22 +47,22 @@ Important note:
 
 ## Reference Line Templates
 
-- `0613g - cutout - Source: venetanji/polyu-storyworld (coursework integration) - Accessed: 2026-04-24 - Non-commercial classroom demo`
-- `2928g - cutout - Source: venetanji/polyu-storyworld (coursework integration) - Accessed: 2026-04-24 - Non-commercial classroom demo`
-- `5208g - cutout - Source: venetanji/polyu-storyworld (coursework integration) - Accessed: 2026-04-24 - Non-commercial classroom demo`
-- `5738g - character seed/cutout - Source chain: local seed + Storyworld-linked workflow - Accessed: 2026-04-24 - Non-commercial classroom demo`
-- `1512g/1601 - cutout visuals - Source: team internal asset pack - Accessed: 2026-04-24 - Non-commercial classroom demo`
-- `Bartender avatar/animation - Source: team original production assets - Accessed: 2026-04-24 - Non-commercial classroom demo`
+- `0613g - cutout - Source: venetanji/polyu-storyworld (project-context integration) - Accessed: 2026-04-24 - Non-commercial project-context demo`
+- `2928g - cutout - Source: venetanji/polyu-storyworld (project-context integration) - Accessed: 2026-04-24 - Non-commercial project-context demo`
+- `5208g - cutout - Source: venetanji/polyu-storyworld (project-context integration) - Accessed: 2026-04-24 - Non-commercial project-context demo`
+- `5738g - character seed/cutout - Source chain: local seed + Storyworld-linked workflow - Accessed: 2026-04-24 - Non-commercial project-context demo`
+- `1512g/1601 - cutout visuals - Source: team internal asset pack - Accessed: 2026-04-24 - Non-commercial project-context demo`
+- `Bartender avatar/animation - Source: team original production assets - Accessed: 2026-04-24 - Non-commercial project-context demo`
 
 ## Minimal Declaration for Unknown Original Author
 
 Use this line when you only know the role ID and upstream project:
 
-`Role ID <ID> is referenced from the course Storyworld source (venetanji/polyu-storyworld). Original individual creator name is not available in our retrieved metadata. Used for non-commercial coursework presentation with repository reference and access date.`
+`Role ID <ID> is referenced from the Storyworld source (venetanji/polyu-storyworld). Original individual creator name is not available in our retrieved metadata. Used for non-commercial project-context presentation with repository reference and access date.`
 
 Recommended dual-source variant:
 
-`Role ID <ID> is referenced from Storyworld characters (GitHub) and Storyworld character images (Hugging Face dataset). Original individual creator name is not available in our retrieved metadata. Used for non-commercial coursework presentation with repository/dataset reference and access date.`
+`Role ID <ID> is referenced from Storyworld characters (GitHub) and Storyworld character images (Hugging Face dataset). Original individual creator name is not available in our retrieved metadata. Used for non-commercial project-context presentation with repository/dataset reference and access date.`
 
 ## Pending Metadata Items
 

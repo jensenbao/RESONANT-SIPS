@@ -51,6 +51,6 @@ attribution:
 
 Rules:
 
-- Keep existing assets for coursework continuity.
+- Keep existing assets for project continuity.
 - For every role ID shown in demo/video, add a corresponding entry in `ASSET_ATTRIBUTION.md`.
 - If original author name is unavailable, use ID-level reference (`roleId + upstream source URL + access date`).

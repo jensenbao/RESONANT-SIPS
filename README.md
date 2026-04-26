@@ -10,6 +10,7 @@ Players read customers, infer hidden emotions, and mix drinks that influence tru
 - **Integrated novelty**: Multi-provider LLM routing + 8-emotion inference + Pixi interactive mixing + Storyworld character ingestion are integrated into one playable loop (not isolated demos).
 - **Runnable repository**: `npm run dev` starts client+server, `.env.example` documents required configuration, and `npm run build` provides production output.
 - **Documented gameplay workflow**: end-to-end gameplay/voiceover walkthrough is documented in `public/preview/gameplay-voiceover-guide-en.md`.
+- **Public game demo video**: playable walkthrough is published on YouTube for a quick project overview: <https://www.youtube.com/watch?v=o8gpBwI3ihs>.
 - **Course ecosystem integration**: integrates `venetanji/polyu-storyworld` (submodule + remote fallback) and MCP-style endpoints under `/api/mcp/...`.
 
 Key reference paths:
@@ -29,8 +30,8 @@ Key reference paths:
 
 Attribution practice:
 
-- Keep all visual assets for coursework continuity, and disclose references by shown role ID.
-- If original creator name is unknown, use ID-level reference: `Role ID + upstream URL + access date + non-commercial coursework note`.
+- Keep all visual assets for project continuity, and disclose references by shown role ID.
+- If original creator name is unknown, use ID-level reference: `Role ID + upstream URL + access date + non-commercial project-context note`.
 
 ## Implementation Highlights
 
@@ -235,6 +236,19 @@ flowchart LR
 For narration script structure, see:
 
 - `public/preview/gameplay-voiceover-guide-en.md`
+
+## Game Demo Video
+
+The latest playable demo is published here:
+
+- YouTube: <https://www.youtube.com/watch?v=o8gpBwI3ihs>
+
+This demo presents the full playable chain in one continuous run:
+
+1. New game setup and character pool usage.
+2. Dialogue observation with hidden emotion/trust updates.
+3. Pixi mixing interaction and recipe execution.
+4. Service outcome feedback and save/progression behavior.
 
 ## Storyworld and MCP-style Integration
 
