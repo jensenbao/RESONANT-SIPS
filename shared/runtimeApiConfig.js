@@ -69,9 +69,14 @@ export const buildRuntimeApiConfig = ({ env = {}, localApiKeys = null } = {}) =>
     fallback: 'https://generativelanguage.googleapis.com/v1/models',
   });
 
-  const characterImageModel = readValue(env, 'VITE_CHARACTER_IMAGE_MODEL') || 'openai/gpt-5.4-image-2';
+  const characterImageModel = (
+    readValue(env, 'VITE_CHARACTER_IMAGE_MODEL') ||
+    readValue(env, 'VITE_IMAGE_GEN_MODEL') ||
+    'google/gemini-3.1-flash-image-preview'
+  );
   const characterImageEndpoint = (
     readValue(env, 'VITE_CHARACTER_IMAGE_ENDPOINT') ||
+    readValue(env, 'VITE_IMAGE_GEN_ENDPOINT') ||
     'https://openrouter.ai/api/v1'
   ).replace(/\/$/, '');
 
