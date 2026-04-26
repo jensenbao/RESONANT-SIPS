@@ -58,6 +58,49 @@ To keep ideation traceable, we map each borrowed principle to a concrete impleme
   - **Evidence paths:** `src/game/pixi/`, `src/styles/`, gameplay HUD/state components in `src/components/`.
   - **Visual evidence:** `Art-assets/Art assets/游戏截屏/02_main_menu_resonant_sips.png`, `Art-assets/Art assets/游戏截屏/07_mixing_emotion_confirmation.png`, `Art-assets/Art assets/游戏截屏/08_mixing_calibration_glass_step.png`.
 
+### 1.3 Design flow and system architecture (Mermaid)
+
+During design, we kept a stable contract: one canonical gameplay path and one runtime data path. These diagrams are the same as the public `README.md` "Gameplay Workflow" section (this repo, not a separate spec).
+
+**Gameplay path (player-facing cadence):**
+
+```mermaid
+flowchart TD
+    A[Start New Game] --> B[Select Character Source]
+    B --> B1[Local seeds]
+    B --> B2[Storyworld submodule]
+    B --> B3[Remote fallback]
+    B1 --> C[Generate Customer Profile]
+    B2 --> C
+    B3 --> C
+    C --> D[Dialogue Round]
+    D --> E[Emotion + Trust Update]
+    E --> F[Mix Drink in Pixi Board]
+    F --> G[Scoring and Service Judgment]
+    G --> H[Save Progress to Slot]
+    H --> I{Continue Session?}
+    I -->|Yes| D
+    I -->|No| J[End Session]
+```
+
+**System / logic path (how it composes in code):**
+
+```mermaid
+flowchart LR
+    U[Player Input] --> FE[React + Pixi Frontend]
+    FE --> API[Node Save Server APIs]
+    API --> SW[Storyworld Service]
+    API --> EMO[Emotion Service]
+    SW --> SRC1[Local seeds]
+    SW --> SRC2[polyu-storyworld submodule]
+    SW --> SRC3[Remote GitHub/HF fallback]
+    EMO --> MODEL[LLM Router / Multi-provider AI]
+    API --> SAVE[Local JSON Saves]
+    SAVE --> FE
+```
+
+These stayed stable across iterations. When a feature could not be mapped to these flows, it was treated as out-of-scope for the play loop until the core was reliable.
+
 ---
 
 ## 2. From zero to playable: full development process by phase

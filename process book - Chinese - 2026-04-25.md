@@ -58,6 +58,49 @@ SD5976 Process Book（Detailed Chinese Edition）
   - **实现证据路径：**`src/game/pixi/`、`src/styles/`、`src/components/` 中 HUD/状态相关组件。
   - **截图证据：**`Art-assets/Art assets/游戏截屏/02_main_menu_resonant_sips.png`、`Art-assets/Art assets/游戏截屏/07_mixing_emotion_confirmation.png`、`Art-assets/Art assets/游戏截屏/08_mixing_calibration_glass_step.png`。
 
+### 1.3 设计流程与系统结构（Mermaid 流程图）
+
+在设计与迭代过程中，我们保持一套稳定的设计契约：一条可验证的玩法路径 + 一条可追踪的运行时数据路径。下述两张图与公开仓库中 `README.md` / `README.zh-CN.md` 的「游玩流程」章节**完全一致**，作为过程文档与仓库说明的对照，而不是第二套平行规格。
+
+**Gameplay 流程图（玩家侧节奏）：**
+
+```mermaid
+flowchart TD
+    A[开始新游戏] --> B[选择角色来源]
+    B --> B1[本地 seeds]
+    B --> B2[Storyworld 子模块]
+    B --> B3[远程回退]
+    B1 --> C[生成顾客画像]
+    B2 --> C
+    B3 --> C
+    C --> D[进入对话回合]
+    D --> E[情绪推断与信任更新]
+    E --> F[Pixi 调酒面板操作]
+    F --> G[得分与服务评价]
+    G --> H[写入本地存档槽]
+    H --> I{继续本次会话?}
+    I -->|是| D
+    I -->|否| J[结束会话]
+```
+
+**系统逻辑流程图（代码侧组合方式）：**
+
+```mermaid
+flowchart LR
+    U[玩家输入] --> FE[React + Pixi 前端]
+    FE --> API[Node 存档服务 API]
+    API --> SW[Storyworld 服务]
+    API --> EMO[情绪分析服务]
+    SW --> SRC1[本地 seeds]
+    SW --> SRC2[polyu-storyworld 子模块]
+    SW --> SRC3[GitHub/HF 远程回退]
+    EMO --> MODEL[LLM 路由与多模型提供商]
+    API --> SAVE[本地 JSON 存档]
+    SAVE --> FE
+```
+
+在收敛阶段，我们以此作为判断标准：如果某个功能不能映射到上述主链路，就先视为与当前核心闭环暂不对齐，避免再次扩张旁支导致稳定性崩坏。
+
 ---
 
 ## 2. 从无到有：完整研发过程

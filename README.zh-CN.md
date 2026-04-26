@@ -19,6 +19,8 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 - `README.zh-CN.md`（中文镜像说明）
 - `process book - English - 2026-04-25.md`（英文过程文档）
 - `process book - Chinese - 2026-04-25.md`（中文过程文档）
+- `SD5976 Process Book.pdf`（手排完成的英文 process book 成品 PDF）
+- 可选：`npm run pdf:process-book:en` 可将 `process book - English - 2026-04-25.md` 自动导出为 `Resonant-Sips-Process-Book-English-2026-04-25.pdf`（需从 Markdown 重导出时使用）
 - `DOC/DESIGN_PLAN.md`（与当前实现一致的设计文档）
 - `DOC/development-trace.md`（仓库协作与开发轨迹）
 - `server/storyworld-service.mjs`、`server/save-server.mjs`、`server/emotion-service.mjs`

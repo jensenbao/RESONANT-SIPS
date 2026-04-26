@@ -33,6 +33,7 @@ Thumbs.db
 *.tmp
 *.temp
 ~$*.docx
+.process-book-en-print-tmp.html
 
 # design docs
 docs/design/

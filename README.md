@@ -19,6 +19,8 @@ Key reference paths:
 - `README.zh-CN.md` (Chinese mirror)
 - `process book - English - 2026-04-25.md` (English process book)
 - `process book - Chinese - 2026-04-25.md` (Chinese process book)
+- `SD5976 Process Book.pdf` (hand-finished English process book PDF)
+- Optional: `npm run pdf:process-book:en` exports `process book - English - 2026-04-25.md` to `Resonant-Sips-Process-Book-English-2026-04-25.pdf` (when you need an automated re-export from Markdown)
 - `DOC/DESIGN_PLAN.md` (implementation-aligned plan)
 - `DOC/development-trace.md` (repository-visible collaboration trace)
 - `server/storyworld-service.mjs`, `server/save-server.mjs`, `server/emotion-service.mjs`
