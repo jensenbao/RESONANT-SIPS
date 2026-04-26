@@ -42,6 +42,11 @@ docs/design/
 saves/*
 !saves/.gitkeep
 
+# generated character assets
+seeds/characters/added/
+public/asset/角色/cutout/*
+!public/asset/角色/cutout/5738g_cutout.png
+
 # Python
 venv/
 __pycache__/
