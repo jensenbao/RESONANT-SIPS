@@ -1,4 +1,4 @@
-﻿SD5976 Process Book (Detailed English Edition)
+SD5976 Process Book (Detailed English Edition)
 
 Project: Resonant Sips  
 Course: PolyU MSc IME - AI Tools for Creative Process and Transmedia (SD5976)  
@@ -14,7 +14,7 @@ This process book is written as a development record rather than a feature showc
 
 ## 1. Project origin: from creative question to executable objective
 
-Resonant Sips did not begin as “an AI game idea.” It began as a design question: in narrative interaction, what should AI do beyond producing convincing text. We wanted AI to affect gameplay logic, not remain a decorative dialogue layer. That is why the player role became a bartender. The player reads the guest through conversation, responds through mixing actions, and receives explicit system feedback through trust movement, settlement differences, and relationship progression.
+Resonant Sips did not begin as "an AI game idea." It began as a design question: in narrative interaction, what should AI do beyond producing convincing text. We wanted AI to affect gameplay logic, not remain a decorative dialogue layer. That is why the player role became a bartender. The player reads the guest through conversation, responds through mixing actions, and receives explicit system feedback through trust movement, settlement differences, and relationship progression.
 
 The cyberpunk bar setting was selected for structural reasons. It naturally supports a gap between surface behavior and hidden emotional state, which makes emotion inference gameplay meaningful. At the same time, cocktail mixing offers operational variables, so abstract interpretation can be translated into actionable mechanics.
 
@@ -31,7 +31,7 @@ Three design advantages were especially instructive for us:
 How this translated into Resonant Sips:
 
 - We structured gameplay into recognizable phases (setup -> dialogue interpretation -> mixing execution -> settlement/progression), so each stage has a clear decision focus.
-- We treated secondary UI panels (profile/history/context modules) as part of interaction storytelling, not only as utility windows, following the same “in-world usability” principle.
+- We treated secondary UI panels (profile/history/context modules) as part of interaction storytelling, not only as utility windows, following the same "in-world usability" principle.
 - We committed to a future-retro cyberpunk tone where neon, pixel stylization, and interface framing support mood while preserving legibility for emotion and recipe judgment.
 
 Reference notes for this ideation influence:
@@ -72,7 +72,7 @@ During the same phase, we integrated the `venetanji/polyu-storyworld` submodule.
 
 In the middle phase, we experienced a common failure mode: feature breadth grew faster than system stability. Multiple side systems were developed in parallel, and core flow quality started to degrade. At that point, we made a deliberate reduction. We temporarily removed distracting branches and concentrated development on one complete core path: guest arrival, dialogue observation, emotion judgment, mixing execution, and settlement feedback.
 
-This decision was the project’s turning point. It reduced surface complexity and improved delivery quality, giving every subsequent iteration a clear validation target.
+This decision was the project's turning point. It reduced surface complexity and improved delivery quality, giving every subsequent iteration a clear validation target.
 
 ### 2.3 Storyworld integration as runtime behavior, not documentation claim
 
@@ -102,7 +102,7 @@ Without this chain, dialogue remains cosmetic and mixing remains mechanical. Wit
 
 ## 4. Model optimization: what we did, and what we did not do
 
-We need to state this precisely. The team did not retrain model weights and did not run fine-tuning as part of this project. Our optimization work was runtime-oriented. “Continuous model optimization” in this project means iterative refinement of prompt constraints, output contracts, validation rules, fallback logic, and parameter settings.
+We need to state this precisely. The team did not retrain model weights and did not run fine-tuning as part of this project. Our optimization work was runtime-oriented. "Continuous model optimization" in this project means iterative refinement of prompt constraints, output contracts, validation rules, fallback logic, and parameter settings.
 
 We standardized the data path from `source.yaml` to `profile.json` to runtime context to reduce noise. We constrained emotion output to a legal 8-axis set and enforced post-processing for computational reliability. When model output failed or degraded, heuristic fallback preserved flow continuity. Dialogue stability was improved through anti-repetition constraints and generation parameter tuning. The objective was not stronger prose. The objective was role-consistent, controllable output that supports gameplay logic.
 
@@ -128,7 +128,7 @@ Network variability and model availability created additional instability in cha
 
 ## 7. Team collaboration and contribution logic
 
-The team followed a “stabilize core first, refine in parallel” collaboration strategy. We first secured core state and service behavior, then advanced UI polish, asset consistency, and documentation quality in parallel. This reduced integration conflicts and improved iteration efficiency.
+The team followed a "stabilize core first, refine in parallel" collaboration strategy. We first secured core state and service behavior, then advanced UI polish, asset consistency, and documentation quality in parallel. This reduced integration conflicts and improved iteration efficiency.
 
 Multi-author contribution is visible in repository history, but role-to-artifact mapping is more important than raw commit counts. Some members focused on service reliability and state behavior, some improved interaction and dialogue quality, some handled visual asset consistency and media integration, and some maintained process documentation, attribution clarity, and release readiness.
 

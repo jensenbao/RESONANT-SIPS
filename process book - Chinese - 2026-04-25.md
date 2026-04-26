@@ -1,4 +1,4 @@
-﻿SD5976 Process Book（Detailed Chinese Edition）
+SD5976 Process Book（Detailed Chinese Edition）
 
 项目名称：Resonant Sips  
 课程：PolyU MSc IME - AI Tools for Creative Process and Transmedia (SD5976)  
@@ -195,4 +195,4 @@ S7 日终反馈与进度推进
 
 ## 12. 结论
 
-Resonant Sips 最终交付的不是一组功能清单，而是一条可运行、可解释、可复盘的创作流程。我们把角色资产、语言生成、情绪建模、交互反馈和工程稳定性组织到同一系统里，并通过持续取舍把它打磨到可展示状态。这就是我们对 “Document your process” 的真实回应。
+Resonant Sips 最终交付的不是一组功能清单，而是一条可运行、可解释、可复盘的创作流程。我们把角色资产、语言生成、情绪建模、交互反馈和工程稳定性组织到同一系统里，并通过持续取舍把它打磨到可展示状态。这就是我们对 "Document your process" 的真实回应。
