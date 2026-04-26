@@ -250,6 +250,41 @@ This demo presents the full playable chain in one continuous run:
 3. Pixi mixing interaction and recipe execution.
 4. Service outcome feedback and save/progression behavior.
 
+### Key Gameplay Screenshots
+
+<table>
+  <tr>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/02_main_menu_resonant_sips.png" alt="Main menu and world entry" width="100%"><br>
+      <sub><b>1) Main menu and world entry</b></sub>
+    </td>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/03_new_game_setup_character_pool.png" alt="Character pool setup before run" width="100%"><br>
+      <sub><b>2) Character pool setup before run</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/05_dialogue_with_customer.png" alt="Live dialogue with customer and trust context" width="100%"><br>
+      <sub><b>3) Live dialogue and trust context</b></sub>
+    </td>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/07_mixing_emotion_confirmation.png" alt="Emotion confirmation before calibration mixing" width="100%"><br>
+      <sub><b>4) Emotion confirmation before mixing</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/09_mixing_serve_step.png" alt="Serve step with target profile matching" width="100%"><br>
+      <sub><b>5) Serve step and profile matching</b></sub>
+    </td>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/11_end_of_day_summary.png" alt="End-of-day progression summary" width="100%"><br>
+      <sub><b>6) End-of-day progression summary</b></sub>
+    </td>
+  </tr>
+</table>
+
 ## Storyworld and MCP-style Integration
 
 - Storyworld source:

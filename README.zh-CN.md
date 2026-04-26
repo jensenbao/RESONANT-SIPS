@@ -249,6 +249,41 @@ flowchart LR
 3. Pixi 调酒面板的配方执行。
 4. 递酒结算反馈与存档推进。
 
+### 关键 Gameplay 截图
+
+<table>
+  <tr>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/02_main_menu_resonant_sips.png" alt="主界面与世界观入口" width="100%"><br>
+      <sub><b>1）主界面与世界观入口</b></sub>
+    </td>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/03_new_game_setup_character_pool.png" alt="开局前角色池配置" width="100%"><br>
+      <sub><b>2）开局前角色池配置</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/05_dialogue_with_customer.png" alt="顾客对话与信任状态场景" width="100%"><br>
+      <sub><b>3）顾客对话与信任状态场景</b></sub>
+    </td>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/07_mixing_emotion_confirmation.png" alt="调酒前情绪确认步骤" width="100%"><br>
+      <sub><b>4）调酒前情绪确认步骤</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/09_mixing_serve_step.png" alt="Serve 步骤与目标配方匹配" width="100%"><br>
+      <sub><b>5）Serve 步骤与目标配方匹配</b></sub>
+    </td>
+    <td>
+      <img src="Art-assets/Art%20assets/游戏截屏/11_end_of_day_summary.png" alt="日终结算与进度反馈" width="100%"><br>
+      <sub><b>6）日终结算与进度反馈</b></sub>
+    </td>
+  </tr>
+</table>
+
 ## Storyworld 与 MCP 风格接口
 
 - Storyworld 来源：

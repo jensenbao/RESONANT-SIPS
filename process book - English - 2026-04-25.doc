@@ -18,6 +18,46 @@ Resonant Sips did not begin as “an AI game idea.” It began as a design quest
 
 The cyberpunk bar setting was selected for structural reasons. It naturally supports a gap between surface behavior and hidden emotional state, which makes emotion inference gameplay meaningful. At the same time, cocktail mixing offers operational variables, so abstract interpretation can be translated into actionable mechanics.
 
+### 1.1 Ideation reference: what we borrowed from Dave the Diver
+
+In ideation, one of our strongest reference points was *Dave the Diver*. We did not treat it as a template to copy mechanics; we treated it as a benchmark for how to package multiple systems into a coherent player-facing rhythm.
+
+Three design advantages were especially instructive for us:
+
+1. **Clear phase-based loop design**: day/night or phase separation helps players focus on one cognitive task at a time, while still feeling progression across the full session.
+2. **Diegetic secondary-menu thinking**: interface layers that feel in-world (rather than abstract dev UI) reduce friction and improve identity. Its phone-centric interaction model influenced our own secondary-menu thinking and information hierarchy.
+3. **Hybrid visual direction with strong readability**: combining stylized retro language with modern depth/lighting can keep scenes expressive without sacrificing clarity for gameplay decisions.
+
+How this translated into Resonant Sips:
+
+- We structured gameplay into recognizable phases (setup -> dialogue interpretation -> mixing execution -> settlement/progression), so each stage has a clear decision focus.
+- We treated secondary UI panels (profile/history/context modules) as part of interaction storytelling, not only as utility windows, following the same “in-world usability” principle.
+- We committed to a future-retro cyberpunk tone where neon, pixel stylization, and interface framing support mood while preserving legibility for emotion and recipe judgment.
+
+Reference notes for this ideation influence:
+
+- Unity case study on *Dave the Diver* (2D/3D blend, production and presentation choices): https://unity.com/case-study/dave-diver
+- Game Developer interview (phase separation, loop expansion, connected-world framing): https://www.gamedeveloper.com/design/dave-the-diver
+
+### 1.2 Reference -> Translation snapshot
+
+To keep ideation traceable, we map each borrowed principle to a concrete implementation decision:
+
+- **Reference focus: phase-separated loop**
+  - **Translation in Resonant Sips:** setup -> dialogue -> mixing -> settlement/progression as a clear four-stage session rhythm.
+  - **Evidence paths:** `src/pages/NewGameSetupPage.jsx`, `src/hooks/useCustomerFlow.js`, `src/game/pixi/`.
+  - **Visual evidence:** `Art-assets/Art assets/游戏截屏/03_new_game_setup_character_pool.png`, `Art-assets/Art assets/游戏截屏/05_dialogue_with_customer.png`, `Art-assets/Art assets/游戏截屏/09_mixing_serve_step.png`, `Art-assets/Art assets/游戏截屏/11_end_of_day_summary.png`.
+
+- **Reference focus: phone-like, diegetic secondary menu logic**
+  - **Translation in Resonant Sips:** profile/history/context panels are treated as narrative UI layers, not separate debugging utilities.
+  - **Evidence paths:** `src/hooks/useDialogue.js`, `src/components/Common/CopyrightModal.jsx`, dialogue scene modules under `src/pages/`.
+  - **Visual evidence:** `Art-assets/Art assets/游戏截屏/06_dialogue_chat_history_overlay.png`.
+
+- **Reference focus: stylized visual identity with readable interaction**
+  - **Translation in Resonant Sips:** future-retro cyberpunk style is kept while preserving gameplay readability for trust, emotion, and recipe judgments.
+  - **Evidence paths:** `src/game/pixi/`, `src/styles/`, gameplay HUD/state components in `src/components/`.
+  - **Visual evidence:** `Art-assets/Art assets/游戏截屏/02_main_menu_resonant_sips.png`, `Art-assets/Art assets/游戏截屏/07_mixing_emotion_confirmation.png`, `Art-assets/Art assets/游戏截屏/08_mixing_calibration_glass_step.png`.
+
 ---
 
 ## 2. From zero to playable: full development process by phase
@@ -112,16 +152,30 @@ The gameplay demo video has now been published and can be referenced directly in
 
 This video serves as the primary end-to-end evidence clip, showing one continuous playable session from setup to outcome feedback.
 
-Use the following placeholders so remaining assets can be inserted directly:
+Integrated screenshot set (captured from actual gameplay run):
 
-[Screenshot S1] Main interface / world setup  
-[Screenshot S2] New game setup / character pool  
-[Screenshot S3] Storyworld character retrieval result  
-[Screenshot S4] Dialogue + emotion selection  
-[Screenshot S5] Mixing execution interface  
-[Screenshot S6] Serve result and feedback  
-[Screenshot S7] Error message and recovery action  
-[Video D2] Technical pipeline clip (1-2 min)
+S1 Main interface / world setup  
+![S1 Main Interface](Art-assets/Art%20assets/游戏截屏/02_main_menu_resonant_sips.png)
+
+S2 New game setup / character pool  
+![S2 New Game Setup](Art-assets/Art%20assets/游戏截屏/03_new_game_setup_character_pool.png)
+
+S3 Dialogue stage (customer interaction context)  
+![S3 Dialogue Stage](Art-assets/Art%20assets/游戏截屏/05_dialogue_with_customer.png)
+
+S4 Emotion confirmation before mixing  
+![S4 Emotion Confirmation](Art-assets/Art%20assets/游戏截屏/07_mixing_emotion_confirmation.png)
+
+S5 Mixing execution (calibration step)  
+![S5 Mixing Calibration](Art-assets/Art%20assets/游戏截屏/08_mixing_calibration_glass_step.png)
+
+S6 Serve result and profile match feedback  
+![S6 Serve Feedback](Art-assets/Art%20assets/游戏截屏/09_mixing_serve_step.png)
+
+S7 End-of-day feedback and progression  
+![S7 End of Day](Art-assets/Art%20assets/游戏截屏/11_end_of_day_summary.png)
+
+[Video D2] Technical pipeline clip (1-2 min) - optional future addition
 
 Process diagrams should be exported as high-resolution images and embedded directly, because visual evidence is typically processed before detailed text in most reading contexts.
 
