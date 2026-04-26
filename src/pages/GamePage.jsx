@@ -13,7 +13,8 @@ import {
   GameHeader,
   DayEndModal,
   CustomerLeaveOverlay,
-  GameHintPanel
+  GameHintPanel,
+  TavernEntranceScene
 } from '../components/Game/index.js';
 import AtmosphereOverlay from '../components/Atmosphere/AtmosphereOverlay.jsx';
 import EventNotification from '../components/Atmosphere/EventNotification.jsx';
@@ -156,8 +157,10 @@ const GamePage = ({
   const advancedGuides = useAdvancedGuides();
   const [showHelp, setShowHelp] = useState(false);
   const [showServeStoryAnim, setShowServeStoryAnim] = useState(false);
-  const [serveStoryAnimKey, setServeStoryAnimKey] = useState(0);
-
+  const [serveStoryAnimKey, setServeStoryAnimKey] = useState(0);  
+  const [showTavernEntrance, setShowTavernEntrance] = useState(false);
+  const [pendingTavernEntrance, setPendingTavernEntrance] = useState(false);
+  const tavernEntranceShownDayRef = useRef(null);
   const triggerServeStoryAnim = useCallback(() => {
     setServeStoryAnimKey(Date.now());
     setShowServeStoryAnim(true);
@@ -217,6 +220,7 @@ const GamePage = ({
   const aiConfig = customerFlow.currentCustomer?.config || getAIConfig(aiType || 'workplace');
   const stagePortraitSrc = aiConfig?.avatarBase64 || '';
   const stageCharacterId = inferStageCharacterId(aiConfig) || getSingleActiveStageCharacterId();
+  const isBarSceneReady = !showAtmosphereOverlay && !pendingTavernEntrance && !showTavernEntrance;
 
   useEffect(() => {
     if (!activeSlotId) return;
@@ -333,6 +337,7 @@ const GamePage = ({
     money, setMoney, unlockedItems, setUnlockedItems,
     atmosphere, generateAtmosphere,
     showAtmosphereOverlay, dismissAtmosphereOverlay,
+    isBarSceneReady,
     showEventNotification, currentEvent,
     eventsEnabled,
     dailyEventCount, triggerEvent, shouldTriggerEvent,
@@ -407,6 +412,40 @@ const GamePage = ({
     && customerFlow.dailyCustomers.length === 0
     && String(customerFlow.customerLoadingProgress || '').includes('No first guest found');
 
+  useEffect(() => {
+    if (showAtmosphereOverlay || !pendingTavernEntrance || hasHighPriorityOverlay) return;
+    setPendingTavernEntrance(false);
+    setShowTavernEntrance(true);
+  }, [showAtmosphereOverlay, pendingTavernEntrance, hasHighPriorityOverlay]);
+
+  useEffect(() => {
+    if (tavernEntranceShownDayRef.current === customerFlow.currentDay) return;
+    setPendingTavernEntrance(false);
+    setShowTavernEntrance(false);
+  }, [customerFlow.currentDay]);
+
+  const handleOpenForBusiness = useCallback(() => {
+    dismissAtmosphereOverlay();
+
+    const readyForEntrance = customerFlow.isGameReady
+      && !customerFlow.isLoadingCustomers
+      && customerFlow.dailyCustomers.length > 0
+      && tavernEntranceShownDayRef.current !== customerFlow.currentDay;
+
+    if (!readyForEntrance) {
+      return;
+    }
+
+    tavernEntranceShownDayRef.current = customerFlow.currentDay;
+    setPendingTavernEntrance(true);
+  }, [
+    customerFlow.currentDay,
+    customerFlow.dailyCustomers.length,
+    customerFlow.isGameReady,
+    customerFlow.isLoadingCustomers,
+    dismissAtmosphereOverlay
+  ]);
+
   if ((!customerFlow.isGameReady || customerFlow.dailyCustomers.length === 0 || customerFlow.isLoadingCustomers) && !hasHighPriorityOverlay) {
     return (
       <div className="game-page">
@@ -423,7 +462,7 @@ const GamePage = ({
             onBack={onBack}
             onBackToSetup={onBackToSetup}
           />
-          <AtmosphereOverlay atmosphere={atmosphere} day={customerFlow.currentDay} onStart={dismissAtmosphereOverlay} isVisible={showAtmosphereOverlay && !customerFlow.isLoadingCustomers} />
+          <AtmosphereOverlay atmosphere={atmosphere} day={customerFlow.currentDay} onStart={handleOpenForBusiness} isVisible={showAtmosphereOverlay && !customerFlow.isLoadingCustomers} />
           {toastList.map(toast => (
             <Toast key={toast.id} message={toast.message} type={toast.type} onClose={() => removeToast(toast.id)} />
           ))}
@@ -441,7 +480,7 @@ const GamePage = ({
         customerCharacterId={stageCharacterId}
       />
       <div className="game-page-ui">
-      <AtmosphereOverlay atmosphere={atmosphere} day={customerFlow.currentDay} onStart={dismissAtmosphereOverlay} isVisible={showAtmosphereOverlay} />
+      <AtmosphereOverlay atmosphere={atmosphere} day={customerFlow.currentDay} onStart={handleOpenForBusiness} isVisible={showAtmosphereOverlay} />
       {eventsEnabled && (
         <EventNotification event={currentEvent} onChoice={handlers.handleEventChoiceAction} onDismiss={handlers.handleEventDismissAction} isVisible={showEventNotification} />
       )}
@@ -554,6 +593,13 @@ const GamePage = ({
             skip
           </button>
         </div>
+      )}
+
+      {showTavernEntrance && (
+        <TavernEntranceScene
+          characterName={aiConfig?.name || aiConfig?.displayName || ''}
+          onAnimationComplete={() => setShowTavernEntrance(false)}
+        />
       )}
 
       {cocktailFlow.showCocktailResult && (

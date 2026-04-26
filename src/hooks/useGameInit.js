@@ -48,6 +48,7 @@ export const useGameInit = (ctx) => {
     activeSlotId,
     atmosphere, generateAtmosphere,
     showAtmosphereOverlay, dismissAtmosphereOverlay,
+    isBarSceneReady,
     showEventNotification, currentEvent,
     handleEventChoiceAction, handleEventDismissAction,
     startNewDay,
@@ -220,7 +221,7 @@ export const useGameInit = (ctx) => {
 
   // 顾客变化时开始新对话 + 进阶引导检查
   useEffect(() => {
-    if (customerFlow.currentCustomer && customerFlow.dailyCustomers.length > 0 && customerFlow.isGameReady && customerFlow.isInitialized.current) {
+    if (customerFlow.currentCustomer && customerFlow.dailyCustomers.length > 0 && customerFlow.isGameReady && customerFlow.isInitialized.current && isBarSceneReady) {
       // 如果是从会话恢复的，跳过第一次重置和开场白（状态已恢复）
       if (restoredFromSessionRef.current) {
         restoredFromSessionRef.current = false;
@@ -255,7 +256,7 @@ export const useGameInit = (ctx) => {
         }
       }
     }
-  }, [customerFlow.currentCustomerIndex, customerFlow.currentDay, customerFlow.dailyCustomers]);
+  }, [customerFlow.currentCustomerIndex, customerFlow.currentDay, customerFlow.dailyCustomers, isBarSceneReady]);
 
   // 🆕 进阶引导：信任度达到阈值
   useEffect(() => {

@@ -9,3 +9,5 @@ export { default as ChapterTransition } from './ChapterTransition.jsx';
 export { default as MemoryFragment } from './MemoryFragment.jsx';
 export { MemoryFragmentInline } from './MemoryFragment.jsx';
 export { default as EndingScreen } from './EndingScreen.jsx';
+// 🆕 酒馆入场场景
+export { default as TavernEntranceScene } from './TavernEntranceScene.jsx';
