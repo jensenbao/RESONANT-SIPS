@@ -21,8 +21,9 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 - `process book - Chinese - 2026-04-25.md`（中文过程文档）
 - `SD5976 Process Book.pdf`（手排完成的英文 process book 成品 PDF）
 - 可选：`npm run pdf:process-book:en` 可将 `process book - English - 2026-04-25.md` 自动导出为 `Resonant-Sips-Process-Book-English-2026-04-25.pdf`（需从 Markdown 重导出时使用）
-- `DOC/DESIGN_PLAN.md`（与当前实现一致的设计文档）
-- `DOC/development-trace.md`（仓库协作与开发轨迹）
+- `DOC/README.md`（文档索引与维护规范）
+- `DOC/当前状态与已完成.md`（与当前实现一致的状态说明）
+- `DOC/开发计划与路线图.md`（计划工作与验收标准）
 - `server/storyworld-service.mjs`、`server/save-server.mjs`、`server/emotion-service.mjs`
 
 ## 学术诚信与版权
@@ -61,7 +62,7 @@ Resonant Sips 是一个赛博朋克叙事调酒互动项目。
 
 项目采用短迭代方式推进，开发工作并行覆盖玩法逻辑、AI 接入、界面与资源打磨、文档维护。  
 团队不是一次性堆叠功能，而是持续把分散能力收敛到稳定可玩的核心闭环，再逐步提升可靠性与展示表现。  
-多成员协作痕迹可在 git 提交历史中核验，相关代码分布可见 `DOC/development-trace.md`。
+多成员协作痕迹可在 git 提交历史中核验，当前协作快照与实现状态见 `DOC/当前状态与已完成.md`。
 
 ### 4) Storyworld / MCP 接入实现
 
@@ -137,7 +138,7 @@ git submodule update --init --recursive
 
 可直接复制的配置模板见：
 
-- `DOC/network-cn-hk-setup.md`
+- `DOC/运行配置与资产维护.md`
 
 配置切换命令：
 
@@ -187,7 +188,7 @@ npm run check:paths
 
 路径规范文档：
 
-- `DOC/asset-structure-and-path-policy.md`
+- `DOC/运行配置与资产维护.md`
 
 ## 游玩流程
 
@@ -325,7 +326,7 @@ flowchart LR
 - 暂无 `npm test` 自动化测试脚本（以手动验证为主）。
 - 暂无 GitHub Actions CI 配置。
 - 百科入口当前由开关关闭。
-- 早期部分设计文档中提到的 Python/ComfyUI 流程与当前 React/Node 主实现并非完全一致。
+- 当前自动化测试与 CI 覆盖仍有限；项目状态以 `DOC/` 下持续维护的主文档为准。
 
 ## 安全与协作说明
 

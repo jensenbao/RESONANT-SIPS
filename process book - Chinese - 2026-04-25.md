@@ -151,11 +151,11 @@ flowchart LR
 
 ---
 
-## 5. ComfyUI custom workflow：视觉一致性流程
+## 5. 模型生图与视觉一致性流程
 
-在美术资产侧，团队制定并使用了统一的 ComfyUI custom workflow 来保证角色像素形象一致性。该流程的核心目标是统一画幅、像素密度、色调和轮廓表现，减少多来源资产造成的风格断裂，并确保角色在同一世界观中具有稳定视觉语言。
+在美术资产侧，项目使用可配置的图像模型 API 生成角色概念图和透明背景立绘。角色 `profile.json` 与已有 portrait 共同约束提示词，服务端负责模型调用、响应校验、尺寸处理、透明背景处理、文件落盘和缓存失效，从而减少不同角色之间的画幅、色调和轮廓差异。
 
-这条流程属于资产生产子流程，不直接参与运行时主逻辑判定，但它直接影响展示质量与视觉可信度。与主程序中的 Storyworld/MCP/情绪规则链路相比，它承担的是“视觉一致性治理”而非“运行时行为判定”。
+这条流程由 `server/character-image-service.mjs` 和 `/api/mcp/character/generate_images` 提供，不直接参与调酒或情绪判定。生图失败时保留现有图像或使用明确占位，不阻断核心玩法；生成结果统一进入角色目录和 `public/asset/角色/cutout/`，并继续遵守素材来源与演示用途登记要求。
 
 ---
 
@@ -232,7 +232,7 @@ S7 日终反馈与进度推进
 
 本文中的关键叙述可在仓库中找到对应痕迹。Storyworld/MCP 接入与回退逻辑可见于 `server/storyworld-service.mjs` 与 `server/save-server.mjs`；情绪结构化、后处理与回退可见于 `server/emotion-service.mjs`、`src/utils/ai/customerGeneration.js`；角色池与流程收敛可见于 `src/pages/NewGameSetupPage.jsx`、`src/hooks/useCustomerFlow.js` 及相关提交记录；对话防复读与参数调优可见于 `src/utils/aiService.js`、`src/hooks/useDialogue.js`；存档稳定性修复可见于 `server/save-server.mjs`。
 
-对于 ComfyUI 流程，可在流程文档与资产组织结果中看到对应实施痕迹（例如 `DOC/流程-v1.md` 与资产目录变更）。该流程用于统一角色像素风格，并与主链路形成互补。
+模型生图与资产缓存的实现可见于 `server/character-image-service.mjs`、`src/utils/storyworldRepository.js`、`shared/runtimeApiConfig.js` 与 `DOC/运行配置与资产维护.md`。该流程用于统一角色视觉资产，并与运行时主链路保持解耦。
 
 ---
 

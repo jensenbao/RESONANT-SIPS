@@ -21,8 +21,9 @@ Key reference paths:
 - `process book - Chinese - 2026-04-25.md` (Chinese process book)
 - `SD5976 Process Book.pdf` (hand-finished English process book PDF)
 - Optional: `npm run pdf:process-book:en` exports `process book - English - 2026-04-25.md` to `Resonant-Sips-Process-Book-English-2026-04-25.pdf` (when you need an automated re-export from Markdown)
-- `DOC/DESIGN_PLAN.md` (implementation-aligned plan)
-- `DOC/development-trace.md` (repository-visible collaboration trace)
+- `DOC/README.md` (documentation index and maintenance rules)
+- `DOC/当前状态与已完成.md` (implementation-aligned current status)
+- `DOC/开发计划与路线图.md` (planned work and acceptance criteria)
 - `server/storyworld-service.mjs`, `server/save-server.mjs`, `server/emotion-service.mjs`
 
 ## Academic Integrity and Copyright
@@ -62,7 +63,7 @@ What is original in this repository is the integration logic: Storyworld charact
 The project was developed through short iteration cycles across gameplay logic, AI integration, UI/asset polish, and documentation updates.  
 Rather than shipping isolated experiments, the team repeatedly consolidated features into a stable playable loop, then refined reliability and presentation quality.  
 Contribution history is visible in git commits from multiple members, with work spread across frontend interaction, backend services, assets, and writing.  
-For a concise, auditable trace of where collaboration appears in the codebase, see `DOC/development-trace.md`.
+For the current collaboration snapshot and implementation status, see `DOC/当前状态与已完成.md`.
 
 ### 4) Storyworld and MCP-style Usage
 
@@ -138,7 +139,7 @@ To reduce VPN dependency:
 
 Copy-paste presets are documented in:
 
-- `DOC/network-cn-hk-setup.md`
+- `DOC/运行配置与资产维护.md`
 
 Profile switch commands:
 
@@ -188,7 +189,7 @@ npm run check:paths
 
 Path policy document:
 
-- `DOC/asset-structure-and-path-policy.md`
+- `DOC/运行配置与资产维护.md`
 
 ## Gameplay Workflow
 
@@ -326,7 +327,7 @@ This demo presents the full playable chain in one continuous run:
 - No `npm test` script yet (manual validation is primary).
 - No GitHub Actions workflow configured yet.
 - Encyclopedia entry point is currently feature-flagged off in app routing.
-- Some older design docs describe aspirational Python/ComfyUI workflow not identical to current React/Node implementation.
+- The current automated test and CI coverage is still limited; use the maintained documents under `DOC/` as the source of truth.
 
 ## Security and Collaboration Notes
 

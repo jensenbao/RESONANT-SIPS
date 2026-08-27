@@ -151,11 +151,11 @@ We standardized the data path from `source.yaml` to `profile.json` to runtime co
 
 ---
 
-## 5. ComfyUI custom workflow: visual consistency pipeline
+## 5. Model-based image generation and visual consistency
 
-On the asset side, the team defined and used a unified custom workflow in ComfyUI to keep pixel portraits stylistically consistent across characters. The workflow aligns framing, pixel density, tonal profile, contour strength, and post-processing behavior so characters remain visually coherent within one world.
+The project uses configurable image-model APIs to generate character concept images and transparent-background cutouts. Character `profile.json` data and an existing portrait constrain the prompt, while the server handles model requests, response validation, resizing, transparency processing, file output, and cache invalidation. This reduces inconsistencies in framing, tonal profile, and silhouette across characters.
 
-This workflow is an asset-production pipeline rather than a runtime gameplay dependency. In practical terms, it manages visual consistency while the gameplay runtime remains centered on the Storyworld/MCP/emotion-rule chain.
+The pipeline is provided by `server/character-image-service.mjs` and `/api/mcp/character/generate_images`; it does not participate in cocktail or emotion judgment. A generation failure preserves the existing image or a clear placeholder instead of blocking core gameplay. Generated results enter the character asset directories and `public/asset/角色/cutout/`, and remain subject to attribution and demonstration-use records.
 
 ---
 
@@ -234,7 +234,7 @@ The project maintains two parallel commitments: transparent use of course charac
 
 Key statements in this document map to observable repository traces. Storyworld/MCP integration and fallback logic are visible in `server/storyworld-service.mjs` and `server/save-server.mjs`. Structured emotion analysis, validation, and fallback behavior are visible in `server/emotion-service.mjs` and `src/utils/ai/customerGeneration.js`. Character-pool flow and runtime integration can be traced through `src/pages/NewGameSetupPage.jsx` and `src/hooks/useCustomerFlow.js`. Dialogue anti-repetition and parameter tuning appear in `src/utils/aiService.js` and `src/hooks/useDialogue.js`. Save-path reliability fixes are visible in `server/save-server.mjs`.
 
-For the ComfyUI pipeline, implementation traces are represented in process documentation and resulting asset organization outcomes (for example in `DOC/流程-v1.md` and related asset changes). This pipeline is used to maintain style consistency and complements the runtime gameplay system.
+Model image generation and asset caching are traceable through `server/character-image-service.mjs`, `src/utils/storyworldRepository.js`, `shared/runtimeApiConfig.js`, and `DOC/运行配置与资产维护.md`. This pipeline maintains visual consistency while remaining decoupled from the runtime gameplay rules.
 
 ---
 
